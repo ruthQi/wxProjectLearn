@@ -1,0 +1,2 @@
+<view>test页</view>
+<view>name: {{name}}</view>
