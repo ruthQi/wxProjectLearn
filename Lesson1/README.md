@@ -22,3 +22,7 @@ app.json文件包括pages, window, tabBar, networkTimeout, debug;
     onReachBottomDistance：页面上拉触底事件触发时距页面底部距离，单位为px
   tabBar:可以通过tabBar配置项指定tab栏的表现，以及tab切换时显示的对应页面
     tabBar中的list是一个数组，只能配置最少2个，最多5个tab
+
+page.json:
+  页面的.json只能设置 window 相关的配置项，以决定本页面的窗口表现，所以无需写 window 这个键
+  页面中配置项会覆盖 app.json 的 window 中相同的配置项
