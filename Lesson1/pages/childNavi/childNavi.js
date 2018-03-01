@@ -31,6 +31,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    //getCurrentPages() 函数用于获取当前页面栈的实例，以数组形式按栈的顺序给出，第一个元素为首页，最     //后一个元素为当前页面。
     console.log('getCurrentPages的用法：', getCurrentPages());
   },
 

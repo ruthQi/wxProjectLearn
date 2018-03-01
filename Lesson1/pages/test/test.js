@@ -1,5 +1,7 @@
 //1.页面中获取应用实例
 var app = getApp();
+//引入js文件，实现模块化；暂不支持绝对路径
+import Common from '../../common/common.js';
 Page({
 
   /**
@@ -133,5 +135,9 @@ Page({
     }, ()=>{
       console.log(this.data)
     })
+  },
+  //测试common文件
+  testCommon:function(){
+    Common.sayHello(this.data.name);
   }
 })

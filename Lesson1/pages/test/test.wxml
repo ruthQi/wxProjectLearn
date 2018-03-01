@@ -23,3 +23,4 @@
   <view>{{newField.text}}</view>
   <button bindtap="addNewField">Add new data</button>
 </view>
+<button bindtap='testCommon'>test common</button>
