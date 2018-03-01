@@ -2,7 +2,9 @@
   "pages":[
     "pages/index/index",
     "pages/test/test",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/navi/navi",
+    "pages/childNavi/childNavi"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -25,6 +27,11 @@
       "text":"测试",
       "iconPath": "images/icon_component.png",
       "selectedIconPath": "images/icon_component_HL.png"
+    },{
+      "pagePath":"pages/navi/navi",
+      "text":"导航",
+      "iconPath":"images/wechat.png",
+      "selectedIconPath": "images/wechatHL.png"
     }],
     "position":"bottom",
     "color": "#aaa",

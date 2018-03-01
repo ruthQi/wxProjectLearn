@@ -25,6 +25,8 @@ Page({
   //当页面加载好之后执行
   onLoad: function () {
     console.log('页面生命周期---页面加载时触发');
+    console.log(app.globalData.userInfo)
+    console.log(this.data.canIUse)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

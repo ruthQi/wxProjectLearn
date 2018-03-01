@@ -1,0 +1,5 @@
+<view>{{title}}</view>
+<view>我是子页面</view>
+<!--navigateBack-->
+<button bindtap='back'>返回</button>
+<navigator open-type='navigateBack'>wxml返回</navigator>

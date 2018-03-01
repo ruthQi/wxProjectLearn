@@ -1,0 +1,17 @@
+<view>
+  <!--进入tabBar:test-->
+  <button bindtap="goToTest">跳转到tabBar:test</button>
+  <!--使用navigator标签，与wx.swithTab相同-->
+  <navigator open-type="switchTab" url="../test/test">navigator标签跳转</navigator>
+  <!--使用navigateTo-->
+  <button bindtap="navigateToChild">navigateTo跳转到子页面</button>
+  <!--使用navigator标签，与wx.navigateTo相同-->
+  <navigator open-type="navigate" url="../childNavi/childNavi?title=navigator">navigator标签跳转</navigator>
+  <!--使用redirectTo-->
+  <button bindtap="redirectToChild">redirectTo跳转到子页面</button>
+  <!--使用navigator标签，与wx.redirectTo相同-->
+  <navigator open-type="redirect" url="../childNavi/childNavi">redirect标签跳转</navigator>
+  <!--reLaunch-->
+  <button bindtap='reLaunchPage'>relaunch打开子页面</button>
+  <navigator open-type='reLaunch' url="../test/test">relaunch打开tabBar页面</navigator>
+</view>

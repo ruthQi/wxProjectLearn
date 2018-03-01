@@ -26,3 +26,24 @@ app.json文件包括pages, window, tabBar, networkTimeout, debug;
 page.json:
   页面的.json只能设置 window 相关的配置项，以决定本页面的窗口表现，所以无需写 window 这个键
   页面中配置项会覆盖 app.json 的 window 中相同的配置项
+
+App()用来注册一个小程序
+  注意事项：
+  App()必须在app.js中注册，且不能注册多个；
+  不要在定义App()的函数中调用getApp(),使用this就可以拿到app实例;
+  使用getApp()获取实例后，不要私自调用生命周期函数；
+  不要在onLaunch的时候调用getCurrentPages(),此时page还没生成；
+
+Page()用来注册一个页面，接受一个object参数，用来指定页面的初始数据，生命周期函数，事件处理函数等
+setData(data,callback):用于将数据从逻辑层发送到视图层（异步），同事改变对应的this.data的值（同步）
+  注意事项：
+  1.直接修改this.data的值而不调用this.setData是无法改变页面的状态的，还会造成数据不一致；
+  2.单次设置的数据不能超过1024kb,请尽量避免一次设置过多的数据
+  3.请不要把data中的任何值设置为undefined,否则这一项将不被设置并可能遗留一些潜在问题
+
+路由相关：
+tips：
+1.navigateTo,redirectTo只能打开非tabBar页面;
+2.switchTab只能打开tabBar页面；
+3.reLaunch可以打开任意页面
+4.调用页面路由带的参数可以在目标页面的onLoad中获取。

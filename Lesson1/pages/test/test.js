@@ -1,3 +1,4 @@
+//1.页面中获取应用实例
 var app = getApp();
 Page({
 
@@ -7,7 +8,14 @@ Page({
   data: {
     name: 'test',
     hasUserInfo: false,
-    userInfo: {}
+    userInfo: {},
+    pass: null,
+    text:'init data',
+    num: 0,
+    array:[{text: 'init data'}],
+    object: {
+      text: 'init data'
+    }
   },
 
   /**
@@ -15,6 +23,12 @@ Page({
    */
   onLoad: function (options) {
     console.log("page test---onload");
+    //setData的参数，data和callback
+    this.setData({
+      pass: app.globalData.pass
+    }, ()=>{
+      console.log('设置密码展示成功')
+    })
   },
 
   /**
@@ -58,7 +72,21 @@ Page({
   onReachBottom: function () {
     console.log("page test---onReachBottom");
   },
-
+  /**
+   * 页面滚动触发事件的处理函数
+   */
+  onPageScroll: function(){
+    console.log('page scroll')
+  },
+  /**
+   * 当前是tab页时，点击tab触发
+   */
+  onTabItemTap(item){
+    console.log('page tab');
+    console.log(item.index);
+    console.log(item.pagePath);
+    console.log(item.text)
+  },
   /**
    * 用户点击右上角分享
    */
@@ -75,6 +103,35 @@ Page({
         userInfo: userInfo,
         hasUserInfo: true        
       })
+    })
+  },
+  //===================点击事件========================
+  changeText: function(){
+    this.setData({
+      text: 'changed data'
+    })
+  },
+  changeNum: function(){
+    this.data.num = 1;
+    this.setData({
+      num: this.data.num
+    })
+  },
+  changeItemInArray: function(){
+    this.setData({
+      'array[0].text':'changed array'
+    })
+  },
+  changeItemInObject: function(){
+    this.setData({
+      'object.text': 'changed object'
+    })
+  },
+  addNewField: function(){
+    this.setData({
+      'newField.text': 'new data'
+    }, ()=>{
+      console.log(this.data)
     })
   }
 })

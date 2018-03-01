@@ -1,5 +1,6 @@
 <view>test页</view>
 <view>name: {{name}}</view>
+<text>密码是：{{pass}}</text>
 <!--text文本类似于span，行内元素，如果设置宽度，高度等，需要设置display才能起作用-->
 <text class="userInfo-tips">与index中不同的方式获取用户信息</text>
 <view class="userInfo-test">
@@ -8,4 +9,17 @@
     <image class="user-avatar" src="{{userInfo.avatarUrl}}"></image>
     <text>{{userInfo.nickName}}</text>
   </block>
+</view>
+<!--测试事件点击-->
+<view>
+  <view>{{text}}</view>
+  <button bindtap="changeText">Change normal data</button>
+  <view>{{num}}</view>
+  <button bindtap="changeNum">Change normal num</button>
+  <view>{{array[0].text}}</view>
+  <button bindtap="changeItemInArray">Change Array data</button>
+  <view>{{object.text}}</view>
+  <button bindtap="changeItemInObject">Change object data</button>
+  <view>{{newField.text}}</view>
+  <button bindtap="addNewField">Add new data</button>
 </view>
