@@ -4,7 +4,8 @@
     "pages/test/test",
     "pages/logs/logs",
     "pages/navi/navi",
-    "pages/childNavi/childNavi"
+    "pages/childNavi/childNavi",
+    "pages/dataAif/dataAif"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -1,0 +1,8 @@
+<view class="wxml-container">
+  <!--数据绑定：组件属性需要在双引号之内-->
+  <view id="item-{{id}}">数据绑定</view>
+  <text>======================</text>
+  <!--if条件语句-->
+  <view wx:if="{{condition}}">if是否暂时</view>
+  <button bindtap='changeIfShow'>toggle if</button>
+</view>

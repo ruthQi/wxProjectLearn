@@ -11,4 +11,6 @@
     <text class="user-motto">{{motto}}</text>
     <button class="user-button" bindtap='changeMotto'>点击</button>
   </view>
+  <!--点击链接进入数据绑定与if的实现-->
+  <navigator class="link-show" url='../dataAif/dataAif' open-type='navigate'>进入数据绑定与if实现</navigator>
 </view>
