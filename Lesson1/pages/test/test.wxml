@@ -1,2 +1,11 @@
 <view>test页</view>
 <view>name: {{name}}</view>
+<!--text文本类似于span，行内元素，如果设置宽度，高度等，需要设置display才能起作用-->
+<text class="userInfo-tips">与index中不同的方式获取用户信息</text>
+<view class="userInfo-test">
+  <button wx:if="{{!hasUserInfo}}" bindtap="getUserInfo">获取头像信息</button>
+  <block wx:else>
+    <image class="user-avatar" src="{{userInfo.avatarUrl}}"></image>
+    <text>{{userInfo.nickName}}</text>
+  </block>
+</view>

@@ -1,0 +1,17 @@
+.userInfo-tips{
+  color: red;
+  text-align: center;
+  margin-top: 50rpx;
+  display: block;
+}
+.userInfo-test{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.user-avatar{
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+}

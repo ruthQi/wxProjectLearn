@@ -1,10 +1,13 @@
+var app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    name: 'test'
+    name: 'test',
+    hasUserInfo: false,
+    userInfo: {}
   },
 
   /**
@@ -61,5 +64,17 @@ Page({
    */
   onShareAppMessage: function () {
     console.log("page test---onShareAppMessage");
+  },
+  //此处获取用户信息的方式与index中的方式是不同的方式
+  //userInfo是从app.js中传递过来的
+  getUserInfo: function(){
+    app.getUserInfoTest((userInfo) => {
+      console.log(userInfo);
+      console.log('--------',app.globalData.userInfoTest);
+      this.setData({
+        userInfo: userInfo,
+        hasUserInfo: true        
+      })
+    })
   }
 })

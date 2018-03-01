@@ -9,7 +9,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    // 登录
+    //登录
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -44,9 +44,27 @@ App({
     console.log("小程序生命周期---小程序隐藏的时候触发")
   },
   //全局的方法
-  
+  /*cb是从test.js中传递过来的回调函数，在获取用户信息成功之后调用回调函数，从而在test.js中可以知道获   取数据成功并赋值用户信息，改变页面元素;
+  在index.js中使用的是另一种方式获取用户信息*/
+  getUserInfoTest: function(cb){
+    if (this.globalData.userInfoTest){
+      typeof cb === 'function' && cb(this.globalData.userInfoTest);
+    }else{
+      wx.login({
+        success: (res)=>{
+          wx.getUserInfo({
+            success: (res)=>{
+              this.globalData.userInfoTest = res.userInfo;
+              typeof cb === 'function' && cb(this.globalData.userInfoTest);
+            }
+          })
+        }
+      })
+    }
+  },
   //全局的属性
   globalData: {
-    userInfo: null
+    userInfo: null,
+    userInfoTest: null
   }
 })

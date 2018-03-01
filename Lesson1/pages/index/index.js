@@ -58,6 +58,7 @@ Page({
   onHide: function(){
     console.log("页面生命周期---页面隐藏时触发");
   },
+  //此处点击的事件是bindgetuserinfo，在这里看到的getUserInfo已经类似于是回调函数了
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
