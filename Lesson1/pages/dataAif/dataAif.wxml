@@ -1,8 +1,39 @@
 <view class="wxml-container">
   <!--数据绑定：组件属性需要在双引号之内-->
   <view id="item-{{id}}">数据绑定</view>
-  <text>======================</text>
-  <!--if条件语句-->
+  <text>========条件=========</text>
+  <!--if条件语句:控制属性需要在双引号之内-->
   <view wx:if="{{condition}}">if是否暂时</view>
   <button bindtap='changeIfShow'>toggle if</button>
+  <text>----------------------</text>
+  <view wx:if="{{num == 1}}">我是1</view>
+  <view wx:elif="{{num > 2}}">我大于2</view>
+  <view wx:else>我是2</view>
+  <text>--------block------------</text>
+  <!--如果要一次性判断多个组件标签，可以使用一个 <block/> 标签将多个组件包装起来，并在上边使用 wx:if 控制属性-->
+  <!--block不是一个组件，它仅仅是一个包装元素，不会在页面中做任何渲染，只接受控制属性-->
+  <view wx:if="{{isBlock}}">false block</view>
+  <block wx:else>
+    <view>block1</view>
+    <view>block2</view>
+  </block>
+  <text>-------------hidden--------</text>
+  <!--hidden与wx:if比较：hidden初始化时，元素已渲染，hidden控制的是显示或者隐藏；
+      wx:if元素符合哪个条件哪个渲染；每次改变条件时元素都会重新渲染；
+      如果切换频繁，使用hidden为好-->
+  <view hidden="{{isHidden}}">false</view>
+  <text>=========关键字==========</text>
+  <!--使用关键字时，需要在双引号内;注意不要写成checked="false",这样会解析成字符串，而不是boolean-->
+  <checkbox checked="{{false}}">点击切换</checkbox>
+  <text>=========三元运算==========</text>
+  <view hidden="{{flag ? true : false}}">Hidden</view>
+  <text>=========算数运算==========</text>
+  <view>{{num1 + num2}} + {{num3}} + d</view>
+  <text>=========字符串==========</text>
+  <view>{{"hello" + nick}}</view>
+  <text>=========扩展符==========</text> 
+  <template name="test">
+    <view>{{a}} {{b}} {{c}}  {{d}}</view>
+  </template>
+  <template is="test" data="{{...obj1,...obj2}}"></template>
 </view>

@@ -6,7 +6,23 @@ Page({
    */
   data: {
     id: 2,
-    condition: false
+    condition: false,
+    num:3,
+    isBlock: false,
+    isHidden: true,
+    flag: false,
+    num1: 1,
+    num2: 2,
+    num3: 3,
+    nick: 'duck',
+    obj1: {
+      a:1,
+      b:2
+    },
+    obj2: {
+      c:3,
+      d:4
+    }
   },
   changeIfShow: function(){
     this.setData({
