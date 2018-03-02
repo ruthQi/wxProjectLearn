@@ -9,7 +9,7 @@ Page({
     condition: false,
     num:3,
     isBlock: false,
-    isHidden: true,
+    isHidden: false,
     flag: false,
     num1: 1,
     num2: 2,

@@ -1,0 +1,15 @@
+<view class="for-container">
+  <!--for遍历-->
+  <text>==========for==========</text>
+  <view>
+    <text wx:for="{{arr}}">item: {{item}};</text>
+  </view>
+  <!--组合-->
+  <text>-----------------</text>
+  <view>
+    <text wx:for="{{[zero,1,2,3,4,5]}}">item:{{item}}/</text>
+  </view>
+  <!--对象:一般用于模板-->
+  <text>------------------</text>
+
+</view>
