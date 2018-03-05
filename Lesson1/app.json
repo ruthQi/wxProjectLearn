@@ -6,7 +6,8 @@
     "pages/navi/navi",
     "pages/childNavi/childNavi",
     "pages/dataAif/dataAif",
-    "pages/forTest/forTest"
+    "pages/forTest/forTest",
+    "pages/event/event"
   ],
   "window":{
     "backgroundTextStyle":"light",

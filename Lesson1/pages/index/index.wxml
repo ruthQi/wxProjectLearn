@@ -15,4 +15,6 @@
   <navigator class="link-show" url='../dataAif/dataAif' open-type='navigate'>进入数据绑定与if实现</navigator>
   <!--for循环-->
   <navigator class="link-show" url='../forTest/forTest' open-type='navigate'>进入for循环</navigator>
+  <!--事件-->
+  <navigator class="link-show" url='../event/event' open-type='navigate'>进入event</navigator>
 </view>

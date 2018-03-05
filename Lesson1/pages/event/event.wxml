@@ -1,0 +1,59 @@
+<view class="event-container">
+  <text>=========事件============</text>
+  <!--bind事件绑定不会阻止冒泡事件向上冒泡；catch事件绑定可以阻止冒泡事件向上冒泡-->
+  <!--bindtap 写法等同于 bind:tap-->
+  <view>
+    <text>----------冒泡事件----------</text>
+    <view id="outer" bindtap="outerTap">
+      outer view
+      <view id="middle" bindtap="middleTap" data-test-index="middle">
+        middle view
+        <view id="inner" bindtap="innerTap" data-index="1">
+          inner view
+        </view>
+        <!--touchmove；touchstart：按下时触发，但是抬起手指的动作，同样也会触发父元素的冒泡事件bindtap-->
+        <view bindtouchmove='bindInnerMove'>
+          bind Inner move
+        </view>
+      </view>
+    </view>
+    <text>===========非冒泡===========</text>
+    <view>
+      <text>----------非冒泡事件----------</text>
+      <view id="catchOuter" catchtap="catchOuterTap">
+        catch outer view
+        <view id="catchMiddle" catchtap="catchMiddleTap">
+          catch middle view
+          <view id="catchInner" catchtap='catchInnerTap'>
+            catch inner view
+          </view>
+          <!--touchstart：使用catch不会触发父元素的冒泡事件-->
+          <view catchtouchstart='catchInnerStart'>
+            catch Inner start
+          </view>
+        </view>
+      </view>
+    </view>
+    <text>===========捕获===========</text>
+    <view>
+      <text>-----------捕获-----------</text>
+      <!--使用capture-bind不会阻断捕获阶段，所以冒泡阶段也会正常进行，此处如果想组织冒泡事件，在使用catch,不使用bind即可组织冒泡事件-->
+      <view id="captureOuter" bind:touchstart="captureOuterBind" capture-bind:touchstart="captureOuter">
+        capture outer view
+        <view id="captureInner" catch:touchstart="captureInnerBind" capture-bind:touchstart="captureInner">
+          capture inner view
+        </view>
+      </view>
+    </view>
+    <view>
+      <text>-----------阻止捕获-----------</text>
+      <!---capture-catch将中断捕获阶段和取消冒泡阶段；捕获阶段先于冒泡阶段；冒泡事件定义使用bind或者catch都无所谓了，因为在捕获阶段阻断，不会执行到冒泡阶段了-->
+      <view id="captureOuterCatch" bind:touchstart="captureOuterCatch" capture-catch:touchstart="captureOuterStop">
+        capture outer view stop
+        <view id="captureInnerCatch" bind:touchstart="captureInnerCatch" capture-catch:touchstart="captureInnerStop">
+          capture inner view stop
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
