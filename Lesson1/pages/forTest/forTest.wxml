@@ -1,15 +1,95 @@
 <view class="for-container">
   <!--for遍历-->
   <text>==========for==========</text>
+  <!--使用wx:for的时候，会提示需要提供wx:key；
+      wx:key用来指定列表中项目的唯一的标识符；
+      wx:key:以两种形式存在，1.项目中唯一的字符串或数字，2.使用this代表项目本身,这时的项目item本事是               一个唯一的字符串货数字
+      推荐array 的 每一个item都添加一个唯一识别的property来管理
+  -->
   <view>
-    <text wx:for="{{arr}}">item: {{item}};</text>
+    <text wx:for="{{arr}}" wx:key="{{this}}">item: {{item}};</text>
   </view>
   <!--组合-->
   <text>-----------------</text>
   <view>
-    <text wx:for="{{[zero,1,2,3,4,5]}}">item:{{item}}/</text>
+    <text wx:for="{{[zero,1,2,3,4,5]}}" wx:key="{{this}}">item:{{item}}/</text>
   </view>
   <!--对象:一般用于模板-->
   <text>------------------</text>
-
+  <!--模板拥有独立作用域-->
+  <template name="msgItem">
+    <view>
+      <text>{{index}}:{{msg}};</text>
+      <text>Time: {{time}}   </text>
+      <!--zero在data中未定义，所以获取不到，也就是说在模板中是独立作用域，获取不到js中data内的变量-->
+      <text>{{zero}}</text>
+      <text>{{tempname}}</text>
+    </view>
+  </template>
+  <template is="msgItem" data="{{...item,tempname:name}}"></template>
+  <!--for详解-->
+  <text>==========for详解========</text>
+  <!--当前项的默认下标名为index,数组当前项的变量名默认是item-->
+  <view>
+    <text wx:for="{{arr}}" wx:key="{{index}}">
+      下标是：{{index}}/数值是：{{item}}
+    </text>
+  </view>
+  <!--更改index和item的命名：使用wx:for-item,wx:for-index重新命名index和item的使用名称
+      wx:for-index:可以指定数组当前下标的变量名
+      wx:for-item:可以指定数组当前元素的变量名-->
+  <view>
+    <text wx:for="{{arr}}" wx:for-index="ind" wx:for-item="num" wx:key="{{index}}">
+      下标是：{{ind}}/数值是：{{num}}
+    </text>
+  </view>
+  <!--九九乘法表-->
+  <view wx:for="{{[1,2,3,4,5,6,7,8,9]}}" wx:for-item="i" wx:key="{{index}}">
+    <view wx:for="{{[1,2,3,4,5,6,7,8,9]}}" wx:for-item="j"wx:key="{{index}}"  style='display:inline-block'>
+      <view wx:if="{{j <= i}}">
+        {{i}} * {{j}} = {{i*j}}
+      </view>
+    </view>
+  </view>
+  <!--block使用wx:for;将 wx:for 用在<block/>标签上，以渲染一个包含多节点的结构块-->
+  <!--
+  使用view的输出结果：
+  0:1
+  1:2
+  2:3
+  使用block的输出结果
+  0:
+  1
+  1:
+  2
+  2:
+  3
+  -->
+  <view wx:for="{{[1,2,3]}}" wx:key="{{index}}">
+    <text>{{index}}:</text>
+    <text>{{item}}</text>
+  </view>
+  <text>------block----------</text>
+  <block wx:for="{{[1,2,3]}}" wx:key="{{index}}">
+    <text>{{index}}:</text>
+    <text>{{item}}</text>
+  </block>
+  <text>-----------wx:key-------------</text>
+  <switch wx:for="{{objectArray}}" wx:key="{{unique}}" style="display:block">
+    {{item.id}}
+  </switch>
+  <button bindtap='switch'>Switch</button>
+  <button bindtap='addToFont'>addToFont</button>
+  <!--静态数组-->
+  <switch wx:for="{{numberArray}}" wx:key="*this" style="display:block">{{item}}</switch>
+  <button bindtap="addNumberFront">add number front</button>
+  <!--字符串-->
+  <!--wx:for="array"相当于遍历字符串，与"{{['a','r','r','a','y']}}"-->
+  <view wx:for="array">
+    {{item}}
+  </view>
+  <!--结尾有字符串,以下等同于"{{[1,2,3] + ' '}}"-->
+  <view wx:for="{{[1,2,3]}} ">
+    {{item}}
+  </view>
 </view>
