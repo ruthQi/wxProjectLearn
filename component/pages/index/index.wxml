@@ -1,4 +1,5 @@
 <!--index.wxml-->
 <view class="container">
   <navigator class='link-show' url="../component/view/view" open-type='navigate'>view组件-flex布局</navigator>
+  <navigator class='link-show' url="../component/scrollview/scrollview" open-type='navigate'>ScrollView组件</navigator>
 </view>

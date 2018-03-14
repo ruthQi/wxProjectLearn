@@ -1,0 +1,20 @@
+<!--
+  scroll-y设置为true时，才可沿y轴滚动，默认值为false;
+  scroll-x设置为true时，才可沿x轴滚动，默认值为false;
+  bindscrolltoupper：滚动到顶部/左边，会触发scrolltoupper事件
+  bindscrolltolower：滚动到底部/右边，会触发scrolltolower 事件
+  upper-threshold: 距顶部/左边多远时（单位px），触发 scrolltoupper 事件,默认值为50
+  lower-threshold：距底部/右边多远时（单位px），触发 scrolltolower 事件，默认值为50
+  scroll-top:设置竖向滚动条位置
+  scroll-left:设置横向滚动条位置
+  scroll-into-view:值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该  元素;设置此属性，scroll-top="30"不可设置;
+  bindscroll:滚动时触发，event.detail = {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}
+-->
+<scroll-view class="scroll-wrapper" scroll-y="true" scroll-x="true" 
+bindscrolltoupper="scrolltoupper" bindscrolltolower="scrolltolower" lower-threshold="80"
+scroll-left="3" scroll-into-view="{{toView}}" bindscroll="scroll">
+  <view class='first' id="first">a</view>
+  <view class='second' id="second">b</view>
+  <view class='third' id="third">c</view>
+</scroll-view>
+<button bindtap="changeView">changeView</button>

@@ -1,0 +1,19 @@
+/* pages/component/scrollview/scrollview.wxss */
+.scroll-wrapper{
+  width: 400rpx;
+  height: 400rpx;
+  border: solid 1px red;
+}
+.scroll-wrapper view{
+  width: 600rpx;
+  height: 300rpx;
+}
+.first{
+  background-color: red;
+}
+.second{
+  background-color: green;
+}
+.third{
+  background-color: blue;
+}
