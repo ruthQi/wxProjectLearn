@@ -35,5 +35,5 @@
   <template name="test">
     <view>{{a}} {{b}} {{c}}  {{d}}</view>
   </template>
-  <template is="test" data="{{...obj1,...obj2}}"></template>
+  <template is="test" data="{{...obj1,...obj2}}"/>
 </view>

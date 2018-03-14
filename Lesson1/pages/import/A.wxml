@@ -4,4 +4,4 @@
   <include src="includeB.wxml" />
 </template>
 
-<template is="B"></template>
+<template is="B"/>

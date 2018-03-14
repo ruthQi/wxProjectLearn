@@ -9,7 +9,8 @@
     "pages/forTest/forTest",
     "pages/event/event",
     "pages/import/import",
-    "pages/wxs/wxs"
+    "pages/wxs/wxs",
+    "pages/style/style"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -21,4 +21,6 @@
   <navigator class='link-show' url="../import/import" open-type='navigate'>引用测试</navigator>
   <!--wxs-->
   <navigator class="link-show" url="../wxs/wxs" open-type='navigate'>wxs测试</navigator>
+  <!--wxss-->
+  <navigator class="link-show" url="../style/style" open-type='navigate'>样式</navigator>
 </view>

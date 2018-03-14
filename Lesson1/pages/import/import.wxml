@@ -1,7 +1,7 @@
 <view>这是引用测试页面import.wxml</view>
 <!--import引用：可以在该文件中使用目标文件d定义的template,其他元素并不会引入-->
 <import src="importChild.wxml" />
-<template is="importChild" data="{{templateName: 'importChild'}}"></template>
+<template is="importChild" data="{{templateName: 'importChild'}}"/>
 <view>=======================</view>
 <!--
   include:可以将目标文件除了<template/>,<wxs/>外的整个代码引入；不会引入<template/>文件
@@ -9,26 +9,26 @@
 -->
 <include src="includeChild.wxml"/>
 <!--模板不展示-->
-<template is="includeChild"></template>
+<template is="includeChild"/>
 <view>=======================</view>
 
 <!--import模板作用域:A模板引入B模板,在此文件中只能使用A模板，获取不到B模板;
 即只会 import 目标文件中定义的 template，而不会 import 目标文件 import 的 template。-->
 <import src="A.wxml" />
-<template is="A"></template>
+<template is="A"/>
 <!--B模板获取不到（在A.wxml中加入<template is="B"></template>，此处的B就可以找到）-->
-<template is="B"></template>
+<template is="B"/>
 <view>=======================</view>
 
 <!--include作用域:includeA.wxml中使用include引入的文件，在从文件中照常展示
 includeA.wxml中使用import引入模板文件，在此文件中可以获取到模板文件；
 C文件，include一个文件B，B文件import了文件A,在C文件可以获取到A文件的模板;-->
 <include src="includeA.wxml" />
-<template is="B" data="{{from: 'import'}}"></template>
+<template is="B" data="{{from: 'import'}}"/>
 <view>=======================</view>
 
 <import src="A.wxml" />
-<template is="A"></template>
+<template is="A"/>
 
 
 <!--

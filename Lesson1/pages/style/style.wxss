@@ -1,0 +1,35 @@
+@import 'comm.wxss';
+/*
+  长度单位使用rpx,此单位会根据不同的机型发生变化;
+  以iphone6为例，1rpx=0.5px;
+  即用750的设计稿，所获取到的单位直接为rpx即可；
+  如果给的是375的设计稿，则需x2;
+*/
+.class1{
+  width: 400rpx;
+  height: 400rpx;
+  background-color: red;
+}
+#classTop{
+  width: 300rpx;
+  height: 300rpx;
+  background-color: #eaeaea;
+}
+/** 局部样式优先级高于全局样式优先级*/
+/** 在comm.wxss中的classTop样式，由于此文件此样式定义在后，所以会覆盖comm.wxss中的样式；
+如果import在此class之后，则会以comm.wxss中的样式为准；即相同优先级的，后面的样式会覆盖前面的样式*/
+.classTop{
+  width: 200rpx;
+  height: 400rpx;
+  background-color: #000;
+}
+/*
+使用元素标签定义样式，优先级最低，定义的有class则不会展示此处的样式
+*/
+view{
+  width: 100rpx;
+  height: 100rpx;
+  background-color: yellow;
+}
+
+
