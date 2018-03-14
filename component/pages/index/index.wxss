@@ -1,1 +1,11 @@
 /**index.wxss**/
+.link-show{
+  width: 400rpx;
+  height: 100rpx;
+  background-color: #e4e4e4;
+  color: #000;
+  border: 1rpx solid #0fefac;
+  text-align: center;
+  margin-top: 10rpx;
+  line-height: 100rpx;
+}

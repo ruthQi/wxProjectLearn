@@ -1,4 +1,4 @@
 <!--index.wxml-->
 <view class="container">
-  
+  <navigator class='link-show' url="../component/view/view" open-type='navigate'>view组件-flex布局</navigator>
 </view>

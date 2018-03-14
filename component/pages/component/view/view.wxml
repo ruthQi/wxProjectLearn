@@ -1,0 +1,15 @@
+<view class="flex-wrapper">
+  <view class='wrapper-1'>a</view>
+  <view class='wrapper-2'>b</view>
+  <view class='wrapper-3'>c</view>
+</view>
+<view class="flex-column-wrapper">
+  <view class='wrapper-1'>a</view>
+  <view class='wrapper-2'>b</view>
+  <view class='wrapper-3'>c</view>
+</view>
+<view class="flex-column-wrapper test1">
+  <view class='wrapper-1'>a</view>
+  <view class='wrapper-2'>b</view>
+  <view class='wrapper-3'>c</view>
+</view>

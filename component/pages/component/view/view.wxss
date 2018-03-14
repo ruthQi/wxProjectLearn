@@ -1,0 +1,46 @@
+/* pages/component/view/view.wxss */
+.flex-wrapper{
+  display: flex;
+
+}
+/*使用flex:1;这种属性与flex-direction和设置的宽度和高度有关；会根据flex的值，来按比例分；设置了父容器的height,和flex-direction:column;此时的flex是沿垂直高度来按比例分父容器的height;宽度也是如此*/
+.flex-wrapper view{
+  width: 200rpx;
+  height: 200rpx;
+  text-align: center;
+  line-height: 200rpx;
+  color: white;
+}
+.wrapper-1{
+  background-color: green;
+  flex: 1;
+}
+.wrapper-2{
+  background-color: red;
+  flex: 1;
+}
+.wrapper-3{
+  background-color: blue;
+  flex: 3;
+}
+/*flex-direction:column时，列会按设置的比例分配父元素的高（高度为设置时，会按元素view的高，元素view也没设置时，按内容撑开的高度算），宽度看元素view，如果view没设置宽度，则铺满；
+flex-direction:row时，行会按设置的比例分配父元素的宽（宽为设置时，即为100%），高度看元素view,如果view没有设置高度，会按内部元素的撑开高度来定*/
+.flex-column-wrapper{
+  display: flex;
+  flex-direction: column;
+  height: 1000rpx; 
+  margin-top: 100rpx;
+}
+
+.flex-column-wrapper view{
+  width: 200rpx;
+  height: 200rpx;
+}
+/*此容器没有设置宽度，所以，宽度会铺满*/
+.test1{
+  flex-direction: column;
+  height: auto;
+}
+.test1 view{
+  width: auto;
+}
