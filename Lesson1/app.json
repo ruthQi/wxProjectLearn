@@ -7,7 +7,9 @@
     "pages/childNavi/childNavi",
     "pages/dataAif/dataAif",
     "pages/forTest/forTest",
-    "pages/event/event"
+    "pages/event/event",
+    "pages/import/import",
+    "pages/wxs/wxs"
   ],
   "window":{
     "backgroundTextStyle":"light",

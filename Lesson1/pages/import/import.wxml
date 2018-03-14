@@ -1,0 +1,44 @@
+<view>这是引用测试页面import.wxml</view>
+<!--import引用：可以在该文件中使用目标文件d定义的template,其他元素并不会引入-->
+<import src="importChild.wxml" />
+<template is="importChild" data="{{templateName: 'importChild'}}"></template>
+<view>=======================</view>
+<!--
+  include:可以将目标文件除了<template/>,<wxs/>外的整个代码引入；不会引入<template/>文件
+  如果使用模板，则使用import引入；如果使用其他标签，不是模板，则使用include引入
+-->
+<include src="includeChild.wxml"/>
+<!--模板不展示-->
+<template is="includeChild"></template>
+<view>=======================</view>
+
+<!--import模板作用域:A模板引入B模板,在此文件中只能使用A模板，获取不到B模板;
+即只会 import 目标文件中定义的 template，而不会 import 目标文件 import 的 template。-->
+<import src="A.wxml" />
+<template is="A"></template>
+<!--B模板获取不到（在A.wxml中加入<template is="B"></template>，此处的B就可以找到）-->
+<template is="B"></template>
+<view>=======================</view>
+
+<!--include作用域:includeA.wxml中使用include引入的文件，在从文件中照常展示
+includeA.wxml中使用import引入模板文件，在此文件中可以获取到模板文件；
+C文件，include一个文件B，B文件import了文件A,在C文件可以获取到A文件的模板;-->
+<include src="includeA.wxml" />
+<template is="B" data="{{from: 'import'}}"></template>
+<view>=======================</view>
+
+<import src="A.wxml" />
+<template is="A"></template>
+
+
+<!--
+  import与include区别：import中能引入模板文件，include引入的是除模板文件之外的文件；
+  C文件，import一个文件B，B文件中import了文件A，在C文件获取不到A文件的模板；
+  C文件，include一个文件B，B文件import了文件A,在C文件可以获取到A文件的模板;
+  C文件，inlcude一个文件B,B文件include文件A,在C文件可以展示A文件内容;
+  C文件，import一个文件B，B文件include文件A，在C文件不展示A文件内容；
+  C文件，import一个文件B，B文件的模板中include文件A，在C文件展示A文件内容；
+  C文件，include一个文件B，B文件中import文件A,并且展示了A的模板，在C中展示B中的模板内容
+
+-->
+ 

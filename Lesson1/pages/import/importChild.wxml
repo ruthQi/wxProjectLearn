@@ -1,0 +1,4 @@
+<view>这是引用importChild.wxml页面</view>
+<template name="importChild">
+  <text>我是测试import的模板，{{templateName}}</text>
+</template>

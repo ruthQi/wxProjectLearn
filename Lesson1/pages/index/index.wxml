@@ -17,4 +17,8 @@
   <navigator class="link-show" url='../forTest/forTest' open-type='navigate'>进入for循环</navigator>
   <!--事件-->
   <navigator class="link-show" url='../event/event' open-type='navigate'>进入event</navigator>
+  <!--引用-->
+  <navigator class='link-show' url="../import/import" open-type='navigate'>引用测试</navigator>
+  <!--wxs-->
+  <navigator class="link-show" url="../wxs/wxs" open-type='navigate'>wxs测试</navigator>
 </view>

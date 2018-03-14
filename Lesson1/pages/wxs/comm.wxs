@@ -1,0 +1,11 @@
+var foo = "'hello world' from tools.wxs";
+//不能使用箭头函数
+var bar = function(b){
+  return b;
+}
+module.exports = {
+  FOO: foo,
+  bar: bar
+}
+
+module.exports.msg = 'some msg';

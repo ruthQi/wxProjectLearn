@@ -1,0 +1,5 @@
+<include src="includeB.wxml" />
+<view>这是includeA.wxml</view>
+<include src="includeC.wxml" />
+<import src="B.wxml"/>
+<template is="B" data="{{from: 'includeA'}}"></template>

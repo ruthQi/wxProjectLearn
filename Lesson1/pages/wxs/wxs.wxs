@@ -1,0 +1,6 @@
+//只能引用 .wxs 文件模块，且必须使用相对路径。
+var tools = require('comm.wxs');
+console.log(tools.msg);
+console.log(tools.FOO);
+console.log(tools.bar("logic.wxs"));
+module.exports.word = 'wxs.wxs';

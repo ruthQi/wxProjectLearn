@@ -1,0 +1,4 @@
+<view>这是引用测试页面includeChild.wxml</view>
+<template name="includeChild">
+  <text>这是引用中include测试模板</text>
+</template>
