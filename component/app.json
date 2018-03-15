@@ -5,7 +5,8 @@
     "pages/component/view/view",
     "pages/component/scrollview/scrollview",
     "pages/component/swiper/swiper",
-    "pages/component/content/content"
+    "pages/component/content/content",
+    "pages/component/form/form"
   ],
   "window":{
     "backgroundTextStyle":"light",

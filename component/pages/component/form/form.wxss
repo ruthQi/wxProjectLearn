@@ -1,0 +1,8 @@
+/* pages/component/form/form.wxss */
+.hover-class{
+  opacity: 0.2;
+}
+.namePlaceholder{
+  color: red;
+  font-size: 24rpx;
+}

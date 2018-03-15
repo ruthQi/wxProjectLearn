@@ -1,0 +1,39 @@
+
+<view>
+  <button bindtap='changeDisabled'>启用按钮</button>
+  <form bindsubmit='submitFun' bindreset='resetFun'>
+    <!--复选框-->
+    <checkbox-group bindchange="changeGroup">
+      <label wx:for="{{country}}" wx:key="{{index}}">
+        <checkbox value='{{item.name}}' checked='{{item.checked}}'/>{{item.value}}
+      </label>
+    </checkbox-group>
+    <!--input
+      type:number:表示的是唤起的键盘为数字键盘；
+      placeholder-style优先级>placeholder-class;
+      password:表示为密码输入框
+      disabled:是否禁用;
+      bindinput:函数中可以直接return，return的值将替换input中的值;
+      cursor:指定focus时的光标位置
+    -->
+    <input name="textCon" type='text' placeholder='输入名称'  placeholder-style='color:green' placeholder-class='namePlaceholder' maxlength='5' bindinput="changeValue" bindfocus="focusFun" bindblur='blurFun'></input>
+    <input name="textCon1" type='number' placeholder='输入数字' disabled></input>
+    <input name="password" password='true' placeholder='输入密码'/>
+    <input bindinput='bindReplaceInput' placeholder='输入的2个1变成2'/>
+    <!--button-->
+    <!--
+      button属性：
+      size:default,mini;
+      type:primary,default,warn
+      loading:前面是否带loading图标
+      plain:是否为镂空，背景色透明
+      disabled:是否禁用
+      form-type:submit/reset
+    -->
+    <button size="mini" type="primary" plain="true" loading='true' disabled='{{isDisabled}}' hover-class='hover-class' form-type='submit'>提交</button>
+    <button size='mini' form-type='reset'>重置</button>
+    <button open-type='contact' bindcontact="getConcat">进入客服回话</button>
+    <button open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>getPhoneNumber</button>
+  </form>
+  
+</view>

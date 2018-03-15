@@ -8,4 +8,6 @@
   <navigator class="link-show" url="../component/swiper/swiper" open-type='navigate'>Swiper组件</navigator>
   <!--基础内容-->
   <navigator class="link-show" url="../component/content/content" open-type='navigate'>基础内容</navigator>
+  <!--表单-->
+  <navigator class="link-show" url="../component/form/form" open-type='navigate'>表单</navigator>
 </view>
