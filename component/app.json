@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/component/view/view",
     "pages/component/scrollview/scrollview",
-    "pages/component/swiper/swiper"
+    "pages/component/swiper/swiper",
+    "pages/component/content/content"
   ],
   "window":{
     "backgroundTextStyle":"light",

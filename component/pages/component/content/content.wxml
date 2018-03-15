@@ -1,0 +1,53 @@
+<!--
+  icon:
+  type：icon的类型
+  size：icon的大小，单位px,默认值23
+  color:icon的颜色
+-->
+<icon type="success" size="40"></icon>
+<view>
+  <block wx:for="{{iconTypes}}" wx:key="{{index}}">
+    <icon type="{{item}}"></icon>
+  </block>
+</view>
+<icon type="search" color="red"></icon>
+<view>====================</view>
+<!--
+  text：
+  selectable：表示文字是否可选,默认值为false;
+  space:显示连续空格；默认值为false;
+    ensp:中文字符空格一半大小;
+    emsp:中文字符空格大小；
+    nbsp:根据字体设置的空格大小
+  decode:是否解码,默认值为false,即不加decode属性，加上即为decode="true"
+-->
+<view>我是view文字，哈哈哈哈哈哈哈啊哈哈</view>
+<text selectable>我是text文字，哈哈哈哈哈哈哈</text>
+<text space="nbsp">显示连续      空格</text>
+<text decode>&lt;&lt;&lt;&gt;&gt;&gt;</text>
+<view>==================</view>
+<!--
+  rich-text:富文本，
+  nodes:建议使用Array
+  type=node:name,attrs,children
+  type=text:text
+-->
+<rich-text nodes="{{nodes}}"></rich-text>
+<view>=======================</view>
+<!--
+  percent:百分比0-100;
+  show-info:进度条右侧是否展示百分比
+  stroke-width：进度条的宽度,单位px
+  color:进度条颜色
+  activeColor:已选择的进度条的颜色
+  backgroundColor:未选择的进度条的颜色
+  active:进度条从左往右的动画
+  active-mode:backwards: 动画从头播；forwards：动画从上次结束点接着播
+-->
+<progress percent='40' show-info></progress>
+<progress stroke-width='40' percent='20'></progress>
+<progress percent='60' activeColor='pink' backgroundColor='green'></progress>
+<progress percent='80' active></progress>
+<view style="margin-top:20px;">
+  <progress percent='{{progress}}' color='pink' show-info></progress>
+</view>

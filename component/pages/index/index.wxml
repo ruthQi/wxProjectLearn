@@ -6,4 +6,6 @@
   <navigator class='link-show' url="../component/scrollview/scrollview" open-type='navigate'>ScrollView组件</navigator>
   <!--swiper-->
   <navigator class="link-show" url="../component/swiper/swiper" open-type='navigate'>Swiper组件</navigator>
+  <!--基础内容-->
+  <navigator class="link-show" url="../component/content/content" open-type='navigate'>基础内容</navigator>
 </view>
