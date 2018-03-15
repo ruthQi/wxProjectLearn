@@ -12,7 +12,12 @@ Page({
     hasDot:true,
     interval:2000,
     duration: 1000,
-    autoplay: true
+    autoplay: true,
+    x: 10,
+    y: 10
+  },
+  onReady: function(){
+    this.video = wx.createVideoContext('myVideo', this);
   },
   swiperChange: function(e){
     //e.detail.source:表示导致变更的原因；autoplay:自动播放导致；touch：用户划动导致
@@ -45,5 +50,24 @@ Page({
     this.setData({
       hasDot: !this.data.hasDot
     })
+  },
+
+  changeXY: function(){
+    this.setData({
+      x:30,
+      y:30
+    })
+  },
+  changeView:function(e){
+    console.log(e)
+  },
+  changeScale: function(e){
+    console.log(e)
+  },
+  play:function(){
+    this.video.play();
+  },
+  pause:function(){
+    this.video.pause();
   }
 })
