@@ -8,8 +8,10 @@
   scroll-top:设置竖向滚动条位置
   scroll-left:设置横向滚动条位置
   scroll-into-view:值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该  元素;设置此属性，scroll-top="30"不可设置;
+  **scroll-into-view 的优先级高于 scroll-top
   bindscroll:滚动时触发，event.detail = {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}
-  scroll-with-animation:在设置滚动条位置时使用动画过渡；默认值为false
+  scroll-with-animation:在设置滚动条位置时使用动画过渡；默认值为false；
+  scroll-view中滚动，无法触发下拉刷新
 -->
 <scroll-view class="scroll-wrapper" scroll-y="true" scroll-x="true" 
 bindscrolltoupper="scrolltoupper" bindscrolltolower="scrolltolower" lower-threshold="0"
@@ -17,7 +19,7 @@ scroll-left="3" scroll-into-view="{{toView}}" bindscroll="scroll" scroll-with-an
   <!-- <view class='first' id="first">a</view>
   <view class='second' id="second">b</view>
   <view class='third' id="third">c</view> -->
-  <view wx:for="{{viewArr}}" class="{{item.unique}}">{{item.value}}</view>
+  <view wx:for="{{viewArr}}" class="{{item.unique}}" wx:key="{{index}}">{{item.value}}</view>
   <text hidden='{{isHidden}}'>加载更多</text>
 </scroll-view>
 <button bindtap="changeView">changeView</button>

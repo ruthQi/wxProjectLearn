@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/component/view/view",
-    "pages/component/scrollview/scrollview"
+    "pages/component/scrollview/scrollview",
+    "pages/component/swiper/swiper"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -22,7 +22,7 @@ Page({
   },
   scrolltolower: function(e){
     console.log('滚动到底部/右边触发', e);
-    //模拟下拉刷新
+    //模拟上拉刷新
     let data = [{
       unique: 'forth', value: 'forth'
     }, {
