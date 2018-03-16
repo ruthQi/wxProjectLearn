@@ -1,3 +1,16 @@
+const date = new Date();
+const years = [];
+const months = [];
+const days = [];
+for(let i = 1990;i<date.getFullYear();i++){
+  years.push(i);
+};
+for(let i =1;i<=12;i++){
+  months.push(i);
+};
+for(let i=1;i<=31;i++){
+  days.push(i);
+}
 Page({
 
   /**
@@ -36,7 +49,14 @@ Page({
     time:'12:01',
     date:'2018-03-16',
     region:['广东省', '广州市', '海珠区'],
-    customItem:'全部'
+    customItem:'全部',
+    year: date.getFullYear(),
+    month:2,
+    day:2,
+    years:years,
+    months:months,
+    days:days,
+    value: [9999, 0, 0]
   },
 
   changeDisabled: function(){
@@ -192,6 +212,15 @@ Page({
     console.log(e);
     this.setData({
       region:e.detail.value
+    })
+  },
+  bindPickerviewChange:function(e){
+    console.log(e);
+    let val = e.detail.value;
+    this.setData({
+      year: this.data.years[val[0]],
+      month: this.data.months[val[1]],
+      day: this.data.days[val[2]]
     })
   }
 })
