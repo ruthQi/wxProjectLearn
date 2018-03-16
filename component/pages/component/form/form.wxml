@@ -34,6 +34,72 @@
     <button size='mini' form-type='reset'>重置</button>
     <button open-type='contact' bindcontact="getConcat">进入客服回话</button>
     <button open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>getPhoneNumber</button>
+    <!--label-->
+    
   </form>
   
+</view>
+<view>=========picker============</view>
+<!--
+  picker支持5中选择器：普通选择器（mode=selector，默认选择器）,多列选择器(mode=multiSelector)，时间选择器(mode=time)，日期选择器(mode=date)，省市区选择器(mode=region)
+-->
+<view>
+  <view>普通选择器</view>
+  <!--
+    range: mode为 selector 或 multiSelector 时，range 有效;值为array或者object array;
+    value:选择了range中的第几个（下标从0开始）
+    bindchange：value改变时触发change,通过e.detail.value可以获取最新的value值；
+    disabled：表示是否禁用；
+    bindcancel:取消选择或者点击遮罩层收起picker时触发
+  -->
+  <picker range="{{array}}" value='{{index}}' bindchange='bindPickerChange' bindcancel='bindPickerCancel'>
+    <view>当前选择：{{array[index]}}</view>
+  </picker>
+  <!--
+    range-key:当 range 是一个 Object Array 时，通过 range-key 来指定 Object 中 key 的值作为选择器显示内容,String型
+  -->
+  <picker range="{{objectArray}}" range-key='name' bindchange='bindPickerChangeObject' bindcancel='bindPickerCancel'>
+    <view>当前选择：{{objectArray[index].name}}</view>
+  </picker>
+</view>
+<view>
+  <view>多列选择器</view>
+  <picker mode="multiSelector" value='{{multiIndex}}' range='{{multiArray}}' bindchange='bindMultiPickerChange' bindcolumnchange="bindMultiPickerColumnChange">
+    <view>当前选择：{{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]]}}</view>
+  </picker>
+</view>
+<view>
+  <view>时间选择器</view>
+  <!--
+  value:格式为hh:mm;
+  start：有效时间的开始，字符串格式hh:mm
+  end：有效时间的结束,字符串格式hh:mm
+  -->
+  <picker mode="time" value='{{time}}' start="09:01" end="23:59" bindchange='bindTimePickerChange'>
+    <view>当前时间：{{time}}</view>
+  </picker>
+</view>
+<view>
+  <view>日期选择器</view>
+  <!--
+    value:表示选中的日期，格式为"YYYY-MM-DD"
+    start:表示有效日期范围的开始，字符串格式为"YYYY-MM-DD";
+    end:表示有效日期范围的结束，字符串格式为"YYYY-MM-DD"
+    fields:有效值 year,month,day，表示选择器的粒度
+    bindchange
+  -->
+  <picker mode="date" value='{{date}}' start="2017-01-01" end="2018-12-31" bindchange='bindDatePickerChange' fields="month">
+    <view>当前日期：{{date}}</view>
+  </picker>
+</view>
+<view>
+  <view>省市区域选择器</view>
+  <!--
+    value:表示选中的省市区，默认选中每一列的第一个值;
+    custom-item:可为每一列的顶部添加一个自定义的项
+    bindchange
+  -->
+  <picker mode="region" value="{{region}}" custom-item="{{customItem}}" bindchange='bindRegionPickerChange'>
+    <view>当前城市：{{region[0]}} {{region[1]}} {{region[2]}}</view>
+  </picker>
 </view>
