@@ -10,4 +10,6 @@
   <navigator class="link-show" url="../component/content/content" open-type='navigate'>基础内容</navigator>
   <!--表单-->
   <navigator class="link-show" url="../component/form/form" open-type='navigate'>表单</navigator>
+  <!--交互反馈-->
+  <navigator class="link-show" url="../component/operation/operation" open-type='navigate'>交互反馈</navigator>
 </view>

@@ -1,0 +1,7 @@
+<!--
+  showActionSheet
+-->
+<button bindtap='showActionSheet'>显示操作菜单</button>
+<button bindtap='showModel'>显示模态弹框</button>
+<button bindtap='showToast'>显示消息提示框</button>
+<button bindtap='showLoading'>显示loading提示框</button>
