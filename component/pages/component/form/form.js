@@ -56,7 +56,15 @@ Page({
     years:years,
     months:months,
     days:days,
-    value: [9999, 0, 0]
+    value: [9999, 0, 0],
+    items:[
+      { name: 'USA', value: '美国' },
+      { name: 'CHN', value: '中国', checked: 'true' },
+      { name: 'BRA', value: '巴西' },
+      { name: 'JPN', value: '日本' },
+      { name: 'ENG', value: '英国' },
+      { name: 'TUR', value: '法国' }
+    ]
   },
 
   changeDisabled: function(){
@@ -222,5 +230,26 @@ Page({
       month: this.data.months[val[1]],
       day: this.data.days[val[2]]
     })
+  },
+  radioChange: function(e){
+    console.log(e)
+  },
+  bindSliderChange:function(e){
+    console.log(e.detail.value)
+  },
+  bindSliderChanging:function(e){
+    console.log(e)
+  },
+  bindSwitchChange:function(e){
+    console.log(e.detail.value)
+  },
+  bindLineChange:function(e){
+    console.log(e.detail)
+  },
+  //bindinput 处理函数的返回值并不会反映到 textarea 上?????
+  //测试后发现是可以反映的，不知道文档为什么说不能？
+  bindTextareaInput:function(e){
+    console.log(e.detail)
+    return 'v'+e.detail.value
   }
 })

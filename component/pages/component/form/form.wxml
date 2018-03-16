@@ -123,3 +123,55 @@
     </picker-view-column>
   </picker-view>
 </view>
+<view>======radio============</view>
+<view>
+  <!--
+    radio组件
+    value:radio标识，radio-group的change事件会携带value里的值
+    color:radio被选中的颜色
+    checked:当前是否选中
+  -->
+  <radio-group bindchange="radioChange">
+    <label wx:for='{{items}}' wx:key="{{index}}">
+      <radio value='{{item.name}}' checked='{{item.checked}}' color='red'>{{item.value}}</radio>
+    </label>
+  </radio-group>
+</view>
+<view>======slider===========</view>
+<!--
+  slider标签:
+  show-value:是否展示当前value;
+  min:最小值
+  max:最大值
+  step:步长，取值必须大于0，并且能被（max-min）整除；
+  disabled:是否禁用；
+  value:当前取值；
+  backgroundColor:背景条的颜色
+  activeColor：已选中的颜色
+  block-size:滑块的大小
+  block-color：滑块的颜色
+  bindchange:完成一次拖动后触发的事件，event.detail = {value: value}
+  bindchanging:拖动过程中触发的事件，event.detail = {value: value}
+-->
+<slider show-value min="0" max="50" step="3" bindchange='bindSliderChange' value="20" backgroundColor='green' activeColor='pink' block-size='20' block-color='red' bindchanging='bindSliderChanging'/>
+
+<view>=========switch===========</view>
+<!--
+  type: 展示样式，有效值：switch, checkbox,默认值为switch
+  checked:是否选中
+  color：switch颜色
+-->
+<switch checked type='checkbox' color='red' bindchange='bindSwitchChange'/>
+
+<view>=======textarea==========</view>
+<!--
+  bindlinechange:输入框行数变化时调用，event.detail = {height: 0, heightRpx: 0, lineCount: 0};
+  auto-height:是否自动增高，设置auto-height时，style.height不生效
+-->
+<textarea class="component-text" placeholder='请输入内容' placeholder-class='placeholder-text' auto-height bindlinechange='bindLineChange' bindinput='bindTextareaInput' auto-focus></textarea>
+<!--
+  ????fixed属性不知道怎么使用，加不加好像都展示textarea
+-->
+<view class='fixedView'>
+  <textarea class="fixedArea" auto-focus></textarea>
+</view>
