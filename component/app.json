@@ -7,7 +7,8 @@
     "pages/component/swiper/swiper",
     "pages/component/content/content",
     "pages/component/form/form",
-    "pages/component/operation/operation"
+    "pages/component/operation/operation",
+    "pages/component/media/media"
   ],
   "window":{
     "backgroundTextStyle":"light",

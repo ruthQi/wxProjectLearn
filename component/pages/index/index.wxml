@@ -12,4 +12,6 @@
   <navigator class="link-show" url="../component/form/form" open-type='navigate'>表单</navigator>
   <!--交互反馈-->
   <navigator class="link-show" url="../component/operation/operation" open-type='navigate'>交互反馈</navigator>
+  <!--媒体组件-->
+  <navigator class="link-show" url="../component/media/media" open-type='navigate'>媒体组件</navigator>
 </view>

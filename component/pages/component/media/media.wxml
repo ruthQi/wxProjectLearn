@@ -1,0 +1,31 @@
+<view>=========audio==========</view>
+<!--
+  id:audio组件的唯一标识符；
+  src:要播放资源的音频地址；
+  loop:是否循环播放；
+  controls:是否展示默认组件；
+  poster:控件上的音频封面的图片资源地址,如果controls为false,设置poster无效
+  name:控件上的音频的名字,如果controls为false,设置name无效；
+  author:默认控件上的作者名字,如果controls为false,设置author无效；
+
+-->
+<audio id="myAudio" src="{{audioSrc}}" poster="{{audioPoster}}" name="{{audioName}}" author="{{audioAuthor}}" controls binderror='bindAudioError' bindplay='bindAudioPlay' bindpause='bindAudioPause' bindtimeupdate='bindAudioTimeupdate' bindended='bindAudioEnded'></audio>
+<button bindtap='audioPlay'>播放</button>
+<button bindtap='audioPause'>暂停</button>
+<button bindtap='setAudioSeek'>设置当前audio时间</button>
+<button bindtap='audioStart'>回到开头</button>
+
+<view>=========Image==========</view>
+<!--
+  bindload:当图片载入完毕时，发布到 AppService 的事件名，事件对象event.detail = {height:'图片高度px', width:'图片宽度px'};
+  lazy-load:图片懒加载。只针对page与scroll-view下的image有效;默认值为false
+  mode:图片裁剪、缩放的模式;13中模式，4中缩放，9中裁剪
+  缩放：scaleToFill,aspectFit,aspectFill,widthFix
+  裁剪：top，bottom,left,right,top left,top right,bottom left,bottom right
+-->
+<view>
+  <view wx:for="{{imgArr}}" wx:key="{{index}}">
+    <view>{{item.text}}</view>
+    <image style="width:200px;height:200px;background-color:#eee" mode="{{item.mode}}" src="{{src}}" lazy-load bindload='bindImageLoad'/>
+  </view>
+</view>

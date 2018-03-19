@@ -67,6 +67,10 @@ Page({
         console.log(res)
       }
     });
+    /**
+     * wx.request()参数：
+     * url,data,header,method，dataType,responseType,success,fail,complete
+     */
     wx.request({
       url: api,
       data: { 
@@ -76,6 +80,7 @@ Page({
       header: {
         'content-type': 'application/json' // 默认值
       },
+      responseType: 'text',//取值：arraybuffer/text，默认值为text
       success:(res)=>{
         console.log(res);
         if(res.data && res.data.code == 200){
