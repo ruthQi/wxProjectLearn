@@ -1,0 +1,18 @@
+<view>
+   <view>地图</view>
+   <!--
+      scale:缩放级别，默认值为16，取值为5-18
+      show-location:显示带有方向的当前定位点;
+      polyline:指定一系列坐标点，从数组第一项连线至最后一项
+      注：bindcontroltap，bindmarkertap等事件，需要设置controls/markers的id才能起作用，否则点击事件无效
+      bindmarkertap：点击标记点是触发；
+      bindcontroltap：点击控件时触发；
+      bindcallouttap：点击标记点的气泡时触发；
+      bindregionchange:视野变化时触发，e.type为begin,end;
+      wx.getLocation,wx.openLocation()
+      使用wx.openLocation的经纬度时，getLocation的type应为：gcj02
+   -->
+   <map longitude="116.276020" latitude="40.042730" scale="18" markers='{{markers}}' polyline='{{polyline}}' controls='{{controls}}' bindcontroltap='bindControlTap' bindmarkertap='bindMarkerTap' bindcallouttap='bindcallouttap' style="width:100%;height:300px;" show-location='{{true}}' 
+   bindregionchange="regionChange" bindtap='bindMapTap'></map>
+</view>
+<button bindtap='getCurrentLoacation'>获取位置</button>

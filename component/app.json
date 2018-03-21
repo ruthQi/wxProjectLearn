@@ -8,7 +8,9 @@
     "pages/component/content/content",
     "pages/component/form/form",
     "pages/component/operation/operation",
-    "pages/component/media/media"
+    "pages/component/media/media",
+    "pages/component/map/map",
+    "pages/component/canvas/canvas"
   ],
   "window":{
     "backgroundTextStyle":"light",

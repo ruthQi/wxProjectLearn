@@ -19,7 +19,7 @@
 <!--
   bindload:当图片载入完毕时，发布到 AppService 的事件名，事件对象event.detail = {height:'图片高度px', width:'图片宽度px'};
   lazy-load:图片懒加载。只针对page与scroll-view下的image有效;默认值为false
-  mode:图片裁剪、缩放的模式;13中模式，4中缩放，9中裁剪
+  mode:图片裁剪、缩放的模式;13中模式，4中缩放，9中裁剪(默认：scaleToFill)
   缩放：scaleToFill,aspectFit,aspectFill,widthFix
   裁剪：top，bottom,left,right,top left,top right,bottom left,bottom right
 -->
@@ -29,3 +29,37 @@
     <image style="width:200px;height:200px;background-color:#eee" mode="{{item.mode}}" src="{{src}}" lazy-load bindload='bindImageLoad'/>
   </view>
 </view>
+<view>==========video============</view>
+<view>
+   <!--
+      danmu-btn:是否展示弹幕按钮；
+      danmu-list:弹幕内容数组；
+      enable-danmu:初始状态弹幕是否可用；
+      controls：是否展示默认的播放控件；默认为true,controls="{{false}}"使用这种方式去掉展示；
+      objectFit:当视频大小与 video 容器大小不一致时，视频的表现形式。contain：包含，fill：填充，cover：覆盖
+      bindtimeupdate:播放进度变化时触发
+   -->
+   <video id="myVideo" src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" controls danmu-btn danmu-list='{{danmuList}}' enable-danmu objectFit='fill' bindfullscreenchange='bindVideoFullChange' bindtimeupdate='bindVideoTimeChange'></video>
+   <input bindblur='bindInputBlur'/>
+   <button bindtap='sendDanmu'>发送弹幕</button>
+   <view>
+      <!--可以选择视频-->
+      <video src="{{src}}"/>
+      <button bindtap='getVideoSrc'>获取视频</button>
+   </view>
+</view>
+<view>==========camera==========</view>
+<view>
+   <!--flash：闪光灯，默认值为auto;值为：auto,on,off-->
+   <camera flash="off" style='width:100%;height:300px;'></camera>
+   <button bindtap='taskPhoto'>拍照</button>
+</view>
+<view>=========live-player=========</view>
+<!--
+   mode:live(直播)，RTC:实时通话;
+   src:支持flv,rtmp 
+-->
+<live-player src="http://flvbohetec1.live.126.net/live/9f88352c095b4d19b22cb075224bba4c.flv?netease=flvbohetec1.live.126.net&t=1521617346770" mode="live" style="width:300px;height:225px;" bindstatechange="bindLiverChange" binderror="bindError" bindnetstatus="bindNetStatus"></live-player>
+<!--live-pusher:实时音视频录制。-->
+<view>=========live-pusher=========</view>
+<live-pusher src="http://flvbohetec1.live.126.net/live/9f88352c095b4d19b22cb075224bba4c.flv?netease=flvbohetec1.live.126.net&t=1521617346770" mode="live" bindstatechange="bindPusherChange" binderror="bindPusherError" bindnetstatus="bindPusherNetStatus" style="width:300px;height:225px;"></live-pusher>

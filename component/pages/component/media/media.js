@@ -3,6 +3,7 @@ Page({
   /**
    * 页面的初始数据
    */
+  inputValue:'',
   data: {
     audioPoster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
     audioName: '此时此刻',
@@ -17,6 +18,9 @@ Page({
     }, {
       mode: 'aspectFill',
       text: 'aspectFill：保持纵横比缩放图片，只保证图片的短边能完全显示出来'
+    }, {
+       mode: 'widthFix',
+       text: 'widthFix：宽度不变，高度自动变化，保持原图宽高比不变'
     }, {
       mode: 'top',
       text: 'top：不缩放图片，只显示图片的顶部区域'
@@ -45,7 +49,18 @@ Page({
       mode: 'bottom right',
       text: 'bottom right：不缩放图片，只显示图片的右下边区域'
     }],
-    src:'../../../images/banner.png'
+    src:'../../../images/cat.jpg',
+    danmuList:[{
+       text:'第1s弹幕',
+       color:'#ff0000',
+       time:1
+    },{
+       text: '第3s弹幕',
+       color: '#ff00ff',
+       time: 3
+    }],
+    videoSrc:'',
+    cameraSrc:''
   },
 
   /**
@@ -60,6 +75,7 @@ Page({
    */
   onReady: function () {
     this.audioCtx = wx.createAudioContext('myAudio');
+    this.videoCtx = wx.createVideoContext('myVideo');
   },
   bindAudioError:function(e){
     console.log('audio出错啦',e)
@@ -90,6 +106,64 @@ Page({
   },
   bindImageLoad:function(e){
     console.log('图片加载完成',e.detail)
+  },
+  bindVideoFullChange: function(e){
+    console.log(e)
+  },
+  bindVideoTimeChange: function(e){
+    console.log(e)
+  },
+  bindInputBlur: function(e){
+    this.inputValue = e.detail.value;
+  },
+  sendDanmu: function(){
+     this.videoCtx.sendDanmu({
+        text: this.inputValue,
+        color: 'red'
+     })
+  },
+  getVideoSrc: function(){
+     wx.chooseVideo({
+        sourceType: ['album', 'camera'],
+        maxDuration: 60,
+        camera: ['front', 'back'],
+        success: (res)=>{
+           console.log(res)
+           this.setData({
+              videoSrc:res.tempFilePath
+           })
+        }
+     })
+  },
+  taskPhoto: function(){
+     let camera = wx.createCameraContext(this);
+     camera.takePhoto({
+        quality: 'high',
+        success: (res) => {
+           console.log(res)
+           this.setData({
+              cameraSrc: res.tempImagePath
+           })
+        }
+     })
+  },
+
+  bindLiverChange: function(e){
+     console.log(e)
+  },
+  bindError: function(e){
+    console.log(e)
+  },
+  bindNetStatus: function(e){
+     console.log(e)
+  },
+  bindPusherChange: function (e) {
+     console.log(e)
+  },
+  bindPusherError: function (e) {
+     console.log(e)
+  },
+  bindPusherNetStatus: function (e) {
+     console.log(e)
   }
-  
 })
