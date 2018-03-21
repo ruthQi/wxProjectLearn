@@ -1,0 +1,11 @@
+<view>
+   <!--
+      canvas不添加canvas-id属性，会在样式中添加display:none
+   -->
+   
+   <canvas canvas-id='secondCanvas' style="margin:5px;border:solid 1px #d3d3d3" bindtouchstart='start' bindtouchmove='move' bindtouchend='end'></canvas>
+   <view hidden="{{isHidden}}" style="width:200px;height:100px;">
+      Coordinates:({{x}}, {{y}})
+   </view>
+   <canvas canvas-id='firstCanvas' style="width:100%;height:100%;background-color:#eee"></canvas>
+</view>

@@ -1,1 +1,5 @@
 /* pages/component/canvas/canvas.wxss */
+page,view{
+   width: 100%;
+   height: 100%;
+}
