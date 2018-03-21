@@ -85,5 +85,9 @@ Page({
   },
   bindMapTap: function(e){
      console.log(e)
+  },
+  //在地图渲染更新完成时触发,地图加载时，之后改变拖动地图，不会触发
+  bindMapUpdate: function(e){
+     console.log('updated:', e)
   }
 })

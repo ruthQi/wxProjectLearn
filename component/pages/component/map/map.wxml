@@ -13,6 +13,6 @@
       使用wx.openLocation的经纬度时，getLocation的type应为：gcj02
    -->
    <map longitude="116.276020" latitude="40.042730" scale="18" markers='{{markers}}' polyline='{{polyline}}' controls='{{controls}}' bindcontroltap='bindControlTap' bindmarkertap='bindMarkerTap' bindcallouttap='bindcallouttap' style="width:100%;height:300px;" show-location='{{true}}' 
-   bindregionchange="regionChange" bindtap='bindMapTap'></map>
+   bindregionchange="regionChange" bindtap='bindMapTap' bindupdated='bindMapUpdate'></map>
 </view>
 <button bindtap='getCurrentLoacation'>获取位置</button>
