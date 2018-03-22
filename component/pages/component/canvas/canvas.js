@@ -6,7 +6,9 @@ Page({
   data: {
       x: 0,
       y:0,
-      isHidden:true
+      isHidden:true,
+      rectX: 0,
+      frameNum:0
   },
   onReady: function(){
      var firstCtx = wx.createCanvasContext('firstCanvas');
@@ -42,6 +44,39 @@ Page({
    //   secondCanvas.setFillStyle('#aaa');
    //   secondCanvas.fill();
    //   secondCanvas.draw();
+      //第三个canvas--动画
+     this.animationFun();
+     
+  },
+  animationFun:function(){
+     let rectX = this.data.rectX;
+     let frameNum = this.data.frameNum;
+     rectX++;
+     frameNum++;
+     this.setData({
+        rectX: rectX,
+        frameNum: frameNum
+     })
+     //每隔4帧渲染
+     if(frameNum%4 == 0){
+        //console.log(this.data.rectX)
+        if (this.data.rectX > 200) {
+           return;
+        }
+        this.moveRect();
+        //console.log(frameNum, rectX)
+     } 
+     requestAnimationFrame(this.animationFun);
+  },
+  moveRect: function(){
+     var thirdCanvas = wx.createCanvasContext('thirdCanvas');
+     thirdCanvas.setStrokeStyle('#ffff00');
+     //thirdCanvas.setLineWidth(2);
+     thirdCanvas.rect(this.data.rectX, 20, 50, 50);
+     thirdCanvas.setFillStyle('#ea0000');
+     thirdCanvas.fill();//填充
+     thirdCanvas.stroke();//线
+     thirdCanvas.draw();
   },
   start: function(e){
      console.log(e)
