@@ -66,6 +66,7 @@ Page({
         this.moveRect();
         //console.log(frameNum, rectX)
      } 
+     //使用requestAnimationFrame实现动画渲染
      requestAnimationFrame(this.animationFun);
   },
   moveRect: function(){
