@@ -1,0 +1,18 @@
+<view class='list-container'>
+   <view class='list-header'>{{title}}</view>
+   <!--scroll-view必须设置高度，才能监听到bindscrolltolower-->
+   <scroll-view class='list-body' scroll-y bindscrolltolower="loadOther" lower-threshold="10">
+      <view class='list-item' wx:for="{{movieList}}" wx:key="{{index}}">
+         <image class="poster" src="{{item.images.small}}"></image>
+         <view class='meta'>
+            <text class='title'>{{item.title}}</text>
+            <text class='sub-title'>{{item.original_title}}({{item.year}})</text>
+            <!--space:显示连续空格：nbsp：根据字体设置的空格大小-->
+            <text class='artists'><text space="nbsp" wx:for="{{item.directors}}" wx:key="{{index}}">{{item.name}}  </text></text>
+         </view>
+         <view class='rating'>
+            <text>{{item.rating.average}}</text>
+         </view>
+      </view>
+   </scroll-view>
+</view>
