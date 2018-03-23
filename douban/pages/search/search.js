@@ -1,7 +1,6 @@
 var url = 'http://localhost/v2/movie/search';
 var value = '';
 var loadingNum = 0;
-//var total= 0;
 Page({
 
   /**
@@ -18,11 +17,10 @@ Page({
     
   },
   search: function(e){
-      console.log(e)
       this.setData({
          movieList: []
       })
-      this.requestFun(0,20,e.detail.value);
+      this.requestFun(0,20,e.detail.value,'search');
       value = e.detail.value;
   },
   loadOther: function(){
@@ -30,9 +28,9 @@ Page({
      if (loadingNum * 20 > this.data.total){
          return;
      }
-     this.requestFun(loadingNum * 20, 20, value);
+     this.requestFun(loadingNum * 20, 20, value,'load');
   },
-  requestFun: function (start, count, value) {
+  requestFun: function (start, count, value,type) {
      wx.showLoading({
         title: '加载中...',
      });
@@ -49,10 +47,14 @@ Page({
         success: (res) => {
            console.log(res)
            wx.hideLoading();
-           console.log(this.data.movieList)
+           //console.log(this.data.movieList)
+           var data = res.data.subjects
+           if (type == 'load'){
+              data = this.data.movieList.concat(res.data.subjects);
+           }
            this.setData({
               total: res.data.total,
-              movieList: this.data.movieList.concat(res.data.subjects)
+              movieList: data
            })
         }
      })
