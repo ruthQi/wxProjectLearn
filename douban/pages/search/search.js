@@ -17,9 +17,9 @@ Page({
     
   },
   search: function(e){
-      this.setData({
-         movieList: []
-      })
+      // this.setData({
+      //    movieList: []
+      // })
       this.requestFun(0,20,e.detail.value,'search');
       value = e.detail.value;
   },
@@ -33,6 +33,7 @@ Page({
   requestFun: function (start, count, value,type) {
      wx.showLoading({
         title: '加载中...',
+        mask:true
      });
      wx.request({
         url: url,
