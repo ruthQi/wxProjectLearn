@@ -28,7 +28,7 @@ Page({
             count: count
          },
          header: {
-            'content-type': 'json'
+            'content-type': 'text/plain'
          },
          success: (res) => {
             console.log(res)

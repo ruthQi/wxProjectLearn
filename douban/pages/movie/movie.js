@@ -16,7 +16,7 @@ Page({
     wx.request({
        url: url+options.id,
        header:{
-          'content-type': 'json'
+          'content-type': 'text/plain'
        },
        success: (res)=>{
          console.log(res)
