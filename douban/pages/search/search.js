@@ -1,10 +1,14 @@
+var url = 'http://localhost/v2/movie/search';
+var value = '';
+var loadingNum = 0;
+//var total= 0;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    
+    movieList:[]
   },
 
   /**
@@ -13,53 +17,44 @@ Page({
   onLoad: function (options) {
     
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    
+  search: function(e){
+      console.log(e)
+      this.setData({
+         movieList: []
+      })
+      this.requestFun(0,20,e.detail.value);
+      value = e.detail.value;
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
+  loadOther: function(){
+     loadingNum++;
+     if (loadingNum * 20 > this.data.total){
+         return;
+     }
+     this.requestFun(loadingNum * 20, 20, value);
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-    
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-    
+  requestFun: function (start, count, value) {
+     wx.showLoading({
+        title: '加载中...',
+     });
+     wx.request({
+        url: url,
+        data: {
+           start: start,
+           count: count,
+           q:value
+        },
+        header: {
+           'content-type': 'json'
+        },
+        success: (res) => {
+           console.log(res)
+           wx.hideLoading();
+           console.log(this.data.movieList)
+           this.setData({
+              total: res.data.total,
+              movieList: this.data.movieList.concat(res.data.subjects)
+           })
+        }
+     })
   }
 })

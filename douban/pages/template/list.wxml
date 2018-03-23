@@ -1,0 +1,19 @@
+<template name="scrollList">
+   <scroll-view class='list-body' scroll-y bindscrolltolower="loadOther" lower-threshold="20">
+      <navigator wx:for="{{movieList}}" wx:key="{{index}}" url='../movie/movie?id={{item.id}}'>
+         <view class='list-item'>
+            <image class="poster" src="{{item.images.small}}"></image>
+            <view class='meta'>
+               <text class='title'>{{item.title}}</text>
+               <text class='sub-title'>{{item.original_title}}({{item.year}})</text>
+               <!--space:显示连续空格：nbsp：根据字体设置的空格大小-->
+               <text class='artists'><text space="nbsp" wx:for="{{item.directors}}" wx:key="{{index}}">{{item.name}}  </text></text>
+            </view>
+            <view class='rating'>
+               <text>{{item.rating.average}}</text>
+            </view>
+         </view>
+      </navigator>
+      
+   </scroll-view>
+</template>

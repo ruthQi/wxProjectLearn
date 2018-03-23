@@ -1,0 +1,7 @@
+<import src="../template/list.wxml"/>
+<view class='search-container'>
+   <view class='search-input'>
+      <input class="input-content" placeholder='输入搜索关键词' bindblur='search'></input>
+   </view>
+   <template is="scrollList" data="{{movieList:movieList}}"/>
+</view>

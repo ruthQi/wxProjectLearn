@@ -1,1 +1,16 @@
 /* pages/search/search.wxss */
+page,.search-container, scroll-view{
+   height: 100%;
+}
+.search-input{
+   display: flex;
+   justify-content: center;
+   border-bottom: 2rpx solid #ccc;
+   margin-bottom: 20rpx;
+}
+.input-content{
+   padding: 20rpx 40rpx;
+   font-size: 40rpx;
+   color: #999;
+   text-align: center;
+}
