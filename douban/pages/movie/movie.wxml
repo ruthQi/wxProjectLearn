@@ -1,0 +1,13 @@
+<view class='movie-info-container'>
+   <view class='movie-meta-content'>
+      <image class="poster" src="{{movieObj.images.large}}"></image>
+      <text class="title">{{movieObj.title}}({{movieObj.year}})</text>
+      <text class="info">评分：{{movieObj.rating.average}}</text>
+      <text class='info'>导演：<block wx:for="{{movieObj.directors}}" wx:key="{{index}}"> {{item.name}} </block></text>
+      <text class='info'>主演：<block wx:for="{{movieObj.casts}}" wx:key="{{index}}"> {{item.name}} </block></text>
+   </view>
+   <view class="movie-des-content">
+      <text class='label'>摘要：</text>
+      <text class='content'>{{movieObj.summary}}</text>
+   </view>
+</view>

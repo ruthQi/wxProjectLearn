@@ -11,6 +11,7 @@ Page({
      
      this.requestFun(0,20);
    },
+   //分页加载
    loadOther: function(e){
       console.log(e);
       loadingNum ++;
@@ -27,7 +28,7 @@ Page({
             count: count
          },
          header: {
-            'content-type': 'json' // 默认值
+            'content-type': 'json'
          },
          success: (res) => {
             console.log(res)
@@ -39,5 +40,4 @@ Page({
          }
       })
    }
-  
 })

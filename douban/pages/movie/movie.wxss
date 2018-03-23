@@ -1,0 +1,35 @@
+/* pages/movie/movie.wxss */
+.movie-meta-content{
+   height: 1000rpx;
+   padding: 50rpx 40rpx;
+   display: flex;
+   flex-direction: column;
+   align-items: center; 
+}
+.poster{
+   width: 80%;
+   height: 80%;
+   margin: 20rpx;
+}
+.title{
+   font-size: 40rpx;
+   color: #444;
+}
+.info{
+   width: 80%;
+   font-size: 18rpx;
+   color: #888;
+   margin-top: 20rpx;
+}
+.movie-des-content{
+   width: 80%;
+   margin: 30rpx auto;
+}
+.label{
+   display: block;
+}
+.content{
+   color: #666;
+   font-size: 20rpx;
+   padding: 10rpx;
+}
