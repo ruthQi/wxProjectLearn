@@ -24,6 +24,12 @@ Page({
             //       console.log(res)
             //    }
             // })
+            wx.getImageInfo({
+               src: res.tempFilePaths[0],
+               success:(res)=>{
+                  console.log(res)
+               }
+            })
             //需要后台重写文件接收，进行上传
             //目前的接口，报400，参数错误
             wx.uploadFile({
@@ -39,6 +45,7 @@ Page({
       })
    },
    downloadFile: function(){
+      //文件下载
       wx.downloadFile({
          url:'https://mint-public.nosdn.127.net/mint_1522047832247_41845329.png',
          success: (res)=>{
@@ -47,6 +54,12 @@ Page({
                downloadSrc: res.tempFilePath
             })
          }
+      })
+   },
+   previewImage: function(){
+      wx.previewImage({
+         current:'http://mint-public.nosdn.127.net/mint_1502086441005_72890816.jpg',
+         urls: ['http://mint-public.nosdn.127.net/mint_1500968144216_89246729.jpg', 'http://mint-public.nosdn.127.net/mint_1502086441005_72890816.jpg','http://mint-public.nosdn.127.net/mint_1500968144216_89246729.jpg'],
       })
    }
 })

@@ -1,4 +1,5 @@
 <button bindtap="uploadImg">上传</button>
-<image src="{{imgSrc}}"></image>
+<image src="{{imgSrc}}" mode="aspectFill"></image>
 <button bindtap='downloadFile'>下载</button>
-<image src="{{downloadSrc}}"></image>
+<image src="{{downloadSrc}}" mode="aspectFill"></image>
+<button bindtap='previewImage'>预览</button>
