@@ -1,0 +1,1 @@
+<button bindtap="loginFun">登录</button>
