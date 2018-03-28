@@ -1,0 +1,28 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/room/room",
+    "pages/video/video"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "薄荷直播",
+    "navigationBarTextStyle":"white"
+  },
+  "tabBar": {
+     "color": "#999",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "直播",
+      "iconPath": "images/live.png",
+      "selectedIconPath": "images/live-active.png"
+    },{
+      "pagePath": "pages/video/video",
+      "text": "短视频",
+      "iconPath": "images/live.png",
+      "selectedIconPath": "images/live-active.png"
+    }]
+  }
+}

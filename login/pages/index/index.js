@@ -1,6 +1,6 @@
 //require('');
 //require('../../utils/chatRoom.js');
-var NIM = require('../../utils/NIM.js');
+//var NIM = require('../../utils/NIM.js');
 var app = getApp();
 Page({
    data:{

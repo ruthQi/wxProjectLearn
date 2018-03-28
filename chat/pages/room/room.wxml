@@ -1,0 +1,23 @@
+<view class='room-container'>
+   <video class="room-video" src="{{pullUrl}}" autoplay objectFit="cover"></video>
+   <view class='room-chat'>
+      <scroll-view class='chat-message' scroll-y>
+         <block wx:for="{{messageList}}" wx:key="{{index}}">
+            <view class="chat-item" wx:if="{{item.type == 'msg_chat'}}">
+               <text>{{item.data.user.nick}}:</text>
+               <text>{{item.data.message}}</text>
+            </view>
+            <view class="chat-item" wx:if="{{item.type == 'enter'}}">
+               <text>{{item.data.user.nick}}:</text>
+               <text>{{item.data.message}}</text>
+            </view>
+         </block>
+      </scroll-view>
+      <view class='input-container'>
+         <view class='inpur-wrapper'>
+            <input class='s-input' placeholder-class='input-placeholder' placeholder='来聊天吧' bindinput='inputMessage' value="{{inputValue}}" focus="{{focus}}"></input>
+         </view>
+         <button class="sendBtn" bindtap='sendMessage'>发送</button>
+      </view>
+   </view>
+</view>

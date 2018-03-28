@@ -1,0 +1,22 @@
+<view class='room-container'> 
+   <view class='banner-list'>
+      <swiper indicator-dots indicator-color='rgba(150,150,150,0.3)' indicator-active-color="#fff" autoplay='{{true}}' interval='2000' circular>
+         <block wx:for="{{bannerList}}" wx:key="{{index}}">
+            <swiper-item>
+               <image class="image-item" src="{{item.imgUrl}}" mode="scaleToFill"></image>
+            </swiper-item>
+         </block>    
+      </swiper>
+   </view>
+   <view class='room-list'>
+      <navigator wx:for="{{roomList}}" url='../room/room?roomId={{item.entity.room.niceRoomId}}' wx:key="{{index}}">
+         <view class='room-item'>
+            <image class="cover-url" src="{{item.coverUrl}}" mode='aspectFill'></image>
+            <view class='room-info'>
+               <text class='s-address'>{{item.entity.room.city}}</text>
+               <text class='s-title'>{{item.title}}</text>
+            </view>
+         </view>
+      </navigator>
+   </view>
+</view>

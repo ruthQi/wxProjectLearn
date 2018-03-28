@@ -40,6 +40,7 @@ export default class Chat{
       });
    }
    initChatRoom(params) {
+      console.log(Chatroom)
       app.globalData.chatroom = Chatroom.getInstance(this.getChatRoomParams(params));
       console.log(app.globalData.chatroom)
    }
