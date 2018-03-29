@@ -1,8 +1,7 @@
 //index.js
 //获取应用实例
-//const app = getApp();
+const app = getApp();
 import request from '../../models/request.js';
-//import Chat from '../../utils/linkChat.js';
 
 Page({
    data:{
@@ -13,6 +12,7 @@ Page({
       //console.log(app.globalData)
       this.getBannerList();
       this.getRoomList();
+      //this.linkChatRoom();
    },
    getBannerList: function(){
       request.request('/api/home/v2/banner', {
@@ -35,6 +35,9 @@ Page({
             roomList: res.data.data.dataList
          })
       })
+   },
+   onShow: function(){
+      app.globalData.chatroom && app.globalData.chatroom.chatroom.disconnect();
    }
    
 })

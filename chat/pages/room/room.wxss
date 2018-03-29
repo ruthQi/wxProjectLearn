@@ -6,7 +6,7 @@ page, .room-container{
 }
 .room-video{
    width: 100%;
-   height: 100%;
+   height: 400rpx;
 }
 .room-chat{
    position: fixed;

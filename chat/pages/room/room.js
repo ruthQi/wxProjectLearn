@@ -4,7 +4,9 @@ const app = getApp();
 import request from '../../models/request.js';
 import Chat from '../../utils/linkChat.js';
 import observer from '../../utils/observer.js';
-
+//var chatroom = null;
+//import { ChatRoom } from '../../utils/linkChat.js';
+var chatroom = null
 Page({
 
   /**
@@ -17,7 +19,11 @@ Page({
     messageList:[],
     messages:[],
     focus: false,
-    userInfo:{}
+    userInfo:null,
+    appKey:'',
+    token:'',
+    account:''
+
   },
 
   /**
@@ -25,7 +31,7 @@ Page({
    */
   onLoad: function (options) {
      this.haddleMessage();
-     app.getUserInfo((userInfo) => {
+     app.getLoginUserInfo((userInfo) => {
         console.log('===========', userInfo)
         console.log(options)
         request.request('/api/liveroom/user/enter', {
@@ -36,39 +42,46 @@ Page({
            let room = res.data.data.room;
            this.setData({
               roomData: res.data.data,
-              userInfo:userInfo.user
+              userInfo: userInfo.user,
+              appKey: app.globalData.appKey,
+              account: userInfo.user.accid,
+              token: userInfo.yunxinToken,
            })
-           console.log('==========',app.globalData)
+           //console.log('==========', app.globalData)
            this.linkChatRoom(room.yxRoomId);
         })
      });
+      
      this.timer = setInterval(this.renderMessage, 300);
   },
 
   linkChatRoom: function (yxRoomId) {
      var params = {
-        appKey: app.globalData.appKey,
-        account: app.globalData.userInfo.user.accid,
-        token: app.globalData.userInfo.yunxinToken,
+        appKey: this.data.appKey,
+        account: this.data.account,
+        token: this.data.token,
         chatroomId: yxRoomId,
         chatroomAddresses: ['wlnimsc1.netease.im:443']
      }
-     app.globalData.chatroom = new Chat(params)
-     //console.log('========', app.globalData.chatroom);
+     chatroom = new Chat(params)
+     //console.log('========', chatroom);
+     app.setRoom(chatroom);
   },
   sendMessage: function(){
      request.request('/api/chat/roomChat', {
         roomId:this.data.roomData.room.roomId,
-        userId:app.globalData.userInfo.user.userId,
+        userId:this.data.userInfo.userId,
         message:this.data.inputValue
      }, 'POST',(res)=>{
-         console.log('------------',res);
-         let data={
-            type:'msg_chat',
-            data: res.data.data.eventData
+         //console.log('------------',res);
+         if (res.data.data){
+            let data = {
+               type: 'msg_chat',
+               data: res.data.data.eventData
+            }
+            this.data.messages.push(data);
          }
          
-         this.data.messages.push(data);
      })
      this.setData({
         inputValue:'',
@@ -103,9 +116,10 @@ Page({
             list.splice(0, 100);
          }
          this.setData({
-            messageList:list
+            messageList:list,
+            messages:[]
          });
-         this.data.messages = [];
+         //this.data.messages = [];
       }
   }
 })
