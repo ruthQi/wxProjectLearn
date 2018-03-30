@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/room/room",
-    "pages/video/video"
+    "pages/video/video",
+    "pages/lifeCycle/lifeCycle"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -61,6 +61,9 @@ App({
   setRoom: function(room){
       this.globalData.chatroom = room;
   },
+  onHide:function(){
+      console.log('app onhide')
+  },
   globalData: {
     appKey: '1698956d2fae6fb7c0124fe49a53ead5',
     userInfo: null,

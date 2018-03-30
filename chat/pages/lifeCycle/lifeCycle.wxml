@@ -1,0 +1,12 @@
+<!--pages/lifeCycle/lifeCycle.wxml-->
+<!--
+   使用navigator切换页面：
+   页面打开执行顺序：onLoad -> onShow -> onReady
+   点击回退按钮：onUnLoad
+   页面再次打开：onLoad -> onShow -> onReady
+   使用tab切换:
+   页面打开执行顺序：onLoad -> onShow -> onReady
+   点击其他tab:onHide;
+   再次打开次tab页面：onShow
+-->
+<text>测试声明周期</text>
