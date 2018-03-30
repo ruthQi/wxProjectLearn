@@ -63,6 +63,9 @@ Page({
         flag = false;
         this.timer = setInterval(this.renderMessage, 300);
     },
+    onShow: function(){
+         console.log('onShow')
+    },
 
     linkChatRoom: function (yxRoomId) {
         var params = {
@@ -105,7 +108,7 @@ Page({
     },
     haddleMessage: function () {
         console.log('9999999999999999')
-        observer.on('msg_chat', this.showMessage);
+        observer.on('msg_chat', this.testFun);
         //observer.on('user_enter', this.showMessage);
         //observer.on('live_user_list', this.showMessage);
         this.testFun();
