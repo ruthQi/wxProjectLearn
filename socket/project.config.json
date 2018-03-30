@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.9.94",
 	"appid": "wxea023a4d76475f4a",
-	"projectname": "pay",
+	"projectname": "socket",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
