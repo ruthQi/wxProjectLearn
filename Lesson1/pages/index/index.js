@@ -1,13 +1,15 @@
 //index.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
+var i =1;
 
 Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    testData:[]
   },
   //事件处理函数
   bindViewTap: function() {
@@ -68,5 +70,22 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  testSetData: function(){
+      setTimeout(()=>{
+         this.testFun();
+      },1)
+      this.testFun();
+
+  },
+  testFun: function(){
+     console.log(new Date().getTime())
+     i++;
+     let arr = this.data.testData;
+     arr = arr.concat([{ i: i }])
+     console.log('i', i, arr)
+     this.setData({
+        testData: arr
+     })
   }
 })

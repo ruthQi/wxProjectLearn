@@ -9,6 +9,10 @@ import observer from '../../utils/observer.js';
 var flag = true;
 var chatroom = null;
 let array = [];
+var i = 0;
+/**
+ * 当打开一个页面,room.wxml,在点击回退，在进入room.wxml,这时候上个页面并未销毁，还存在data域，触发socket后，还会存到上个页面的data中去；所以存在，联系触发两次 socket，一次存入上个页面，一个存入当前页面，虽然收到2条socket,但是只会渲染一次
+ */
 Page({
 
     /**
@@ -23,7 +27,9 @@ Page({
         userInfo: null,
         appKey: '',
         token: '',
-        account: ''
+        account: '',
+        messages:[],
+        testData:[]
 
     },
 
@@ -101,16 +107,40 @@ Page({
         observer.on('msg_chat', this.showMessage);
         //observer.on('user_enter', this.showMessage);
         //observer.on('live_user_list', this.showMessage);
+        this.testFun();
+        this.testFun();
+
+    },
+    testFun:function(){
+       console.log(new Date().getTime())
+       i++;
+       let arr = this.data.testData;
+       arr = arr.concat([i])
+       console.log('i', i, arr)
+       this.setData({
+          testData: arr
+       })
     },
     showMessage: function (data) {
-        console.log('data.type', data.type);
+        //console.log('data.type', data.type);
+        console.log(new Date().getTime())
         if (data.type == 'msg_chat' && data.data.user.userId == this.data.userInfo.userId) {
             return;
         }
         array = array.concat([data]);
+       // 数组使用push有问题
+        //console.log(array.push(data))//输出1
+
+
+      //   let list = this.data.messages;
+      //   console.log('============', list)
+      //   list = list.concat([1])
       //   this.setData({
-      //      messages: array
+      //      messages: list
       //   })
+      //   console.log('this.data.messages', this.data.messages)
+        
+        
 
     },
     renderMessage: function () {
