@@ -35,9 +35,6 @@ Page({
             roomList: res.data.data.dataList
          })
       })
-   },
-   onShow: function(){
-      app.globalData.chatroom && app.globalData.chatroom.chatroom.disconnect();
    }
    
 })

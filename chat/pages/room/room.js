@@ -6,7 +6,6 @@ import Chat from '../../utils/linkChat.js';
 import observer from '../../utils/observer.js';
 //var chatroom = null;
 //import { ChatRoom } from '../../utils/linkChat.js';
-var flag = true;
 var chatroom = null;
 let array = [];
 var i = 0;
@@ -38,7 +37,6 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        console.log(flag)
         this.haddleMessage();
         app.getLoginUserInfo((userInfo) => {
             console.log('===========', userInfo)
@@ -60,13 +58,19 @@ Page({
                 this.linkChatRoom(room.yxRoomId);
             })
         });
-        flag = false;
         this.timer = setInterval(this.renderMessage, 300);
     },
     onShow: function(){
          console.log('onShow')
     },
-
+    /*
+    要在onUnload里面清除observer监听，因为没初始化一次页面，都会重新监听，如果不在页面unload时销毁，就会造成多次监听；
+    如果设置标志位，来控制初始化监听的次数，则会导致，新的页面获取不到监听数据，因为监听是属于上个页面的，设置数据也是设置上个页面的data,这个页面获取不到数据
+    */
+    onUnload: function(){
+       observer.off('msg_chat',this.showMessage);
+       chatroom && chatroom.chatroom.disconnect();
+    },
     linkChatRoom: function (yxRoomId) {
         var params = {
             appKey: this.data.appKey,
@@ -77,7 +81,7 @@ Page({
         }
         chatroom = new Chat(params)
         //console.log('========', chatroom);
-        app.setRoom(chatroom);
+        //app.setRoom(chatroom);
     },
     sendMessage: function () {
         request.request('/api/chat/roomChat', {
@@ -108,7 +112,7 @@ Page({
     },
     haddleMessage: function () {
         console.log('9999999999999999')
-        observer.on('msg_chat', this.testFun);
+        observer.on('msg_chat', this.showMessage);
         //observer.on('user_enter', this.showMessage);
         //observer.on('live_user_list', this.showMessage);
         this.testFun();
@@ -131,35 +135,37 @@ Page({
         if (data.type == 'msg_chat' && data.data.user.userId == this.data.userInfo.userId) {
             return;
         }
-        array = array.concat([data]);
+       // array = array.concat([data]);
        // 数组使用push有问题
         //console.log(array.push(data))//输出1
 
 
-      //   let list = this.data.messages;
-      //   console.log('============', list)
-      //   list = list.concat([1])
-      //   this.setData({
-      //      messages: list
-      //   })
-      //   console.log('this.data.messages', this.data.messages)
+        let list = this.data.messages;
+        console.log('============', list)
+        list = list.concat([data])
+        this.setData({
+           messages: list
+        })
+        console.log('this.data.messages', this.data.messages)
         
         
 
     },
     renderMessage: function () {
-        if (array.length > 0) {
+       if (this.data.messages.length > 0) {
             let list = [...this.data.messageList];
             console.log('array',array)
-            list = list.concat(array);
+            //list = list.concat(array);
+            list = list.concat(this.data.messages);
             //console.log(list)
             if (list.length > 200) {
                 list.splice(0, 100);
             }
             this.setData({
-                messageList: list
+                messageList: list,
+                messages:[]
             });
-            array = [];
+            //array = [];
         }
     }
 })
