@@ -6,13 +6,12 @@
 var PIXI = require('./libs/pixi.js');
 var Scroller = require('./libs/scroller.js');
 var TWEEN = require('./libs/tween.js');
-var ctx = canvas.getContext('2d');
-//console.log(PIXI)
+
 export default class Main {
   constructor() {
     this.imgSrc = 'images/';
     this.viewWidth = window.innerWidth;
-    this.viewHeight = window.innerHeight;   
+    this.viewHeight = window.innerHeight;  
     this.container = new PIXI.Container();
     this.loader = PIXI.loader; 
     this.initView();
@@ -22,13 +21,18 @@ export default class Main {
   initView(){
     this.container.width = this.viewWidth;
     this.container.height = this.viewHeight;
+    this.container.pivot.set(25, this.viewHeight + 100)
+    this.container.rotation = Math.PI / 2;
     /*自己会创建一个 Canvas 画布，而在微信小游戏中已经有了一个现成的 canvas，随后再创建的 canvas 都是离屏的（off-screen），所以，游戏现在是跑在一个不可见的 canvas 里面。所以，我们需要修改我们的初始化方法，让 Phaser 使用微信自动创建的 canvas。*/
+    console.log(canvas);
     let config={
       width: this.viewWidth,
       height: this.viewHeight,
-      view: canvas
+      view:canvas,
+      transparent: true
     }
     this.canvasView = new PIXI.CanvasRenderer(config);
+    //console.log(this.container)
     this.loader.add(this.imgSrc + "first/bg.png")
               .add(this.imgSrc + "first/bg1.png")
               .add(this.imgSrc + "first/bg2.png")
@@ -171,15 +175,7 @@ export default class Main {
     if (this.viewWidth < this.viewHeight) {
       this.scale = this.viewWidth / 750;
       this.height = this.viewHeight / this.scale;
-      this.canvasView.resize(this.viewHeight / this.scale, 750);
-      //console.log(this.canvasView.view)
-      //this.canvasView.rootContext.scale(0.5,0.5)
-      this.canvasView.view.style.backgroundColor='#fff';
-      //console.log(Math.PI)
-      this.canvasView.view.style.transform = 'rotate(-180deg)';
-      this.canvasView.view.width = this.viewHeight / this.scale;
-      this.canvasView.view.height = 750;
-      console.log(this.canvasView)
+      this.canvasView.resize(750, this.viewHeight / this.scale);
       this.scroller && this.scroller.setDimensions(this.viewWidth, this.viewHeight, this.viewWidth, 2e4);
     } else {
       this.scale = this.viewHeight / 750;
@@ -200,10 +196,8 @@ export default class Main {
   }
   loadComplete = () => {
     //fe==this.container
-    //this.mainScene = new PIXI.Container();
     //ye
     this.firstPageContainer = new PIXI.Container();
-    //this.firstPageContainer.visible = false;
     //Ee
     this.bgSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'first/bg.png'].texture);
     this.bgSprite.position.set(265,97);
@@ -248,17 +242,64 @@ export default class Main {
     circleSprite1.pivot.set(27, 27);
     circleSprite1.scale.set(.57, .57);
     circleSprite1.position.set(250, 27);
+    //2表示2s
     new TWEEN.Tween(circleSprite1.position).to({
       x: 100
-    }, 2e3).delay(100).easing(TWEEN.Easing.Quadratic.Out).repeat(1 / 0).start();
+    }, 2).delay(0.1).easing(TWEEN.Easing.Quadratic.Out).repeat(1/0).start();
     var textSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + "first/text.png"].texture);
     textSprite.position.set(205, 48);
     this.tipsContainer.addChild(circleSprite2, circleSprite1, textSprite);
     this.tipsContainer.position.set(this.height - 396, 140);
-    this.firstPageContainer.addChild(this.bgSprite);
-
-    this.container.addChild(this.firstPageContainer);
+    this.firstPageContainer.addChild(this.bgSprite, this.sxzAni, this.timeSprite, this.tipsContainer);
+    this.container.addChild(this.firstPageContainer, this.firstLineContainer, this.secondLineContainer);
+    this.showAnimation();
     this.updateLoop();
+  }
+  showAnimation(){
+    var that = this;
+    this.bgSprite.alpha = 0, this.timeSprite.alpha = 0, 
+    new TWEEN.Tween({
+      alpha: 0
+    }).to({
+      alpha: 1
+    }, 0.5).onUpdate(function () {
+      that.bgSprite.alpha = this.alpha
+    }).delay(0.5).onComplete(function () {
+      that.sxzAni.play()
+    }).start(), 
+    new TWEEN.Tween({
+      alpha: 0
+    }).to({
+      alpha: 1
+    }, 0.5).onUpdate(function () {
+      that.timeSprite.alpha = this.alpha
+    }).delay(1).start();
+    this.firstLineContainer.children.forEach(function (e, t) {
+      t < 9 && (e.alpha = 0, new TWEEN.Tween({
+        _this: e,
+        alpha: 0
+      }).to({
+        alpha: 1
+      }, 0.3).onUpdate(function () {
+        this._this.alpha = this.alpha
+      }).delay(1.2 * Math.random() + 0.3).start())
+    });
+    this.secondLineContainer.children.forEach(function (e, t) {
+      e.alpha = 0, new TWEEN.Tween({
+        _this: e,
+        alpha: 0
+      }).to({
+        alpha: 1
+      }, 0.3).onUpdate(function () {
+        this._this.alpha = this.alpha
+      }).delay(1.2 * Math.random() + 0.3).start()
+    }), this.tipsContainer.alpha = 0, new TWEEN.Tween({
+      alpha: 0
+    }).to({
+      alpha: 1
+    }, 0.5).onUpdate(function () {
+      that.tipsContainer.alpha = this.alpha
+    }).delay(1.8).start()
   }
   updateLoop(){
     TWEEN.update();
