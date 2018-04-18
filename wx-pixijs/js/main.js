@@ -12,6 +12,8 @@ export default class Main {
   constructor() {
     this.imgSrc = 'images/';
     this.currentPage = 'main';//Tn
+    this.aniFlag = 'slide1';//An
+    this.firstLineFlag = false;//Eo
     this.viewWidth = window.innerWidth;
     this.viewHeight = window.innerHeight;  
     this.container = new PIXI.Container();
@@ -189,13 +191,86 @@ export default class Main {
       zooming: false,
       animating: true,
       bouncing: false,
-      animationDuration: 1
+      animationDuration: 1000
     })
   }
   scrollFun = (left, top, zoom) => {
     console.log('++++++++++++++++')
     console.log(left, top, zoom)
     console.log('++++++++++++++++')
+    this.container.position.y = -top;
+    console.log(this.container)
+    let topScale = top/this.scale;
+    let leftScale = left/this.scale;
+    if(this.aniFlag == 'slide1'){
+      if(topScale < 942.478){
+        if(topScale > 10){
+          this.wordAni();
+        }else{
+          this.rectAni2.position.x = 942.478 + this.rectAni2.left + 255 - topScale;
+          this.rectAni(this.rectAni1, topScale, false);
+        }
+      }
+    }
+  }
+  rectAni(ele, top, bol){
+    let v1 = top%(Math.PI/2*400),
+        v2 = parseInt(top/(Math.pi/2*100)),
+        v3 = top%(Math.PI/2*100),
+        v4 = -v1/(Math.PI/2*100)*255,
+        v5 = -v3/(Math.PI/2*100)*255;
+    bol && (v4 = 0, v5 = 0);
+    if(v1 < Math.PI/ 2 * 100){
+      ele.pivot.set(255, 255);
+      ele.position.x = ele.left + 255 + v4;
+      bol && (v5 = 0);
+    }else{
+      if(v1 > Math.PI/2*100 && v1 <= Math.PI/4*100){
+        ele.pivot.set(255,0);
+        ele.position.x = ele.left + 255 + 255 + v4;
+        bol && (v5 = 255);
+      }else{
+        if(v1 > Math.PI/4*100 && v1<=Math.PI/6*100){
+          ele.pivot.set(0,0);
+          ele.position.x = ele.left + 255*3 + v4;
+          bol && (v5 = 510);
+        }else{
+          if(v1>Math.PI/6 * 100&& v1<=Math.PI/800){
+            ele.pivot.set(0,255);
+            ele.position.x = ele.left + 255 * 4 + v4;
+            bol && (v5 = 765);
+          }
+        }
+      }
+    }
+    ele.rotation = v1/100;
+
+  }
+  wordAni(){
+    if (!this.firstLineFlag){
+      this.firstLineFlag = true;
+      this.firstLineContainer.children.forEach(function (e, t) {
+        new TWEEN.Tween({
+          _this: e,
+          alpha: 1
+        }).to({
+          alpha: 0
+        }, 300).onUpdate(function () {
+          this._this.alpha = this.alpha
+        }).delay(1.2 * Math.random() + 0.3).start()
+      });
+      this.secondLineContainer.children.forEach(function (e, t) {
+        new TWEEN.Tween({
+          _this: e,
+          alpha: 1
+        }).to({
+          alpha: 0
+        }, 0.3).onUpdate(function () {
+          this._this.alpha = this.alpha
+        }).delay(1.2 * Math.random() + 0.3).start()
+      })
+    }
+    
   }
   loadComplete = () => {
     this.renderFirstPage();
@@ -261,10 +336,102 @@ export default class Main {
     this.tipsContainer.addChild(circleSprite2, circleSprite1, textSprite);
     this.tipsContainer.position.set(this.height - 396, 140);
     this.firstPageContainer.addChild(this.bgSprite, this.sxzAni, this.timeSprite, this.tipsContainer);
+    //it
     let bgRect = new PIXI.Graphics();
     bgRect.beginFill(14935004);
     bgRect.drawRect(0, 0, this.height, 750);
     bgRect.endFill();
+    //me
+    this.circleContainer = new PIXI.Container();
+    let circle1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'circle1.png'].texture);
+    circle1Sprite.pivot.set(22, 22);
+    this.circleContainer.addChild(circle1Sprite);
+    for(var i = 10;i>0;i--){
+      var circle2Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'circle2.png'].texture);
+      circle2Sprite.pivot.set(22, 22);
+      circle2Sprite.alpha = i/10;
+      this.circleContainer.addChild(circle2Sprite);
+    }
+    this.circleContainer.position.set(-22,-22);
+    this.circleContainer.visible = false;
+
+    //rect图片
+    let rectImageArr = [];
+    for(var i = 0; i< 3;i++){
+      rectImageArr.push(this.imgSrc + 'rect/'+ i + '.jpg');
+    }
+    let step1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    step1Sprite.pivot.set(21.5,6);
+    step1Sprite.position.set(407, 543);
+    step1Sprite.scale.set(0,0);
+    let step2Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    step2Sprite.pivot.set(21.5, 6);
+    step2Sprite.position.set(407, 543);
+    step2Sprite.scale.set(0, 0);
+    //Ce
+    this.rectAni1 = new PIXI.extras.AnimatedSprite.fromImages(rectImageArr);
+    this.rectAni1.animationSpeed = 0.1;
+    this.rectAni1.play();
+    this.rectAni1.left = (this.height - 460 - 255) / 2,
+    this.rectAni1.footStep = [step1Sprite, step2Sprite],
+    this.rectAni1.position.set(this.rectAni1.left + 255, 543),
+    this.rectAni1.pivot.set(255, 255);
+
+    let step3Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    step3Sprite.pivot.set(21.5, 6);
+    step3Sprite.position.set(867, 543);
+    step3Sprite.scale.set(0, 0);
+    step3Sprite.name = 'footStep3';
+    let step4Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    step4Sprite.pivot.set(21.5, 6);
+    step4Sprite.position.set(867, 543);
+    step4Sprite.scale.set(0, 0);
+    //Me
+    this.rectAni2 = new PIXI.extras.AnimatedSprite.fromImages(rectImageArr);
+    this.rectAni2.animationSpeed = 0.1;
+    this.rectAni2.gotoAndPlay(2);
+    this.rectAni2.left = (this.height - 460 - 255) / 2 + 460,
+    this.rectAni2.footStep = [step3Sprite, step4Sprite],
+    this.rectAni2.position.set(942.478 + this.rectAni2.left + 255, 543),
+    this.rectAni2.pivot.set(255, 255);
+
+    //tt
+    this.dialogContainer = new PIXI.Container();
+    //Ne
+    this.dialogTextContainer = new PIXI.Container();
+    //Ve
+    let heartSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'dialog/heart.png'].texture);
+    heartSprite.pivot.set(78, 78);
+    heartSprite.scale.set(0, 0),
+    heartSprite.position.set(this.rectAni1.left + 240 + 78 - 120, 362);
+    //He
+    let dialogHeartArr = [];
+    for(var i = 0; i< 6; i++){
+      dialogHeartArr.push(this.imgSrc+'dialog/heart_'+ i +'.png');
+    }
+    this.heartAni = new PIXI.extras.AnimatedSprite.fromImages(dialogHeartArr);
+    this.heartAni.animationSpeed = 0.2;
+    this.heartAni.loop = false;
+    this.heartAni.visible = false;
+    this.heartAni.position.set(this.rectAni1.left + 240,234);
+
+    //Ze
+    this.dialogScissorsContainer = new PIXI.Container();
+    this.dialogScissorsContainer.position.set(this.rectAni1.left+255-226,244);
+    var textSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'diamond/text.png'].texture);
+    textSprite.position.set((700 - textSprite.width) / 2, 345);
+    var scissorsSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'diamond/scissors.png'].texture);
+    scissorsSprite.visible = false;
+    scissorsSprite.position.set(274, 0);
+    new TWEEN.Tween(scissorsSprite.position).to({
+      x: 189,
+      y: 68
+    }, 1).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
+    this.dialogScissorsContainer.addChild(textSprite);
+    this.dialogScissorsContainer.visible = false;
+    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, heartSprite, this.dialogScissorsContainer );
+
+
     this.container.addChild(bgRect, this.firstPageContainer, this.firstLineContainer, this.secondLineContainer);
   }
   bindEvent(){
