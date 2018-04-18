@@ -3,13 +3,15 @@
  * 游戏主函数
  * 
  */
+
 var PIXI = require('./libs/pixi.js');
+console.log(PIXI)
 var Scroller = require('./libs/scroller.js');
 var TWEEN = require('./libs/tween.js');
-
 export default class Main {
   constructor() {
     this.imgSrc = 'images/';
+    this.currentPage = 'main';//Tn
     this.viewWidth = window.innerWidth;
     this.viewHeight = window.innerHeight;  
     this.container = new PIXI.Container();
@@ -21,18 +23,17 @@ export default class Main {
   initView(){
     this.container.width = this.viewWidth;
     this.container.height = this.viewHeight;
-    this.container.pivot.set(25, this.viewHeight + 100)
+    this.container.pivot.set(0, this.viewHeight+82);
     this.container.rotation = Math.PI / 2;
     /*自己会创建一个 Canvas 画布，而在微信小游戏中已经有了一个现成的 canvas，随后再创建的 canvas 都是离屏的（off-screen），所以，游戏现在是跑在一个不可见的 canvas 里面。所以，我们需要修改我们的初始化方法，让 Phaser 使用微信自动创建的 canvas。*/
-    console.log(canvas);
+    //console.log(canvas);
     let config={
       width: this.viewWidth,
       height: this.viewHeight,
-      view:canvas,
-      transparent: true
+      view:canvas
     }
+    //ue
     this.canvasView = new PIXI.CanvasRenderer(config);
-    //console.log(this.container)
     this.loader.add(this.imgSrc + "first/bg.png")
               .add(this.imgSrc + "first/bg1.png")
               .add(this.imgSrc + "first/bg2.png")
@@ -188,40 +189,49 @@ export default class Main {
       zooming: false,
       animating: true,
       bouncing: false,
-      animationDuration: 1000
+      animationDuration: 1
     })
   }
   scrollFun = (left, top, zoom) => {
+    console.log('++++++++++++++++')
     console.log(left, top, zoom)
+    console.log('++++++++++++++++')
   }
   loadComplete = () => {
+    this.renderFirstPage();
+    this.bindEvent();
+    this.showAnimation();
+    this.currentPage = 'firstPage';
+    this.updateLoop();
+  }
+  renderFirstPage(){
     //fe==this.container
     //ye
     this.firstPageContainer = new PIXI.Container();
     //Ee
-    this.bgSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'first/bg.png'].texture);
-    this.bgSprite.position.set(265,97);
+    this.bgSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/bg.png'].texture);
+    this.bgSprite.position.set(265, 97);
     //Ae
     let sxzArr = [];
-    for(var i = 0; i < 38; i++){
-      sxzArr.push(this.imgSrc+'sxz/sxz_'+ i + '.png');
+    for (var i = 0; i < 38; i++) {
+      sxzArr.push(this.imgSrc + 'sxz/sxz_' + i + '.png');
     }
     this.sxzAni = new PIXI.extras.AnimatedSprite.fromImages(sxzArr);
     this.sxzAni.animationSpeed = 0.25;
     this.sxzAni.loop = false;
     //Pe
-    this.timeSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'first/time.png'].texture);
-    this.timeSprite.position.set(336,607);
+    this.timeSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/time.png'].texture);
+    this.timeSprite.position.set(336, 607);
 
     //we
     this.firstLineContainer = new PIXI.Container();
-    for(var i = 0; i< 10; i++){
-      if(i == 9){
+    for (var i = 0; i < 10; i++) {
+      if (i == 9) {
         var renderContent = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/rect.png'].texture);
         renderContent.position.x = 368;
         renderContent.position.y = -69;
-      }else{
-        var renderContent = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/t1_'+i+'.png'].texture);
+      } else {
+        var renderContent = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/t1_' + i + '.png'].texture);
         renderContent.position.x = 38 * i;
       }
       this.firstLineContainer.addChild(renderContent);
@@ -229,7 +239,7 @@ export default class Main {
     this.firstLineContainer.position.set(this.height - 539, 514);
     //_e
     this.secondLineContainer = new PIXI.Container();
-    for(var i=0;i<8;i++){
+    for (var i = 0; i < 8; i++) {
       let item = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/t2_' + i + '.png'].texture);
       item.position.x = 38 * i;
       this.secondLineContainer.addChild(item);
@@ -237,7 +247,7 @@ export default class Main {
     this.secondLineContainer.position.set(this.height - 422, 572);
     //Te
     this.tipsContainer = new PIXI.Container();
-    let circleSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc+'first/circle2.png'].texture);
+    let circleSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/circle2.png'].texture);
     let circleSprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'first/circle1.png'].texture);
     circleSprite1.pivot.set(27, 27);
     circleSprite1.scale.set(.57, .57);
@@ -245,15 +255,43 @@ export default class Main {
     //2表示2s
     new TWEEN.Tween(circleSprite1.position).to({
       x: 100
-    }, 2).delay(0.1).easing(TWEEN.Easing.Quadratic.Out).repeat(1/0).start();
+    }, 2).delay(0.1).easing(TWEEN.Easing.Quadratic.Out).repeat(1 / 0).start();
     var textSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + "first/text.png"].texture);
     textSprite.position.set(205, 48);
     this.tipsContainer.addChild(circleSprite2, circleSprite1, textSprite);
     this.tipsContainer.position.set(this.height - 396, 140);
     this.firstPageContainer.addChild(this.bgSprite, this.sxzAni, this.timeSprite, this.tipsContainer);
-    this.container.addChild(this.firstPageContainer, this.firstLineContainer, this.secondLineContainer);
-    this.showAnimation();
-    this.updateLoop();
+    let bgRect = new PIXI.Graphics();
+    bgRect.beginFill(14935004);
+    bgRect.drawRect(0, 0, this.height, 750);
+    bgRect.endFill();
+    this.container.addChild(bgRect, this.firstPageContainer, this.firstLineContainer, this.secondLineContainer);
+  }
+  bindEvent(){
+    //console.log(this.container)
+    this.container.interactive = true;
+    this.container.buttonMode = true;
+    console.log(this.container)
+    console.log(this.scroller)
+    canvas.addEventListener('touchstart', (e)=>{
+      //console.log('88888', e)
+      //var t = e.data.originalEvent;
+      this.eventFlag = false;
+      this.scroller.doTouchStart(e.touches, e.timeStamp)
+    })
+    canvas.addEventListener('touchmove', (e) => {
+      //console.log('88888', e)
+      //var t = e.data.originalEvent;
+      if (!this.eventFlag) {
+        //console.log('00000000000')
+        //var t = e.data.originalEvent;
+        this.scroller.doTouchMove(e.touches, e.timeStamp, e.scale)
+      }
+    })
+    canvas.addEventListener('touchend', (e)=>{
+      this.scroller.doTouchEnd(e.timeStamp);
+      this.eventFlag = true;
+    })
   }
   showAnimation(){
     var that = this;

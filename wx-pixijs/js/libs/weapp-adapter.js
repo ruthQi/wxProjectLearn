@@ -113,7 +113,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	})
-	exports.cancelAnimationFrame = exports.requestAnimationFrame = exports.clearInterval = exports.clearTimeout = exports.setInterval = exports.setTimeout = exports.canvas = exports.location = exports.localStorage = exports.HTMLElement = exports.FileReader = exports.Audio = exports.Image = exports.WebSocket = exports.XMLHttpRequest = exports.navigator = exports.document = undefined
+  exports.cancelAnimationFrame = exports.requestAnimationFrame = exports.clearInterval = exports.clearTimeout = exports.setInterval = exports.setTimeout = exports.canvas = exports.location = exports.localStorage = exports.HTMLElement = exports.FileReader = exports.Audio = exports.Image = exports.WebSocket = exports.XMLHttpRequest = exports.navigator = exports.document = exports.TouchEvent = undefined
 
 	var _WindowProperties = __webpack_require__(2)
 
@@ -183,6 +183,10 @@
 
 	var _location3 = _interopRequireDefault(_location2)
 
+  var _event2 = __webpack_require__(16)
+
+  var _event3 = _interopRequireDefault(_event2)
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj } }
 
 	exports.document = _document3.default
@@ -195,6 +199,7 @@
 	exports.HTMLElement = _HTMLElement3.default
 	exports.localStorage = _localStorage3.default
 	exports.location = _location3.default
+  exports.TouchEvent = _event3.default.default;
 
 
 	// 暴露全局的 canvas
@@ -1094,11 +1099,11 @@
 	function touchEventHandlerFactory(type) {
 	  return function (event) {
 	    var touchEvent = new TouchEvent(type)
-
+      //console.log('=====',event)
 	    touchEvent.touches = event.touches
 	    touchEvent.targetTouches = Array.prototype.slice.call(event.touches)
 	    touchEvent.changedTouches = event.changedTouches
-	    touchEvent.timeStamp = event.timeStamp
+      touchEvent.timeStamp = event.timeStamp || new Date().getTime()
 	    _document2.default.dispatchEvent(touchEvent)
 	  }
 	}
@@ -1107,7 +1112,7 @@
 	wx.onTouchMove(touchEventHandlerFactory('touchmove'))
 	wx.onTouchEnd(touchEventHandlerFactory('touchend'))
 	wx.onTouchCancel(touchEventHandlerFactory('touchcancel'))
-
+  exports.default = TouchEvent;
 /***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
