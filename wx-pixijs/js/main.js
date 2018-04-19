@@ -8,12 +8,18 @@ var PIXI = require('./libs/pixi.js');
 console.log(PIXI)
 var Scroller = require('./libs/scroller.js');
 var TWEEN = require('./libs/tween.js');
+
+var Mn, Nn, zn, Wn, Xn, Ln, Fn, Dn, kn, Un, Bn, Rn = false;
+var Yn = [Mn, Nn, zn, Wn, Xn, Ln, Fn, Dn, kn, Un, Bn];
+
 export default class Main {
   constructor() {
     this.imgSrc = 'images/';
     this.currentPage = 'main';//Tn
     this.aniFlag = 'slide1';//An
     this.firstLineFlag = false;//Eo
+    this.point = {x:0,y:0};//On
+    this.distance = 0;//Jn
     this.viewWidth = window.innerWidth;
     this.viewHeight = window.innerHeight;  
     this.container = new PIXI.Container();
@@ -191,22 +197,24 @@ export default class Main {
       zooming: false,
       animating: true,
       bouncing: false,
-      animationDuration: 1000
+      animationDuration: 1
     })
   }
   scrollFun = (left, top, zoom) => {
     console.log('++++++++++++++++')
     console.log(left, top, zoom)
     console.log('++++++++++++++++')
-    this.container.position.y = -top;
+    //this.container.position.y = -top;
     console.log(this.container)
     let topScale = top/this.scale;
     let leftScale = left/this.scale;
     if(this.aniFlag == 'slide1'){
       if(topScale < 942.478){
         if(topScale > 10){
+          this.blackTipsContainer.visible = false;
           this.wordAni();
         }else{
+          this.blackTipsContainer.visible = true;
           this.rectAni2.position.x = 942.478 + this.rectAni2.left + 255 - topScale;
           this.rectAni(this.rectAni1, topScale, false);
         }
@@ -214,6 +222,7 @@ export default class Main {
     }
   }
   rectAni(ele, top, bol){
+    console.log(ele, top, bol)
     let v1 = top%(Math.PI/2*400),
         v2 = parseInt(top/(Math.pi/2*100)),
         v3 = top%(Math.PI/2*100),
@@ -244,6 +253,26 @@ export default class Main {
       }
     }
     ele.rotation = v1/100;
+    if(v2 % 2 == 0){
+      ele.footStep[0].position.x = ele.left + 255 + v5;
+      ele.footStep[1].position.x = ele.left + 255 + v5 - 255;
+      ele.footStep[1].scale.set((255 - v3) / 255, (255 - v3) / 255);
+      if(v3 < 50){
+        ele.footStep[0].scale.set(v3 / 50, v3 / 50)
+      }else{
+        ele.footStep[0].scale.set(1, 1);
+      }
+      v2 == 0 && ele.footStep[1].scale.set(0, 0);
+    }else{
+      ele.footStep[1].position.x = ele.left + 255 + v5;
+      ele.footStep[0].position.x = ele.left + 255 + v5 - 255;
+      ele.footStep[0].scale.set((255 - v3) / 255, (255 - v3) / 255);
+      if(v3< 50){
+        ele.footStep[1].scale.set(v3 / 50, v3 / 50)
+      }else{
+        ele.footStep[1].scale.set(1, 1)
+      }
+    }
 
   }
   wordAni(){
@@ -277,9 +306,11 @@ export default class Main {
     this.bindEvent();
     this.showAnimation();
     this.currentPage = 'firstPage';
+    this.dialogContainer.visible = false;
     this.updateLoop();
   }
   renderFirstPage(){
+    let self = this;
     //fe==this.container
     //ye
     this.firstPageContainer = new PIXI.Container();
@@ -327,8 +358,10 @@ export default class Main {
     circleSprite1.pivot.set(27, 27);
     circleSprite1.scale.set(.57, .57);
     circleSprite1.position.set(250, 27);
+    this.circleSprite1 = circleSprite1;//Se
     //2表示2s
-    new TWEEN.Tween(circleSprite1.position).to({
+    //Ie
+    this.circleTween = new TWEEN.Tween(circleSprite1.position).to({
       x: 100
     }, 2).delay(0.1).easing(TWEEN.Easing.Quadratic.Out).repeat(1 / 0).start();
     var textSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + "first/text.png"].texture);
@@ -420,19 +453,169 @@ export default class Main {
     this.dialogScissorsContainer.position.set(this.rectAni1.left+255-226,244);
     var textSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'diamond/text.png'].texture);
     textSprite.position.set((700 - textSprite.width) / 2, 345);
-    var scissorsSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'diamond/scissors.png'].texture);
-    scissorsSprite.visible = false;
-    scissorsSprite.position.set(274, 0);
-    new TWEEN.Tween(scissorsSprite.position).to({
+    //Ke
+    this.scissorsSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'diamond/scissors.png'].texture);
+    this.scissorsSprite.visible = false;
+    this.scissorsSprite.position.set(274, 0);
+    //diamondScissorsTween
+    this.diamondTween = new TWEEN.Tween(this.scissorsSprite.position).to({
       x: 189,
       y: 68
     }, 1).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
     this.dialogScissorsContainer.addChild(textSprite);
     this.dialogScissorsContainer.visible = false;
-    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, heartSprite, this.dialogScissorsContainer );
+    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, heartSprite, this.dialogScissorsContainer);
+    //nt
+    this.holeContainer = new PIXI.Container();
+    //ot
+    this.holeRect = new PIXI.Graphics();
+    this.holeRect.beginFill(2301728);
+    this.holeRect.position.set(-2e3, -2e3);
+    this.holeRect.drawRect(0, 0, 1e4, 1e4);
+    this.holeRect.endFill();
+    //Fi
+    let diamondFallArr = [];
+    for(var i = 0; i< 23; i++){
+      diamondFallArr.push(this.imgSrc + "diamond_fall/zsdzxl_" + i + ".png");
+    }
+    //st
+    this.diamondFallAni = new PIXI.extras.AnimatedSprite.fromImages(diamondFallArr);
+    this.diamondFallAni.position.set(74, -438);
+    this.diamondFallAni.animationSpeed = .2;
+    this.diamondFallAni.loop = false;
+    //at
+    this.trangleContainer = new PIXI.Container();
+    this.trangleContainer.visible = false;
+    this.trangleContainer.position.set(250, 305);
+    //pt
+    this.dialog2Container = new PIXI.Container();
+    //
+    var footStep2Sprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step2.png'].texture);
+    footStep2Sprite1.pivot.set(21.5,6);
+    footStep2Sprite1.position.set(867,560);
+    footStep2Sprite1.scale.set(0,0);
+    var footStep2Sprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step2.png'].texture);
+    footStep2Sprite2.pivot.set(21.5, 6);
+    footStep2Sprite2.position.set(867, 560);
+    footStep2Sprite2.scale.set(0, 0);
 
+    this.rectAni3 = new PIXI.extras.AnimatedSprite.fromImages(rectImageArr);
+    this.rectAni3.animationSpeed = .1;
+    this.rectAni3.gotoAndPlay(2);
+    this.rectAni3.left = this.height - 250 - 255;
+    this.rectAni3.footStep = [footStep2Sprite1, footStep2Sprite2];
+    this.rectAni3.position.set(this.rectAni3.left + 255, 560);
+    this.rectAni3.pivot.set(255, 255);
+    //xt
+    this.stairsContainer = new PIXI.Container();
+    this.stairsContainer.visible = false;
+    this.stairsContainer.position.set(1876, -200);
 
-    this.container.addChild(bgRect, this.firstPageContainer, this.firstLineContainer, this.secondLineContainer);
+    //vt
+    this.stairsLlightContainer = new PIXI.Container();
+
+    //mt
+    this.stairsBgContainer = new PIXI.Container();
+
+    let stairsBgSprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc+'stairs/bg1.png'].texture);
+    stairsBgSprite1.position.set(69,180);
+    let stairsBgSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/bg_left1.png'].texture);
+    let stairsBgSprite3 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/bg_left2.png'].texture);
+    stairsBgSprite3.position.set(193,0);
+    let stairsBgSprite4 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/bg_right1.png'].texture);
+    stairsBgSprite4.position.set(958, 266);
+    let stairsBgSprite5 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/bg_right2.png'].texture);
+    stairsBgSprite5.position.set(964, 70);
+    this.stairsBgContainer.addChild(stairsBgSprite1, stairsBgSprite2, stairsBgSprite3, stairsBgSprite4, stairsBgSprite5);
+    this.stairsBgContainer.position.set(1400,-612);
+    this.stairsBgContainer.visible = false;
+    //St
+    this.stairsHoleBgSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/hole_bg.png'].texture);
+    this.stairsHoleBgSprite.position.set(2561, -647);
+    //bt
+    this.stairsHoleCoverSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/hole_cover.png'].texture);
+    this.stairsHoleBgSprite.position.set(2561, -794);
+    this.holeBg1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'stairs/hole_bg.png'].texture);
+    this.holeBg1Sprite.position.set(50,-193);
+    this.holeCover1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/hole_cover1.png'].texture);
+    this.holeCover1Sprite.position.set(50, -340);
+    this.holeContainer.addChild(this.holeRect, this.holeBg1Sprite, this.diamondFallAni, this.stairsBgContainer, this.stairsContainer, this.stairsHoleBgSprite, this.trangleContainer, this.stairsHoleCoverSprite, this.holeCover1Sprite, this.dialog2Container, footStep2Sprite1, footStep2Sprite2, this.rectAni3, this.stairsLlightContainer);
+    this.holeContainer.visible = false;
+    this.holeContainer.position.set(0,250);
+
+    //Et
+    this.endContainer = new PIXI.Container();
+    this.endContainer.visible = false;
+
+    //Kt
+    this.blackTipsContainer = new PIXI.Container();
+    let hand2Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'hand2.png'].texture);
+    let line4Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'line4.png'].texture);
+    line4Sprite.position.set(3, 0);
+    line4Sprite.pivot.set(0,0);
+    
+    new TWEEN.Tween({
+      percent: 0
+    }).to({
+      percent: 100
+    }, 2).onUpdate(function () {
+      if (this.percent < 45){
+        hand2Sprite.alpha = 1
+      }else{
+        if (this.percent < 80) {
+          hand2Sprite.alpha = (35 - (this.percent - 45)) / 35
+        } else {
+          hand2Sprite.alpha = 0;
+        }
+      }
+      if (this.percent < 50){
+        self.blackTipsContainer.position.x = 740 - 140 * this.percent / 50
+      }
+      if (this.percent < 22){
+        line4Sprite.scale.x = this.percent / 22
+      }else{
+        line4Sprite.scale.x = Math.max(0, (44 - this.percent) / 22)
+      }
+    }).repeat(1 / 0).easing(TWEEN.Easing.Quadratic.InOut).start()
+    this.blackTipsContainer.position.set(600, 600);
+    this.blackTipsContainer.addChild(hand2Sprite, line4Sprite);
+    this.blackTipsContainer.visible = false;
+    //Zt
+    this.whiteTipsContainer = new PIXI.Container();
+    let handSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'hand.png'].texture);
+    let line3Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'line3.png'].texture);
+    line3Sprite.position.set(3, 0);
+    line3Sprite.pivot.set(0, 0);
+    new TWEEN.Tween({
+      percent: 0
+    }).to({
+      percent: 100
+    }, 2e3).onUpdate(function () {
+      if (this.percent < 45){
+        handSprite.alpha = 1;
+      }else{
+        if (this.percent < 80){
+          handSprite.alpha = (35 - (this.percent - 45)) / 35
+        }else{
+          handSprite.alpha = 0
+        }
+      }
+      if (this.percent < 50){
+        self.whiteTipsContainer.position.x = 740 - 140 * this.percent / 50
+      }
+      if (this.percent < 22){
+        line3Sprite.scale.x = this.percent / 22
+      }else{
+        line3Sprite.scale.x = Math.max(0, (44 - this.percent) / 22)
+      }
+    }).repeat(1 / 0).easing(TWEEN.Easing.Quadratic.InOut).start();
+
+    this.whiteTipsContainer.position.set(600, 600);
+    this.whiteTipsContainer.addChild(handSprite, line3Sprite);
+    this.whiteTipsContainer.visible = false;
+
+    this.container.addChild(bgRect, this.dialogContainer, this.holeContainer, this.endContainer, this.firstPageContainer, this.firstLineContainer, this.secondLineContainer, this.blackTipsContainer, this.whiteTipsContainer);
+    this.container.addChild(this.circleContainer);
   }
   bindEvent(){
     //console.log(this.container)
@@ -441,24 +624,201 @@ export default class Main {
     console.log(this.container)
     console.log(this.scroller)
     canvas.addEventListener('touchstart', (e)=>{
-      //console.log('88888', e)
-      //var t = e.data.originalEvent;
-      this.eventFlag = false;
-      this.scroller.doTouchStart(e.touches, e.timeStamp)
+      this.startEvent(e);
     })
     canvas.addEventListener('touchmove', (e) => {
-      //console.log('88888', e)
-      //var t = e.data.originalEvent;
-      if (!this.eventFlag) {
-        //console.log('00000000000')
-        //var t = e.data.originalEvent;
-        this.scroller.doTouchMove(e.touches, e.timeStamp, e.scale)
-      }
+      this.moveEvent(e);
     })
     canvas.addEventListener('touchend', (e)=>{
-      this.scroller.doTouchEnd(e.timeStamp);
-      this.eventFlag = true;
+      this.endEvent(e);
     })
+  }
+  startEvent(e){
+    var pageX = e.touches[0].pageX/this.scale;
+    var pageY = e.touches[0].pageY/this.scale;
+    if (this.currentPage == 'firstPage'){
+      this.point = {
+        x:pageY,
+        y:750-pageX
+      };
+      this.distance = 0;
+      this.circleTween.stop();
+      this.circleSprite1.position.x = 250;
+    } else if (this.currentPage == 'main'){
+      
+      this.scroller.doTouchStart(e.touches, e.timeStamp);
+      this.circleContainer.visible = true;
+      this.circleContainer.children[0].position.set(pageY, 750-pageX);
+      for (var i = 0; i < this.circleContainer.children.length; i++) {
+        var item = this.circleContainer.children[i];
+        item.position.set(pageY, 750 - pageX);
+      }
+    }
+  }
+  moveEvent(e){
+    var pageX = e.touches[0].pageX / this.scale;
+    var pageY = e.touches[0].pageY / this.scale;
+    if (this.currentPage == 'firstPage'){
+      this.distance = pageY - this.point.x;
+      if(this.distance > 0){
+        this.distance = 0;
+      }else{
+        this.distance < -224 && (this.distance = -224);
+      }
+      this.firstLineContainer.children.forEach((e,t)=>{
+        if(t == 9){
+          e.position.x = this.distance / 30 * (9 - t) + 304 + 64;
+        }else{
+          e.position.x = this.distance / 30 * (9 - t) + 38 * t;
+        }
+      })
+      this.secondLineContainer.children.forEach((e, t)=> {
+        e.position.x = this.distance / 20 * (8 - t) + 38 * t
+      });
+      this.circleSprite1.position.x = 250 + this.distance;
+      if (this.distance == -224 && this.circleSprite1.scale.x == 0.57){
+        new TWEEN.Tween(this.circleSprite1.scale).to({
+          x: 1,
+          y: 1
+        }, 0.3).start();
+        setTimeout(()=> {
+          var that = this;
+          this.distance == -224 && new TWEEN.Tween({
+            alpha: 1
+          }).to({
+            alpha: 0
+          }, 0.3).onUpdate(function () {
+            that.firstPageContainer.alpha = this.alpha
+          }).onComplete(function () {
+            that.firstPageContainer.visible = false;
+            that.dialogContainer.visible = true;
+            that.currentPage = "main";
+            that.blackTipsContainer.visible = true;
+            that.showOtherCon();
+          }).start();
+          that.scroller.doTouchStart(e.touches, e.timeStamp);
+        }, 0.3)
+      }
+    } else if (this.currentPage == 'main'){
+      this.scroller.doTouchMove(e.touches, e.timeStamp, e.scale);
+      this.circleContainer.children[0].position.set(pageY, 750-pageX);
+      for (var i = 1; i < this.circleContainer.children.length;i++){
+        let item = this.circleContainer.children[i];
+        Yn[i] && Yn[i].stop();
+        Yn[i] = new TWEEN.Tween(item.position).to({
+          x: pageY,
+          y: 750 - pageX
+        }, 0.008 * i).onUpdate(function () {
+          item.position.set(this.x, this.y)
+        }).start();
+      }
+    }
+  }
+  endEvent(e){
+    var self = this;
+    if (this.currentPage == 'firstPage'){
+      if(this.distance > -224){   
+        new TWEEN.Tween(this.circleSprite1.scale).to({
+          x: .57,
+          y: .57
+        }, 0.3).start();
+        new TWEEN.Tween(this.circleSprite1.position).to({
+          x: 250
+        }, 0.3).start().onComplete(function () {
+          self.circleTween.start()
+        });
+        this.firstLineContainer.children.forEach(function (e, t) {
+          9 == t ? new TWEEN.Tween(e.position).to({
+            x: 368
+          }, 0.3).start() : new TWEEN.Tween(e.position).to({
+            x: 38 * t
+          }, 0.3).start()
+        });
+        this.secondLineContainer.children.forEach(function (e, t) {
+          new TWEEN.Tween(e.position).to({
+            x: 38 * t
+          }, 0.3).start()
+        })
+      }
+    } else if (this.currentPage == 'main'){
+      this.scroller.doTouchEnd(e.timeStamp);
+      this.circleContainer.visible = false;
+    }
+  }
+  getDialogTextArr(){
+    let dialogText1Arr = [], dialogText2Arr = [], dialogText3Arr = [], dialogText4Arr = [];
+    for(var i = 0; i<5; i++){
+      dialogText1Arr.push(this.imgSrc + 'dialog/text1_'+i+'.png');
+    }
+    for (var i = 0; i < 5; i++) {
+      dialogText2Arr.push(this.imgSrc + 'dialog/text2_' + i + '.png');
+    }
+    for (var i = 0; i < 5; i++) {
+      dialogText3Arr.push(this.imgSrc + 'dialog/text3_' + i + '.png');
+    }
+    for (var i = 0; i < 5; i++) {
+      dialogText4Arr.push(this.imgSrc + 'dialog/text4_' + i + '.png');
+    }
+    return [dialogText1Arr, dialogText2Arr, dialogText3Arr, dialogText4Arr];
+  }
+  getDialogOutlineArr(){
+    let outline1Arr = [], outline2Arr = [], outline3Arr = [], outline4Arr = [];
+    for (var i = 0; i < 4; i++) {
+      outline1Arr.push(this.imgSrc + 'dialog/outline1_' + i + '.png');
+    }
+    for (var i = 0; i < 4; i++) {
+      outline2Arr.push(this.imgSrc + 'dialog/outline2_' + i + '.png');
+    }
+    for (var i = 0; i < 4; i++) {
+      outline3Arr.push(this.imgSrc + 'dialog/outline3_' + i + '.png');
+    }
+    for (var i = 0; i < 4; i++) {
+      outline4Arr.push(this.imgSrc + 'dialog/outline4_' + i + '.png');
+    }
+    return [outline1Arr, outline2Arr, outline3Arr, outline4Arr];
+  }
+  showOtherCon(){
+    let dialogTextArr = this.getDialogTextArr();
+    let outLineArr = this.getDialogOutlineArr(); 
+    if(!Rn){
+      Rn = true;
+      for(var i = 0; i<4; i++){
+        var itemContainer = new PIXI.Container();
+        var dialogTextAni = new PIXI.extras.AnimatedSprite.fromImages(dialogTextArr[i]);
+        dialogTextAni.animationSpeed = .1;
+        dialogTextAni.loop = false;
+        itemContainer.position.y = 120;
+
+        var dialogOutlineAni = new PIXI.extras.AnimatedSprite.fromImages(outLineArr[i]);
+        dialogOutlineAni.animationSpeed = .1;
+        dialogOutlineAni.play();
+        dialogOutlineAni.position.x = -40;
+        itemContainer.position.x = -15;
+        if(i == 0){
+          itemContainer.position.x = this.rectAni1.left + 127.5;
+          dialogTextAni.position.y = 20;
+          dialogTextAni.position.x = -15;
+        }
+        if (i == 3) {
+          itemContainer.position.x = this.rectAni1.left + 127.5;
+          dialogTextAni.position.y = 20;
+          dialogTextAni.position.x = -10;
+        }
+        if (i == 1) {
+          itemContainer.position.x = (this.height - 460 - 255) / 2 + 460 + 127.5 - 251 + 60;
+          dialogTextAni.position.y = 13;
+          dialogTextAni.position.x = -16;
+        }
+        if (i == 2) {
+          itemContainer.position.x = (this.height - 460 - 255) / 2 + 460 + 127.5 - 402 + 60;
+          dialogTextAni.position.y = 10;
+          dialogTextAni.position.x = -23;
+        }
+        itemContainer.addChild(dialogOutlineAni, dialogTextAni);
+        this.dialogTextContainer.addChild(itemContainer);
+        itemContainer.visible = false;
+      }
+    }
   }
   showAnimation(){
     var that = this;
