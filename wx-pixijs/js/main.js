@@ -5,7 +5,7 @@
  */
 
 var PIXI = require('./libs/pixi.js');
-console.log(PIXI)
+//console.log(PIXI)
 var Scroller = require('./libs/scroller.js');
 var TWEEN = require('./libs/tween.js');
 
@@ -19,14 +19,26 @@ export default class Main {
     this.aniFlag = 'slide1';//An
     this.firstLineFlag = false;//Eo
     this.point = {x:0,y:0};//On
+    this.pointQ = {x:0,y:0};//Qn
+    this.pointG = {x:0,y:0};//Gn
     this.distance = 0;//Jn
+    this.dialogFlag = false;//_o
+    this.date = new Date();//Hn
+    this.objVArr = [];//vo
+    this.objK = {};//Kn
+    this.$Arr = [];//$n
+    this.eArr = [];//eo
+    this.iArr = [];//io
+    this.nArr = [];//no
+    this.lFlag = false;//lo
+    this.maskFlag = false;
     this.viewWidth = window.innerWidth;
     this.viewHeight = window.innerHeight;  
     this.container = new PIXI.Container();
     this.loader = PIXI.loader; 
     this.initView();
     this.setStyle();
-    this.initScroller();
+    
   }
   initView(){
     this.container.width = this.viewWidth;
@@ -181,50 +193,105 @@ export default class Main {
   
   }
   setStyle(){
-    if (this.viewWidth < this.viewHeight) {
-      this.scale = this.viewWidth / 750;
-      this.height = this.viewHeight / this.scale;
-      this.canvasView.resize(750, this.viewHeight / this.scale);
-      this.scroller && this.scroller.setDimensions(this.viewWidth, this.viewHeight, this.viewWidth, 2e4);
-    } else {
-      this.scale = this.viewHeight / 750;
-      this.height = this.viewWidth / this.scale;
-      this.scroller && this.scroller.setDimensions(this.viewWidth, this.viewHeight, 2e4, this.viewHieght);
-    }
+    this.scale = this.viewWidth / 750;
+    this.height = this.viewHeight / this.scale;
+    this.canvasView.resize(750, this.viewHeight / this.scale);
   }
   initScroller(){
     this.scroller = new Scroller(this.scrollFun, {
       zooming: false,
       animating: true,
       bouncing: false,
-      animationDuration: 1
+      animationDuration: 1000
     })
   }
   scrollFun = (left, top, zoom) => {
-    console.log('++++++++++++++++')
-    console.log(left, top, zoom)
-    console.log('++++++++++++++++')
-    //this.container.position.y = -top;
-    console.log(this.container)
     let topScale = top/this.scale;
     let leftScale = left/this.scale;
+    console.log(topScale);
     if(this.aniFlag == 'slide1'){
       if(topScale < 942.478){
         if(topScale > 10){
           this.blackTipsContainer.visible = false;
           this.wordAni();
         }else{
-          this.blackTipsContainer.visible = true;
-          this.rectAni2.position.x = 942.478 + this.rectAni2.left + 255 - topScale;
-          this.rectAni(this.rectAni1, topScale, false);
+          //this.blackTipsContainer.visible = true;
+        }
+        this.rectAni2.position.x = 942.478 + this.rectAni2.left + 255 - topScale;
+        this.rectAni(this.rectAni1, topScale, false);
+      }else{
+        if (this.dialogFlag){
+          this.scroller.__scrollTop = 942.478 * this.scale;
+        }else{
+          this.handleDialog('dialog1')
         }
       }
     }
   }
+  handleDialog(type){
+    this.aniFlag = type;
+    this.dialogFlag = true;
+    this.maskFlag = true;
+    if (type == 'dialog1'){
+      this.rectAni1.position.x = this.rectAni1.left;
+      this.rectAni1.rotation = Math.PI/2 * 2;
+      this.rectAni1.footStep[0].scale.set(0,0);
+      this.rectAni1.footStep[1].scale.set(0,0);
+      this.scroller.__scrollTop = 0;
+      setTimeout(()=>{
+        setTimeout(()=>{
+          console.log('000000')
+          this.dialogTextContainer.children[0].visible = true;
+          this.dialogTextContainer.children[0].children[1].gotoAndPlay(0);
+          this.aniFlag = "dialog1_start";
+          this.blackTipsContainer.visible = true;
+
+        },1000)
+        this.showHeartAni();
+      },200)
+    }
+
+
+  }
+  showHeartAni(){
+    var self = this;
+    new TWEEN.Tween(this.heartSprite.position).to({
+      x: this.rectAni1.left + 240 + 78,
+      y: 312
+    }, 0.5).onComplete(function () {
+      self.heartAni.visible = true;
+      self.heartAni.play()
+    }).start();
+    var t = new TWEEN.Tween(this.heartSprite.scale).to({
+      x: .8,
+      y: .8
+    }, 0.5).start(),
+    i = new TWEEN.Tween(this.heartSprite.scale).to({
+      x: 1,
+      y: 1
+    }, 0.13),
+    n = new TWEEN.Tween(this.heartSprite.scale).to({
+      x: .8,
+      y: .8
+    }, 0.13),
+    o = new TWEEN.Tween(this.heartSprite.scale).to({
+      x: 1,
+      y: 1
+    }, 0.13),
+    s = new TWEEN.Tween(this.heartSprite.scale).to({
+      x: .8,
+      y: .8
+    }, 0.13).onComplete(function () {
+      self.heartAni.visible = false;
+      self.heartAni.stop();
+      self.heartSprite.visible = false;
+    });
+    t.chain(i), i.chain(n), n.chain(o), o.chain(s)
+  }
   rectAni(ele, top, bol){
-    console.log(ele, top, bol)
+    
     let v1 = top%(Math.PI/2*400),
-        v2 = parseInt(top/(Math.pi/2*100)),
+        v2 = parseInt(top/(Math.PI/2*100)),
         v3 = top%(Math.PI/2*100),
         v4 = -v1/(Math.PI/2*100)*255,
         v5 = -v3/(Math.PI/2*100)*255;
@@ -234,17 +301,17 @@ export default class Main {
       ele.position.x = ele.left + 255 + v4;
       bol && (v5 = 0);
     }else{
-      if(v1 > Math.PI/2*100 && v1 <= Math.PI/4*100){
+      if(v1 > Math.PI/2*100 && v1 <= Math.PI/2*2*100){
         ele.pivot.set(255,0);
         ele.position.x = ele.left + 255 + 255 + v4;
         bol && (v5 = 255);
       }else{
-        if(v1 > Math.PI/4*100 && v1<=Math.PI/6*100){
+        if(v1 > Math.PI/2*100*2 && v1<=Math.PI/2*100*3){
           ele.pivot.set(0,0);
           ele.position.x = ele.left + 255*3 + v4;
           bol && (v5 = 510);
         }else{
-          if(v1>Math.PI/6 * 100&& v1<=Math.PI/800){
+          if(v1>Math.PI/2 * 100 * 3&& v1<=Math.PI/2*100*4){
             ele.pivot.set(0,255);
             ele.position.x = ele.left + 255 * 4 + v4;
             bol && (v5 = 765);
@@ -252,10 +319,12 @@ export default class Main {
         }
       }
     }
+    
     ele.rotation = v1/100;
     if(v2 % 2 == 0){
+      console.log(ele.footStep[0].position,ele.left)
       ele.footStep[0].position.x = ele.left + 255 + v5;
-      ele.footStep[1].position.x = ele.left + 255 + v5 - 255;
+      ele.footStep[1].position.x = ele.left + v5;
       ele.footStep[1].scale.set((255 - v3) / 255, (255 - v3) / 255);
       if(v3 < 50){
         ele.footStep[0].scale.set(v3 / 50, v3 / 50)
@@ -264,8 +333,9 @@ export default class Main {
       }
       v2 == 0 && ele.footStep[1].scale.set(0, 0);
     }else{
+      console.log(ele.footStep[1].scale, ele.left, v3)
       ele.footStep[1].position.x = ele.left + 255 + v5;
-      ele.footStep[0].position.x = ele.left + 255 + v5 - 255;
+      ele.footStep[0].position.x = ele.left + v5;
       ele.footStep[0].scale.set((255 - v3) / 255, (255 - v3) / 255);
       if(v3< 50){
         ele.footStep[1].scale.set(v3 / 50, v3 / 50)
@@ -284,7 +354,7 @@ export default class Main {
           alpha: 1
         }).to({
           alpha: 0
-        }, 300).onUpdate(function () {
+        }, 0.3).onUpdate(function () {
           this._this.alpha = this.alpha
         }).delay(1.2 * Math.random() + 0.3).start()
       });
@@ -304,6 +374,9 @@ export default class Main {
   loadComplete = () => {
     this.renderFirstPage();
     this.bindEvent();
+    this.initScroller();
+    //必须设置此参数才可滑动有效果
+    this.scroller && this.scroller.setDimensions(this.viewWidth, this.viewHeight, this.viewWidth, 2e4);
     this.showAnimation();
     this.currentPage = 'firstPage';
     this.dialogContainer.visible = false;
@@ -393,11 +466,11 @@ export default class Main {
     for(var i = 0; i< 3;i++){
       rectImageArr.push(this.imgSrc + 'rect/'+ i + '.jpg');
     }
-    let step1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    let step1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texture);
     step1Sprite.pivot.set(21.5,6);
     step1Sprite.position.set(407, 543);
     step1Sprite.scale.set(0,0);
-    let step2Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    let step2Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texture);
     step2Sprite.pivot.set(21.5, 6);
     step2Sprite.position.set(407, 543);
     step2Sprite.scale.set(0, 0);
@@ -410,12 +483,12 @@ export default class Main {
     this.rectAni1.position.set(this.rectAni1.left + 255, 543),
     this.rectAni1.pivot.set(255, 255);
 
-    let step3Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    let step3Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texture);
     step3Sprite.pivot.set(21.5, 6);
     step3Sprite.position.set(867, 543);
     step3Sprite.scale.set(0, 0);
     step3Sprite.name = 'footStep3';
-    let step4Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texure);
+    let step4Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step.png'].texture);
     step4Sprite.pivot.set(21.5, 6);
     step4Sprite.position.set(867, 543);
     step4Sprite.scale.set(0, 0);
@@ -433,10 +506,10 @@ export default class Main {
     //Ne
     this.dialogTextContainer = new PIXI.Container();
     //Ve
-    let heartSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'dialog/heart.png'].texture);
-    heartSprite.pivot.set(78, 78);
-    heartSprite.scale.set(0, 0),
-    heartSprite.position.set(this.rectAni1.left + 240 + 78 - 120, 362);
+    this.heartSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc +'dialog/heart.png'].texture);
+    this.heartSprite.pivot.set(78, 78);
+    this.heartSprite.scale.set(0, 0),
+    this.heartSprite.position.set(this.rectAni1.left + 240 + 78 - 120, 362);
     //He
     let dialogHeartArr = [];
     for(var i = 0; i< 6; i++){
@@ -464,7 +537,7 @@ export default class Main {
     }, 1).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
     this.dialogScissorsContainer.addChild(textSprite);
     this.dialogScissorsContainer.visible = false;
-    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, heartSprite, this.dialogScissorsContainer);
+    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, this.heartSprite, this.dialogScissorsContainer);
     //nt
     this.holeContainer = new PIXI.Container();
     //ot
@@ -617,12 +690,12 @@ export default class Main {
     this.container.addChild(bgRect, this.dialogContainer, this.holeContainer, this.endContainer, this.firstPageContainer, this.firstLineContainer, this.secondLineContainer, this.blackTipsContainer, this.whiteTipsContainer);
     this.container.addChild(this.circleContainer);
   }
+  
   bindEvent(){
     //console.log(this.container)
     this.container.interactive = true;
     this.container.buttonMode = true;
     console.log(this.container)
-    console.log(this.scroller)
     canvas.addEventListener('touchstart', (e)=>{
       this.startEvent(e);
     })
@@ -636,6 +709,9 @@ export default class Main {
   startEvent(e){
     var pageX = e.touches[0].pageX/this.scale;
     var pageY = e.touches[0].pageY/this.scale;
+    if (this.maskFlag) {
+      this.maskStartEvent(e);
+    }
     if (this.currentPage == 'firstPage'){
       this.point = {
         x:pageY,
@@ -644,6 +720,7 @@ export default class Main {
       this.distance = 0;
       this.circleTween.stop();
       this.circleSprite1.position.x = 250;
+      
     } else if (this.currentPage == 'main'){
       
       this.scroller.doTouchStart(e.touches, e.timeStamp);
@@ -658,6 +735,9 @@ export default class Main {
   moveEvent(e){
     var pageX = e.touches[0].pageX / this.scale;
     var pageY = e.touches[0].pageY / this.scale;
+    if (this.maskFlag) {
+      this.maskMoveEvent(e);
+    }
     if (this.currentPage == 'firstPage'){
       this.distance = pageY - this.point.x;
       if(this.distance > 0){
@@ -716,6 +796,9 @@ export default class Main {
   }
   endEvent(e){
     var self = this;
+    if (this.maskFlag) {
+      this.maskEndEvent(e);
+    }
     if (this.currentPage == 'firstPage'){
       if(this.distance > -224){   
         new TWEEN.Tween(this.circleSprite1.scale).to({
@@ -744,6 +827,93 @@ export default class Main {
       this.scroller.doTouchEnd(e.timeStamp);
       this.circleContainer.visible = false;
     }
+  }
+  distance(e, t){
+    var i = Math.sqrt(Math.pow(t.x - e.x, 2) + Math.pow(t.y - e.y, 2));
+    return i
+  }
+  maskStartEvent(e){
+    console.log('000000000000')
+    var pageX = e.touches[0].pageX / this.scale;
+    var pageY = e.touches[0].pageY / this.scale;
+    this.date = new Date();
+    this.pointQ.x = pageY;
+    this.pointQ.y = 750 - pageX;
+    this.pointG = {
+      x:pageY,
+      y:750 - pageX
+    }
+    if(this.aniFlag != 'cut1'){
+      this.circleContainer.visible = true;
+      this.circleContainer.children[0].position.set(pageY, 750 - pageX);
+      for (var i = 0; i < this.circleContainer.children.length; i++){
+        var item = this.circleContainer.children[i];
+        item.position.set(pageY, 750 - pageX);
+      }
+    }
+    if ("cut1" != this.aniFlag && "cut2" != this.aniFlag && "dialog3_start" != this.aniFlag){ 
+      return;
+    }else{
+      this.circleContainer.visible = false;
+      this.generateObj(this.pointQ, this.date);
+      this.resetData();
+      this.objK.x = this.pointQ.x;
+      this.objK.y = this.pointQ.y;
+      this.$Arr.push(Kn);
+      this.eArr.push(Kn);
+      this.iArr.push(Kn);
+      this.nArr.push(Kn)
+    }
+
+  }
+  maskMoveEvent(e){
+    var pageX = e.touches[0].pageX / this.scale;
+    var pageY = e.touches[0].pageY / this.scale;
+    this.piontG = {
+      x: pageY,
+      y: 750 - pageX
+    };
+    if (this.aniFlag != 'cut1'){
+      this.circleContainer.children[0].position.set(pageY, 750 - pageX);
+      for (var i = 0; i < this.circleContainer.children.length; i++) {
+        var item = this.circleContainer.children[i];
+        Yn[i] && Yn[i].stop();
+        Yn[i] = new TWEEN.Tween(item.position).to({
+          x: pageY,
+          y: 750 - pageX
+        }, 0.008 * i).onUpdate(function () {
+          item.position.set(this.x, this.y)
+        }).start()
+      }
+    }
+    if ("cut1" == this.aniFlag || "cut2" == this.aniFlag || "dialog3_start" == this.aniFlag){
+      this.circleContainer.visible = false;
+      if(!this.lFlag){
+        return;
+      }
+      this.generateObj(this.pointG, this.date);
+      var point = {
+        x: this.pointG.x,
+        y: this.pointG.y
+      }
+    }
+  }
+  maskEndEvent(e){
+
+  }
+  generateObj(obj,time){
+    this.objVArr.push({
+      position: obj,
+      lineWidth:10,
+      time: time
+    })
+  }
+  resetData(){
+    Vn = {}, this.objK = {};
+    Zn = {}, this.$Arr = [];
+    this.eArr = [];
+    to = 0, this.iArr = [];
+    this.nArr = [], ao = [], ro = [], oo = 0, lo = !0
   }
   getDialogTextArr(){
     let dialogText1Arr = [], dialogText2Arr = [], dialogText3Arr = [], dialogText4Arr = [];
