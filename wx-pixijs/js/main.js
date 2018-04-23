@@ -22,7 +22,9 @@ export default class Main {
     this.pointQ = {x:0,y:0};//Qn
     this.pointG = {x:0,y:0};//Gn
     this.distance = 0;//Jn
+    this.cCount = 0;
     this.dialogFlag = false;//_o
+    this.dialog3Flag = false;//bo
     this.date = new Date();//Hn
     this.objVArr = [];//vo
     this.objK = {};//Kn
@@ -30,7 +32,61 @@ export default class Main {
     this.eArr = [];//eo
     this.iArr = [];//io
     this.nArr = [];//no
+    this.rArr = [];//ro
+    this.aArr = [];//ao
     this.lFlag = false;//lo
+    this.gFlag = false;//go
+    this.arrIndex = 0;//to
+    this.sArr = [{//so
+      x: 0,
+      y: 0
+    }, {
+      x: 1,
+      y: 0
+    }];
+    this.pArr = [{//po
+      figure: 5,
+      figureName: "\u5de6\u6a2a",
+      rule: [{
+        style: [0],
+        min: 1,
+        max: 3
+      }]
+    }, {
+      figure: 1,
+      figureName: "\u53f3\u6a2a",
+      rule: [{
+        style: [1],
+        min: 1,
+        max: 3
+      }]
+    }, {
+      figure: 2,
+      figureName: "\u7ad6",
+      rule: [{
+        style: [2, 3],
+        min: 1,
+        max: 3
+      }]
+    }, {
+      figure: 3,
+      figureName: "\u5de6\u659c",
+      rule: [{
+        style: [4, 7],
+        min: 1,
+        max: 3
+      }]
+    }, {
+      figure: 4,
+      figureName: "\u53f3\u659c",
+      rule: [{
+        style: [5, 6],
+        min: 1,
+        max: 3
+      }]
+    }];
+    this.oIndex = 0;//oo
+    this.mCount = 0;//mo
     this.maskFlag = false;
     this.viewWidth = window.innerWidth;
     this.viewHeight = window.innerHeight;  
@@ -320,6 +376,7 @@ export default class Main {
       }
     }
     
+    
     ele.rotation = v1/100;
     if(v2 % 2 == 0){
       console.log(ele.footStep[0].position,ele.left)
@@ -343,6 +400,70 @@ export default class Main {
         ele.footStep[1].scale.set(1, 1)
       }
     }
+
+  }
+  rectAni2(ele, top, bol) {
+
+    let v1 = top % (Math.PI / 2 * 400),
+      v2 = parseInt(top / (Math.PI / 2 * 100)),
+      v3 = top % (Math.PI / 2 * 100),
+      v4 = -v1 / (Math.PI / 2 * 100) * 255,
+      v5 = -v3 / (Math.PI / 2 * 100) * 255;
+    bol && (v4 = 0, v5 = 0);
+    if (v1 > -Math.PI / 2 * 100) {
+      ele.pivot.set(0, 255);
+      ele.position.x = ele.left + v4;
+      bol && (v5 = 0);
+    } else {
+      if (v1 < -Math.PI / 2 * 100 && v1 > -Math.PI / 2 * 2 * 100) {
+        ele.pivot.set(0, 0);
+        ele.position.x = ele.left - 255 + v4;
+        bol && (v5 = -255);
+      } else {
+        if (v1 < -Math.PI / 2 * 100 * 2 && v1 >= -Math.PI / 2 * 100 * 3) {
+          ele.pivot.set(255, 0);
+          ele.position.x = ele.left -510 + v4;
+          bol && (v5 = -510);
+        } else {
+          if (v1 < Math.PI / 2 * 100 * 3 && v1 >= -Math.PI / 2 * 100 * 4) {
+            ele.pivot.set(255, 255);
+            ele.position.x = ele.left -765 + v4;
+            bol && (v5 = -765);
+          }
+        }
+      }
+    }
+
+
+    ele.rotation = v1 / 100;
+    if (v2 % 2 == 0) {
+      console.log(ele.footStep[0].position, ele.left)
+      ele.footStep[0].position.x = ele.left + v5;
+      ele.footStep[1].position.x = ele.left + v5 + 255;
+      ele.footStep[1].scale.set((255 + v3) / 255, (255 + v3) / 255);
+      if (v3 > -50) {
+        ele.footStep[0].scale.set(-v3 / 50, -v3 / 50)
+      } else {
+        ele.footStep[0].scale.set(1, 1);
+      }
+      v2 == 0 && ele.footStep[1].scale.set(0, 0);
+    } else {
+      console.log(ele.footStep[1].scale, ele.left, v3)
+      ele.footStep[1].position.x = ele.left + v5;
+      ele.footStep[0].position.x = ele.left + v5 + 255;
+      ele.footStep[0].scale.set((255 + v3) / 255, (255 + v3) / 255);
+      if (v3 > -50) {
+        ele.footStep[1].scale.set(-v3 / 50, -v3 / 50)
+      } else {
+        ele.footStep[1].scale.set(1, 1)
+      }
+    }
+    if ('dialog3_end' == this.aniFlag && top + this.height < 1060 && !this.dialog3Flag){
+      this.dialog3Tween();
+    }
+
+  }
+  dialog3Tween(){//W()
 
   }
   wordAni(){
@@ -828,12 +949,16 @@ export default class Main {
       this.circleContainer.visible = false;
     }
   }
-  distance(e, t){
+  distanceFun(e, t){
     var i = Math.sqrt(Math.pow(t.x - e.x, 2) + Math.pow(t.y - e.y, 2));
+    return i;
+  }
+  angle(e, t) {
+    var i = 100 * Math.atan((t.y - e.y) / (t.x - e.x));
     return i
   }
   maskStartEvent(e){
-    console.log('000000000000')
+    //console.log('000000000000')
     var pageX = e.touches[0].pageX / this.scale;
     var pageY = e.touches[0].pageY / this.scale;
     this.date = new Date();
@@ -859,10 +984,10 @@ export default class Main {
       this.resetData();
       this.objK.x = this.pointQ.x;
       this.objK.y = this.pointQ.y;
-      this.$Arr.push(Kn);
-      this.eArr.push(Kn);
-      this.iArr.push(Kn);
-      this.nArr.push(Kn)
+      this.$Arr.push(this.objK);
+      this.eArr.push(this.objK);
+      this.iArr.push(this.objK);
+      this.nArr.push(this.objK)
     }
 
   }
@@ -895,11 +1020,332 @@ export default class Main {
       var point = {
         x: this.pointG.x,
         y: this.pointG.y
+      };
+      var distance = this.distanceFun(this.eArr[this.eArr.length-1], point);
+      if(distance > 10){
+        let curItem = this.eArr[this.arrIndex];
+        let nextItem = this.eArr[this.arrIndex + 1];
+        let lastItem = this.eArr[this.eArr.length - 1];
+        let last3Item = this.eArr[this.eArr.length - 3];
+        let last2Item = this.eArr[this.eArr.length - 2];
+        console.log(curItem, nextItem,lastItem,last2Item,last3Item)
+        let angle1 = this.getAngleBetween(last3Item, last2Item, last2Item, nextItem);
+        let angle2 = this.getAngleBetween(curItem, nextItem,nextItem,lastItem);
+        this.arrIndex = this.eArr,length -1;
+        this.nArr.push(this.eArr[this.eArr.length -1]);
+        this.nArr.push(this.eArr[this.arrIndex]);
+        if(this.nArr.length > 1){
+          this.rArr.push({
+            firstPoint: this.nArr[this.nArr.length - 3],
+            endPoint: this.nArr[this.nArr.length - 2]
+          })
+        }
+        if(angle1 >= 40 || angle2 >= 20){
+          this.arrIndex = this.eArr.length - 1;
+          this.iArr.push(this.eArr[this.arrIndex - 1]);
+          this.iArr.push(this.eArr[this.arrIndex]);
+          if (this.iArr.length > 1){
+            this.aArr.push({
+              firstPoint: this.iArr[this.iArr.length - 3],
+              endPoint: this.iArr[this.iArr.length - 2]
+            })
+          }
+        }
+      }else{
+        this.eArr.push(point);
+        if(this.eArr.length >= 3 && this.eArr.length - this.arrIndex >= 5){
+          let curItem = this.eArr[this.arrIndex];
+          let nextItem = this.eArr[this.arrIndex + 1];
+          let lastItem = this.eArr[this.eArr.length - 1];
+          let last3Item = this.eArr[this.eArr.length - 3];
+          let last2Item = this.eArr[this.eArr.length - 2];
+          console.log(curItem, nextItem, lastItem, last2Item, last3Item)
+          let angle1 = this.getAngleBetween(last3Item,last2Item, last2Item, nextItem);
+          let angle2 = this.getAngleBetween(curItem, nextItem, nextItem, lastItem);
+          
+          this.arrIndex = this.eArr.length - 1;
+          this.nArr.push(this.eArr[this.eArr.length - 1]);
+          this.nArr.push(this.eArr[this.arrIndex]);
+          if (this.nArr.length > 1) {
+            this.rArr.push({
+              firstPoint: this.nArr[this.nArr.length - 3],
+              endPoint: this.nArr[this.nArr.length - 2]
+            })
+          }
+          if (angle1 >= 40 || angle2 >= 20) {
+            this.arrIndex = this.eArr.length - 1;
+            this.iArr.push(this.eArr[this.arrIndex - 1]);
+            this.iArr.push(this.eArr[this.arrIndex]);
+            if (this.iArr.length > 1) {
+              this.aArr.push({
+                firstPoint: this.iArr[this.iArr.length - 3],
+                endPoint: this.iArr[this.iArr.length - 2]
+              })
+            }
+          }
+        }
+      }
+      this.$Arr.push(point);
+      this.objK = point;
+      this.changeStyle(this.rArr);
+      for (var x = "", i = 0; i < this.pArr.length; i++) {
+        var w = this.figureShape(this.rArr, this.pArr[i].rule);
+        console.log('======w', w)
+        if(w === !0){
+          x = this.pArr[i].figureName;
+          this.oIndex = this.pArr[i].figure
+        }
+        console.log('move',this.oIndex)
+      }
+      if (this.aniFlag == 'cut1') {
+        this.showCut1(this.oIndex)//v
+      } else if (this.aniFlag == 'cut2') {
+        this.showCut2(this.oIndex);//m
       }
     }
   }
-  maskEndEvent(e){
+  figureShape(e, t) {
+    for (var i = e.length, n = i - 1, o = t.length - 1; o >= 0; o--) {
+      for (var s = 0; n >= 0; n--) {
+        for (var a = !1, r = 0; r < t[o].style.length; r++) if (e[n].style == t[o].style[r]) {
+          s++ , a = !0;
+          break
+        }
+        if (!a) break
+      }
+      if (!(s >= t[o].min && s <= t[o].max)) return !1
+    }
+    return !(n > -1)
+  }
+  showCut1(e){
+    console.log('***************showCut1', e)
+    var t = {
+      x: (this.objK.x + this.pointQ.x) / 2,
+      y: (this.objK.y + this.pointQ.y) / 2
+    };
+    if(e == 3){
+      if (t.x <= 540 + this.rectAni1.left - 152 && t.y <= 400){
+        this.showSlide2(0)
+      } else if (t.x > 540 + this.rectAni1.left - 152 && t.y > 400){
+        this.showSlide2(3)
+      }
+    }else if(e == 4){
+      if (t.x > 540 + this.rectAni1.left - 152 && t.y <= 400){
+        this.showSlide2(1)
+      } else if (t.x <= 540 + this.rectAni1.left - 152 && t.y > 400){
+        this.showSlide2(2)
+      }
+    }
+  }
+  showSlide2(e){
+    console.log('e', e)
+    this.scissorsSprite.visible = true;
+    this.diamondTween.stop();
+    this.scissorsSprite.visible = false;
+    if (e != 0 || this.diamondltAni.hasDropped){
+      console.log('e == 0')
+      if (1 != e || this.diamondrtAni.hasDropped){
+        console.log('e == 1')
+        if (2 != e || this.diamondlbAni.hasDropped){
+          console.log('e == 2')
+          if (3 == e && !this.diamondrbAni.hasDropped){
+            console.log('e == 3')
+            this.diamondrbAni.hasDropped = true;
+            this.diamondrbAni.gotoAndPlay(3);
+            this.bloodAni.play();
+            this.lineAni2.visible = false;
+            this.lineRAni2.visible = true;
+            this.cCount++;
+          }
+        }else{
+          this.diamondlbAni.hasDropped = true;
+          this.diamondlbAni.gotoAndPlay(3);
+          this.blood2Ani.play();
+          this.lineAni.visible = false;
+          this.lineRAni.visible = true;
+          this.cCount++;
+        }
+      }else{
+        this.diamondrtAni.hasDropped = true;
+        this.diamondrtAni.gotoAndPlay(3);
+        this.bloodAni2.play();
+        this.lineBSAni2.visible = false;
+        this.lineRSAni2.visible = true;
+        this.cCount++
+      }
+    }else{
+      this.diamondltAni.hasDropped = !0;
+      this.diamondltAni.gotoAndPlay(3);
+      this.blood2Ani2.play();
+      this.lineBSAni.visible = !1;
+      this.lineRSAni.visible = !0;
+      this.cCount++;
+    }
+    if(this.cCount == 4){
+      this.aniFlag = 'slide2';
+      setTimeout(()=>{
+        this.setmaskFlag();
+      },1200)
+    }
+  }
+  setmaskFlag() {
+    var self = this;
+    if(!this.gFlag){
+      this.blackTipsContainer.visible = true;
+      this.diamond1Ani.footStep.visible = true;
+      this.scroller.__scrollTop = 0;
+      this.gFlag = true;
+      new TWEEN.Tween({
+        alpha: 1
+      }).to({
+        alpha: 0
+      }, 0.3).onUpdate(function () {
+        var e = this.alpha;
+        self.dialogScissorsContainer.children.forEach(function (t, i) {
+          1 != i && 2 != i && (t.alpha = e)
+        })
+      }).onComplete(function () {
+        //self.maskFlag = false;
+      }).start()
+    }
+  }
+  showCut2(){
 
+  }
+
+  changeStyle(e) {
+    for (var t = e.length, i = 0; i < t; i++) {
+      var n = this.getAngleBetween(e[i].firstPoint, e[i].endPoint, this.sArr[0], this.sArr[1]),
+        o = e[i].firstPoint.x,
+        s = e[i].firstPoint.y,
+        a = e[i].endPoint.x,
+        r = e[i].endPoint.y,
+        p = 15;
+      n < p ? (e[i].style = 1, e[i].styleName = "right") : n > 180 - p ? (e[i].style = 0, e[i].styleName = "left") : n > 90 - p && n < 90 + p ? r >= s ? (e[i].style = 2, e[i].styleName = "down") : (e[i].style = 3, e[i].styleName = "up") : a >= o && r <= s ? (e[i].style = 4, e[i].styleName = "up-right") : a < o && r < s ? (e[i].style = 5, e[i].styleName = "up-left") : a >= o && r >= s ? (e[i].style = 6, e[i].styleName = "down-right") : a < o && r > s && (e[i].style = 7, e[i].styleName = "down-left")
+    }
+  }
+  getAngleBetween(e, t, i, n) {
+    console.log('=========',e, t, i, n)
+    var o = {
+      x: t.x - e.x,
+      y: t.y - e.y
+    },
+      s = {
+        x: n.x - i.x,
+        y: n.y - i.y
+      },
+      a = o.x * s.x + o.y * s.y,
+      r = Math.sqrt(Math.pow(o.x, 2) + Math.pow(o.y, 2)) * Math.sqrt(Math.pow(s.x, 2) + Math.pow(s.y, 2)),
+      p = a / r;
+    p > 1 && (p = 1);
+    var l = Math.acos(p),
+      d = 180 * l / Math.PI;
+    return d
+  }
+  maskEndEvent(e){
+    var flag = true;
+    if(this.pointG && this.pointG.x - this.pointQ.x > 0){
+      flag = false;
+    }
+    if (this.aniFlag == 'dialog1_start'){
+      if (4 == this.mCount) return;
+      if(flag){
+        this.mCount ++;
+        this.blackTipsContainer.visible = false;
+      }else{
+        this.mCount > 0 && this.mCount --;
+      }
+      if(this.mCount == 4){
+        for(var i = 0; i< 4;i++){
+          this.dialogTextContainer.children[i].visible = false;
+        }
+        this.showTween({
+          moveItem: this.rectAni2,
+          targetLeft: 500,
+          forwards: !0
+        }),
+        this.showTween({
+          moveItem: this.rectAni1,
+          targetLeft: 157.08,
+          forwards: !0,
+          time: 300
+        })
+        this.rectAni1.footStep[0].scale.set(0, 0);
+        this.rectAni1.footStep[1].scale.set(0, 0);
+        this.showCut('cut1');
+        return;
+      }
+      for(var j = 0;j<4;j++){
+        this.dialogTextContainer.children[j].visible = false;
+      }
+      console.log('this.mCount', this.mCount, this.dialogTextContainer.children)
+      this.dialogTextContainer.children[this.mCount].visible = true;
+      this.dialogTextContainer.children[this.mCount].children[1].gotoAndPlay(0);
+    }
+    if ("cut1" == this.aniFlag || "cut2" == this.aniFlag || "dialog3_start" == this.aniFlag){
+      if (!this.lFlag) return;
+      this.lFlag = false;
+      if (this.eArr.length - this.arrIndex == 1){
+        this.arrIndex = this.eArr.length - 1;
+        this.iArr.push(this.eArr[this.arrIndex - 1]);
+        this.iArr.push(this.eArr[this.arrIndex])
+        if(this.iArr.length > 1){
+          this.aArr.push({
+            firstPoint: this.iArr[this.iArr.length - 2],
+            endPoint: this.iArr[this.iArr.length - 1]
+          });
+        }
+      }else if(this.iArr.length <= 2){
+        return;
+      }
+      this.changeStyle(this.aArr)
+      for (var o = "", n = 0; n < this.pArr.length; n++) {
+        var s = this.figureShape(this.aArr, this.pArr[n].rule);
+        console.log('s', s)
+        if(s){
+          o = this.pArr[n].figureName;
+          this.oIndex = this.pArr[n].figure
+        }
+      }
+      console.log('end', this.oIndex)
+      if ("cut1" == this.aniFlag){
+        this.showCut1(this.oIndex)
+      } else if ("cut2" == this.aniFlag){
+        this.showCut2(this.oIndex)
+      }
+    }
+  }
+  showTween(e, t){
+    var self = this;
+    var i = e.time ? e.time/1000 : 1;
+    e.targetLeft < 0 ? new TWEEN.Tween({
+      left: 0
+    }).to({
+      left: e.targetLeft
+    }, i).onUpdate(function () {
+      self.rectAni2(e.moveItem, this.left, e.forwards)
+    }).onComplete(function () {
+      t && t()
+    }).delay(0.5).start() : new TWEEN.Tween({
+      left: 0
+    }).to({
+      left: e.targetLeft
+    }, i).onUpdate(function () {
+      self.rectAni(e.moveItem, this.left, e.forwards)
+    }).onComplete(function () {
+      t && t()
+    }).delay(0.5).start()
+  }
+  showCut(e){
+    this.aniFlag = e;
+    if(e == 'cut1'){
+      this.diamondTween.start();
+      this.scissorsSprite.visible = true;
+      this.dialogScissorsContainer.visible = true;
+      this.rectAni1.visible = false;
+    }else{
+      //lt.visible = !0, gt.visible = !0, triangleScissorsTween.start(), ft.visible = !0, _o = !1
+    }
   }
   generateObj(obj,time){
     this.objVArr.push({
@@ -909,11 +1355,19 @@ export default class Main {
     })
   }
   resetData(){
-    Vn = {}, this.objK = {};
-    Zn = {}, this.$Arr = [];
+    //Vn = {}, 
+    this.objK = {};
+    //Zn = {}, 
+    this.$Arr = [];
     this.eArr = [];
-    to = 0, this.iArr = [];
-    this.nArr = [], ao = [], ro = [], oo = 0, lo = !0
+    this.arrIndex = 0;
+    this.iArr = [];
+    this.nArr = [];
+    this.aArr = [];
+    this.lFlag = true;
+    this.rArr = [];
+    this.oIndex = 0;
+    
   }
   getDialogTextArr(){
     let dialogText1Arr = [], dialogText2Arr = [], dialogText3Arr = [], dialogText4Arr = [];
@@ -988,7 +1442,187 @@ export default class Main {
         this.dialogTextContainer.addChild(itemContainer);
         itemContainer.visible = false;
       }
+      let lineArr = [];
+      for(var i = 0;i<5;i++){
+        lineArr.push(this.imgSrc+'line/'+i+'.png');
+      }
+      //Re
+      this.lineAni = new PIXI.extras.AnimatedSprite.fromImages(lineArr),
+      this.lineAni.animationSpeed = .4;
+      this.lineAni.position.set(291, 197);
+      this.lineAni.rotation = Math.PI / 180 * 57.2;
+      this.lineAni.pivot.set(142, 0);
+      this.lineAni.play();
+      //qe
+      this.lineAni2 = new PIXI.extras.AnimatedSprite.fromImages(lineArr),
+      this.lineAni2.animationSpeed = .4;
+      this.lineAni2.position.set(419, 196);
+      this.lineAni2.rotation = -Math.PI / 180 * 58.5;
+      this.lineAni2.pivot.set(142, 0);
+      this.lineAni2.play();
+      let lineBSArr = []; 
+      for(var i = 0; i<5;i++){
+        lineBSArr.push(this.imgSrc + 'line/b_s_'+i+'.png');
+      }
+      //Je
+      this.lineBSAni = new PIXI.extras.AnimatedSprite.fromImages(lineBSArr);
+      this.lineBSAni.animationSpeed = .4, this.lineBSAni.position.set(256, 69);
+      this.lineBSAni.rotation = -Math.PI / 180 * 40;
+      this.lineBSAni.pivot.set(64, 0), this.lineBSAni.play();
+      //Ye
+      this.lineBSAni2 = new PIXI.extras.AnimatedSprite.fromImages(lineBSArr);
+      this.lineBSAni2.animationSpeed = .4, this.lineBSAni2.position.set(451, 69);
+      this.lineBSAni2.rotation = Math.PI / 180 * 40, this.lineBSAni2.pivot.set(64, 0); 
+      this.lineBSAni2.play();
+      //
+      let lineRArr = [];
+      for(var i = 0; i< 5;i++){
+        lineRArr.push(this.imgSrc+'line/r_'+i+'.png');
+      }
+      //je
+      this.lineRAni = new PIXI.extras.AnimatedSprite.fromImages(lineRArr); 
+      this.lineRAni.animationSpeed = .4;
+      this.lineRAni.position.set(291, 197); 
+      this.lineRAni.rotation = Math.PI / 180 * 57.2;
+      this.lineRAni.pivot.set(142, 0); 
+      this.lineRAni.play();
+      //Oe
+      this.lineRAni2 = new PIXI.extras.AnimatedSprite.fromImages(lineRArr);
+      this.lineRAni2.animationSpeed = .4;
+      this.lineRAni2.position.set(419, 196);
+      this.lineRAni2.rotation = -Math.PI / 180 * 58.5;
+      this.lineRAni2.pivot.set(142, 0); 
+      this.lineRAni2.play();
+      let lineRSArr = [];
+      for(var i = 0; i < 5; i++){
+        lineRSArr.push(this.imgSrc + 'line/r_s_'+i+'.png');
+      }
+      //Qe
+      this.lineRSAni = new PIXI.extras.AnimatedSprite.fromImages(lineRSArr);
+      this.lineRSAni.animationSpeed = .4, this.lineRSAni.position.set(256, 69);
+      this.lineRSAni.rotation = -Math.PI / 180 * 40; 
+      this.lineRSAni.pivot.set(64, 0), this.lineRSAni.play();
+      //Ge
+      this.lineRSAni2 = new PIXI.extras.AnimatedSprite.fromImages(lineRSArr); 
+      this.lineRSAni2.animationSpeed = .4;
+      this.lineRSAni2.position.set(451, 69); 
+      this.lineRSAni2.rotation = Math.PI / 180 * 40; 
+      this.lineRSAni2.pivot.set(64, 0); 
+      this.lineRSAni2.play();
+      this.lineRAni.visible = false;
+      this.lineRAni2.visible = false;
+      this.lineRSAni.visible =false;
+      this.lineRSAni2.visible = false;
+      //ze
+      let diamond1Arr = [];
+      for(var i = 0;i<3;i++){
+        diamond1Arr.push(this.imgSrc + 'diamond/1_'+i+'.png');
+      }
+      this.diamond1Ani = new PIXI.extras.AnimatedSprite.fromImages(diamond1Arr); 
+      this.diamond1Ani.animationSpeed = .1;
+      var self = this;
+      this.diamond1Ani.onFrameChange = function () {
+        if (!self.diamondltAni.hasDropped){
+          self.diamondltAni.gotoAndStop(self.diamond1Ani.currentFrame);
+        }
+        if (!self.diamondlbAni.hasDropped){
+          self.diamondlbAni.gotoAndStop(self.diamond1Ani.currentFrame)
+        }
+        if (!self.diamondrtAni.hasDropped) {
+          self.diamondrtAni.gotoAndStop(self.diamond1Ani.currentFrame)
+        }
+        if (!self.diamondrbAni.hasDropped) {
+          self.diamondrbAni.gotoAndStop(self.diamond1Ani.currentFrame)
+        }
+      };
+      var footStepSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc+'foot_step.png'].texture);
+      footStepSprite.pivot.set(21.5, 6);
+      footStepSprite.position.set(357, 298);
+      this.diamond1Ani.footStep = footStepSprite;
+      footStepSprite.visible = false;
+      this.diamond1Ani.play();
+      this.diamond1Ani.pivot.set(357, 298);
+      this.diamond1Ani.position.set(357, 298);
+      let diamondltArr = [];
+      for (var i = 0; i < 15; i++) {
+        diamondltArr.push(this.imgSrc + "diamond/l_t_" + i + ".png");
+      }
+      //We
+      this.diamondltAni = new PIXI.extras.AnimatedSprite.fromImages(diamondltArr),
+        this.diamondltAni.hasDropped = false;
+      this.diamondltAni.loop = false;
+      this.diamondltAni.animationSpeed = .2;
+      let diamondlbArr = []
+      for (var i = 0; i < 15; i++) {
+        diamondlbArr.push(this.imgSrc + "diamond/l_b_" + i + ".png");
+      }
+      //Xe
+      this.diamondlbAni = new PIXI.extras.AnimatedSprite.fromImages(diamondlbArr);
+      this.diamondlbAni.hasDropped = false;
+      this.diamondlbAni.loop = false;
+      this.diamondlbAni.animationSpeed = .2;
+      let diamondrtArr = [];
+      for (var i = 0; i < 15; i++) {
+        diamondrtArr.push(this.imgSrc + "diamond/r_t_" + i + ".png");
+      }
+      //Le
+      this.diamondrtAni = new PIXI.extras.AnimatedSprite.fromImages(diamondrtArr);
+      this.diamondrtAni.hasDropped = false;
+      this.diamondrtAni.loop = false;
+      this.diamondrtAni.animationSpeed = .2;
+      let diamondrbArr = [];
+      for (var i = 0; i < 14; i++) {
+        diamondrbArr.push(this.imgSrc + "diamond/r_b_" + i + ".png");
+      }
+      //Fe
+      this.diamondrbAni = new PIXI.extras.AnimatedSprite.fromImages(diamondrbArr);
+      this.diamondrbAni.hasDropped = false;
+      this.diamondrbAni.loop = false;
+      this.diamondrbAni.animationSpeed = .2;
+      let bloodArr = [];
+      for (var i = 0; i < 19; i++) {
+        bloodArr.push(this.imgSrc + "blood/jxxg_" + i + ".png");
+      }
+      //Be
+      this.bloodAni = new PIXI.extras.AnimatedSprite.fromImages(bloodArr);
+      this.bloodAni.animationSpeed = .2;
+      this.bloodAni.pivot.set(125, 125);
+      this.bloodAni.position.set(445, 195);
+      this.bloodAni.loop = false;
+
+      //ke
+      this.bloodAni2 = new PIXI.extras.AnimatedSprite.fromImages(bloodArr);
+      this.bloodAni2.animationSpeed = .2;
+      this.bloodAni2.pivot.set(125, 125);
+      this.bloodAni2.scale.set(.5, .5);
+      this.bloodAni2.position.set(445, 55);
+      this.bloodAni2.rotation = -Math.PI / 180 * 90;
+      this.bloodAni2.loop = false;
+
+
+      let blood2Arr = [];
+      for (var e = 0; e < 19; e++) {
+        blood2Arr.push(this.imgSrc + "blood2/jxxg_" + e + ".png");
+      }
+      //Ue
+      this.blood2Ani = new PIXI.extras.AnimatedSprite.fromImages(blood2Arr);
+      this.blood2Ani.animationSpeed = .2;
+      this.blood2Ani.pivot.set(375, 125);
+      this.blood2Ani.position.set(250, 195);
+      this.blood2Ani.loop = false;
+      //De
+      this.blood2Ani2 = new PIXI.extras.AnimatedSprite.fromImages(blood2Arr);
+      this.blood2Ani2.animationSpeed = .2;
+      this.blood2Ani2.pivot.set(375, 125);
+      this.blood2Ani2.scale.set(.5, .5);
+      this.blood2Ani2.position.set(250, 55);
+      this.blood2Ani2.rotation = Math.PI / 180 * 90;
+      this.blood2Ani2.loop = false;
+      this.dialogScissorsContainer.addChild(footStepSprite, this.diamond1Ani, this.diamondlbAni, this.diamondltAni, this.diamondrtAni, this.diamondrbAni, this.blood2Ani2, this.bloodAni2, this.blood2Ani, this.bloodAni, this.scissorsSprite, this.lineAni, this.lineAni2, this.lineBSAni, this.lineBSAni2, this.lineRAni, this.lineRAni2, this.lineRSAni, this.lineRSAni2);
     }
+    
+    
+    
   }
   showAnimation(){
     var that = this;
