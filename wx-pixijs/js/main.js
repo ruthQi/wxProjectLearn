@@ -23,6 +23,7 @@ export default class Main {
     this.pointG = {x:0,y:0};//Gn
     this.distance = 0;//Jn
     this.cCount = 0;
+    this.wCount = 0;//wo
     this.dialogFlag = false;//_o
     this.dialog3Flag = false;//bo
     this.date = new Date();//Hn
@@ -36,6 +37,7 @@ export default class Main {
     this.aArr = [];//ao
     this.lFlag = false;//lo
     this.gFlag = false;//go
+    this.oFlag = false;//_o
     this.arrIndex = 0;//to
     this.sArr = [{//so
       x: 0,
@@ -264,7 +266,7 @@ export default class Main {
   scrollFun = (left, top, zoom) => {
     let topScale = top/this.scale;
     let leftScale = left/this.scale;
-    console.log(topScale);
+    //console.log(topScale);
     if(this.aniFlag == 'slide1'){
       if(topScale < 942.478){
         if(topScale > 10){
@@ -283,8 +285,116 @@ export default class Main {
         }
       }
     }
+    if(this.aniFlag == 'slide2'){
+      //console.log('************topScale', topScale)
+      this.handleSlide2(topScale);
+    }
   }
-  handleDialog(type){
+  handleSlide2(topScale){//R()
+    if(topScale > 10){
+      this.blackTipsContainer.visible = false;
+    }else{
+      this.blackTipsContainer.visible = true;
+    }
+    var dis = this.height + this.rectAni1.left;
+    this.textContainer.position.x = dis - topScale;
+    
+    if (topScale > 845 && 0 == this.textContainer.children[0].hasCrashed){
+      this.textContainer.children[0].hasCrashed = true;
+      this.textContainer.children[0].gotoAndPlay(11);
+    }
+    if (topScale > 1460 && 0 == this.textContainer.children[1].hasCrashed){
+      this.textContainer.children[1].hasCrashed = !0;
+      this.textContainer.children[1].gotoAndPlay(11);
+    }
+    if (topScale > 2070 && 0 == this.textContainer.children[2].hasCrashed) {
+      this.textContainer.children[2].hasCrashed = !0;
+      this.textContainer.children[2].gotoAndPlay(11);
+    }
+    if (topScale > 3000 && 0 == this.textContainer.children[3].hasCrashed) {
+      this.diamond1Ani.visible = false;//this.diamond1Ani
+      this.diamond1Ani.footStep.visible = false;
+      this.textContainer.children[3].hasCrashed = !0;
+      this.textContainer.children[3].gotoAndPlay(1);
+      this.handleFall1();
+    }
+    if (topScale < 845 && 1 == this.textContainer.children[0].hasCrashed) {
+      this.showTextAni(this.textContainer.children[0]);
+    }
+    if (topScale < 1460 && 1 == this.textContainer.children[1].hasCrashed) {
+      this.showTextAni(this.textContainer.children[1]);
+    }
+    if (topScale < 2070 && 1 == this.textContainer.children[2].hasCrashed) {
+      this.showTextAni(this.textContainer.children[2]);
+    }
+    let num = topScale % 600, v1 = 307, v2 = 200, v3 = 300, v4 = 400;
+    if (num < v2){
+      this.diamond1Ani.rotation = num / 1e3 / 2;
+      this.diamond1Ani.position.x = v1 - 0.8 * num;
+      this.diamond1Ani.position.y = 298;
+      this.diamond1Ani.footStep.position.x = v1 - 0.8 * num;
+      this.diamond1Ani.footStep.scale.set((1000-num)/1000);
+    }
+    if(num > v2 && num <= v3){
+      this.diamond1Ani.rotation = (v2/1000-(num-v2)/1000*2)/2;
+      this.diamond1Ani.position.x = v1- 0.8 * v2 + 1.6 *(num-v2);
+      this.diamond1Ani.position.y = 298 - (num-v2);
+      this.diamond1Ani.footStep.position.x = v1 - 0.8 * v2 + 1.6 *(num-v2);
+      this.diamond1Ani.footStep.scale.set((1000 - v2) / 1000 - (num - v2)/100 * 0.8);
+    }
+    if(num > v3 && num <= v4){
+      this.diamond1Ani.rotation = -(num-v3)/1000;
+      this.diamond1Ani.position.x = v1 - 0.8 * v2 + 1.6 * (num - v2);
+      this.diamond1Ani.position.y = 198 + (num - v3);
+      this.diamond1Ani.footStep.position.x = v1 - 0.8 * v2 + 1.6 * (num - v2);
+      this.diamond1Ani.footStep.scale.set((num - v3) / 100 * 0.8);
+    }
+    if(num > v4){
+      this.diamond1Ani.rotation = -(v4 - v3) / 1000+(num-v4)/2000;
+      this.diamond1Ani.position.x = v1 - 0.8 * v2 + 1.6 * (v4 - v2) - 0.8 * (num-v4);
+      this.diamond1Ani.position.y = 298;
+      this.diamond1Ani.footStep.position.x = v1 - 0.8 * v2 + 1.6 * (v4 - v2) - 0.8 * (num - v4);
+      this.diamond1Ani.footStep.scale.set(0.8 + (num - v4)/100 * 0.2);
+    }
+  }
+  showTextAni(e){//Q()
+    if (!e.timer){
+      e.hasCrashed = false;
+      e.timer = setInterval(() =>{
+        var t = e.currentFrame;
+        if (11 == t || 0 == t){
+          clearInterval(e.timer);
+          e.timer = null
+        }
+        e.gotoAndStop(t - 1);
+      }, 50)
+    }
+  }
+  handleFall1(){//G
+    this.aniFlag = 'fall1';
+    var self = this;
+    new TWEEN.Tween(this.textContainer.position).to({
+      x: self.height + self.rectAni1.left - 3450
+    }, 0.7).start();
+    new TWEEN.Tween(this.textContainer.position).to({
+      y: -800
+    }, 1.3).delay(0.8).onComplete(function () {
+      new TWEEN.Tween(self.holeContainer.position).to({
+        y: 0
+      }, 0.5).start();
+      self.holeContainer.visible = true; 
+      self.diamondFallAni.play();
+      self.diamondFallAni.onFrameChange = function () {
+        if (22 == this.currentFrame){
+          this.stop();
+          this.visible = false;
+          self.trangleContainer.visible = true;
+          self.handleDialog("dialog2")
+        }
+      }
+    }).start()
+  }
+  handleDialog(type){//T()
     this.aniFlag = type;
     this.dialogFlag = true;
     this.maskFlag = true;
@@ -296,15 +406,25 @@ export default class Main {
       this.scroller.__scrollTop = 0;
       setTimeout(()=>{
         setTimeout(()=>{
-          console.log('000000')
+          //console.log('000000')
           this.dialogTextContainer.children[0].visible = true;
           this.dialogTextContainer.children[0].children[1].gotoAndPlay(0);
           this.aniFlag = "dialog1_start";
           this.blackTipsContainer.visible = true;
 
-        },1000)
+        },1)
         this.showHeartAni();
-      },200)
+      },0.2)
+    }
+    if (type == 'dialog2'){
+      this.rectAni3.left = this.height - 250 - 255;
+      this.rectAni3.position.set(this.rectAni3.left + 255, 560);
+      setTimeout(() => {
+        this.dialog2Container.children[0].visible = true;
+        this.dialog2Container.children[0].children[1].play();
+        this.aniFlag = "dialog2_start";
+        this.whiteTipsContainer.visible = true;
+        }, 0.2)
     }
 
 
@@ -345,7 +465,7 @@ export default class Main {
     t.chain(i), i.chain(n), n.chain(o), o.chain(s)
   }
   rectAni(ele, top, bol){
-    
+    //console.log('+++++++++++++++++++++++')
     let v1 = top%(Math.PI/2*400),
         v2 = parseInt(top/(Math.PI/2*100)),
         v3 = top%(Math.PI/2*100),
@@ -378,8 +498,9 @@ export default class Main {
     
     
     ele.rotation = v1/100;
+    //console.log('$$$$$$$$$$$$$$$$$$$$$$$v2', v2)
     if(v2 % 2 == 0){
-      console.log(ele.footStep[0].position,ele.left)
+      //console.log(ele.footStep[0].position,ele.left)
       ele.footStep[0].position.x = ele.left + 255 + v5;
       ele.footStep[1].position.x = ele.left + v5;
       ele.footStep[1].scale.set((255 - v3) / 255, (255 - v3) / 255);
@@ -390,7 +511,7 @@ export default class Main {
       }
       v2 == 0 && ele.footStep[1].scale.set(0, 0);
     }else{
-      console.log(ele.footStep[1].scale, ele.left, v3)
+      //console.log(ele.footStep[1].scale, ele.left, v3)
       ele.footStep[1].position.x = ele.left + 255 + v5;
       ele.footStep[0].position.x = ele.left + v5;
       ele.footStep[0].scale.set((255 - v3) / 255, (255 - v3) / 255);
@@ -437,7 +558,7 @@ export default class Main {
 
     ele.rotation = v1 / 100;
     if (v2 % 2 == 0) {
-      console.log(ele.footStep[0].position, ele.left)
+      //console.log(ele.footStep[0].position, ele.left)
       ele.footStep[0].position.x = ele.left + v5;
       ele.footStep[1].position.x = ele.left + v5 + 255;
       ele.footStep[1].scale.set((255 + v3) / 255, (255 + v3) / 255);
@@ -448,7 +569,7 @@ export default class Main {
       }
       v2 == 0 && ele.footStep[1].scale.set(0, 0);
     } else {
-      console.log(ele.footStep[1].scale, ele.left, v3)
+      //console.log(ele.footStep[1].scale, ele.left, v3)
       ele.footStep[1].position.x = ele.left + v5;
       ele.footStep[0].position.x = ele.left + v5 + 255;
       ele.footStep[0].scale.set((255 + v3) / 255, (255 + v3) / 255);
@@ -658,7 +779,11 @@ export default class Main {
     }, 1).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
     this.dialogScissorsContainer.addChild(textSprite);
     this.dialogScissorsContainer.visible = false;
-    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, this.heartSprite, this.dialogScissorsContainer);
+    //$e
+    this.textContainer = new PIXI.Container();
+    this.textContainer.position.set(this.height + this.rectAni1.left, 0);
+    //this.textContainer.visible = false;
+    this.dialogContainer.addChild(step1Sprite, step2Sprite, step3Sprite, step4Sprite, this.rectAni1, this.rectAni2, this.dialogTextContainer, this.heartAni, this.heartSprite, this.textContainer, this.dialogScissorsContainer);
     //nt
     this.holeContainer = new PIXI.Container();
     //ot
@@ -816,11 +941,12 @@ export default class Main {
     //console.log(this.container)
     this.container.interactive = true;
     this.container.buttonMode = true;
-    console.log(this.container)
+    //console.log(this.container)
     canvas.addEventListener('touchstart', (e)=>{
       this.startEvent(e);
     })
     canvas.addEventListener('touchmove', (e) => {
+      //console.log('@@@@@@@@@@@@@@@@@@@@@@')
       this.moveEvent(e);
     })
     canvas.addEventListener('touchend', (e)=>{
@@ -828,6 +954,7 @@ export default class Main {
     })
   }
   startEvent(e){
+    
     var pageX = e.touches[0].pageX/this.scale;
     var pageY = e.touches[0].pageY/this.scale;
     if (this.maskFlag) {
@@ -854,8 +981,10 @@ export default class Main {
     }
   }
   moveEvent(e){
+    
     var pageX = e.touches[0].pageX / this.scale;
     var pageY = e.touches[0].pageY / this.scale;
+    //console.log('00000000000000000000000000000000099999', pageX, pageY)
     if (this.maskFlag) {
       this.maskMoveEvent(e);
     }
@@ -878,6 +1007,7 @@ export default class Main {
       });
       this.circleSprite1.position.x = 250 + this.distance;
       if (this.distance == -224 && this.circleSprite1.scale.x == 0.57){
+        //console.log('======================')
         new TWEEN.Tween(this.circleSprite1.scale).to({
           x: 1,
           y: 1
@@ -901,6 +1031,7 @@ export default class Main {
         }, 0.3)
       }
     } else if (this.currentPage == 'main'){
+      //console.log('xxxxxxxxxxxxxxxxx')
       this.scroller.doTouchMove(e.touches, e.timeStamp, e.scale);
       this.circleContainer.children[0].position.set(pageY, 750-pageX);
       for (var i = 1; i < this.circleContainer.children.length;i++){
@@ -992,12 +1123,14 @@ export default class Main {
 
   }
   maskMoveEvent(e){
+    //console.log('%%%%%%%%%%%%%%%%%',e)
     var pageX = e.touches[0].pageX / this.scale;
     var pageY = e.touches[0].pageY / this.scale;
-    this.piontG = {
+    this.pointG = {
       x: pageY,
       y: 750 - pageX
     };
+    //this.piontG = pointG;
     if (this.aniFlag != 'cut1'){
       this.circleContainer.children[0].position.set(pageY, 750 - pageX);
       for (var i = 0; i < this.circleContainer.children.length; i++) {
@@ -1012,6 +1145,7 @@ export default class Main {
       }
     }
     if ("cut1" == this.aniFlag || "cut2" == this.aniFlag || "dialog3_start" == this.aniFlag){
+      //console.log('$$$$$$$$$$$$$$$$$$$$$$$$')
       this.circleContainer.visible = false;
       if(!this.lFlag){
         return;
@@ -1021,51 +1155,25 @@ export default class Main {
         x: this.pointG.x,
         y: this.pointG.y
       };
+      //console.log('9999999999999999@@@@@@@@@@', point, this.pointG)
       var distance = this.distanceFun(this.eArr[this.eArr.length-1], point);
+      //console.log(distance, this.eArr)
       if(distance > 10){
-        let curItem = this.eArr[this.arrIndex];
-        let nextItem = this.eArr[this.arrIndex + 1];
-        let lastItem = this.eArr[this.eArr.length - 1];
-        let last3Item = this.eArr[this.eArr.length - 3];
-        let last2Item = this.eArr[this.eArr.length - 2];
-        console.log(curItem, nextItem,lastItem,last2Item,last3Item)
-        let angle1 = this.getAngleBetween(last3Item, last2Item, last2Item, nextItem);
-        let angle2 = this.getAngleBetween(curItem, nextItem,nextItem,lastItem);
-        this.arrIndex = this.eArr,length -1;
-        this.nArr.push(this.eArr[this.eArr.length -1]);
-        this.nArr.push(this.eArr[this.arrIndex]);
-        if(this.nArr.length > 1){
-          this.rArr.push({
-            firstPoint: this.nArr[this.nArr.length - 3],
-            endPoint: this.nArr[this.nArr.length - 2]
-          })
-        }
-        if(angle1 >= 40 || angle2 >= 20){
-          this.arrIndex = this.eArr.length - 1;
-          this.iArr.push(this.eArr[this.arrIndex - 1]);
-          this.iArr.push(this.eArr[this.arrIndex]);
-          if (this.iArr.length > 1){
-            this.aArr.push({
-              firstPoint: this.iArr[this.iArr.length - 3],
-              endPoint: this.iArr[this.iArr.length - 2]
-            })
-          }
-        }
-      }else{
         this.eArr.push(point);
-        if(this.eArr.length >= 3 && this.eArr.length - this.arrIndex >= 5){
+        if (this.eArr.length >= 3 && this.eArr.length - this.arrIndex >= 5) {
           let curItem = this.eArr[this.arrIndex];
           let nextItem = this.eArr[this.arrIndex + 1];
           let lastItem = this.eArr[this.eArr.length - 1];
           let last3Item = this.eArr[this.eArr.length - 3];
           let last2Item = this.eArr[this.eArr.length - 2];
-          console.log(curItem, nextItem, lastItem, last2Item, last3Item)
-          let angle1 = this.getAngleBetween(last3Item,last2Item, last2Item, nextItem);
+          //console.log(curItem, nextItem, lastItem, last2Item, last3Item)
+          let angle1 = this.getAngleBetween(last3Item, last2Item, last2Item, nextItem);
           let angle2 = this.getAngleBetween(curItem, nextItem, nextItem, lastItem);
-          
+
           this.arrIndex = this.eArr.length - 1;
           this.nArr.push(this.eArr[this.eArr.length - 1]);
           this.nArr.push(this.eArr[this.arrIndex]);
+          //console.log('move<10**************this.nArr', this.nArr)
           if (this.nArr.length > 1) {
             this.rArr.push({
               firstPoint: this.nArr[this.nArr.length - 3],
@@ -1076,6 +1184,7 @@ export default class Main {
             this.arrIndex = this.eArr.length - 1;
             this.iArr.push(this.eArr[this.arrIndex - 1]);
             this.iArr.push(this.eArr[this.arrIndex]);
+            //console.log('move<10**************this.iArr', this.iArr)
             if (this.iArr.length > 1) {
               this.aArr.push({
                 firstPoint: this.iArr[this.iArr.length - 3],
@@ -1090,12 +1199,12 @@ export default class Main {
       this.changeStyle(this.rArr);
       for (var x = "", i = 0; i < this.pArr.length; i++) {
         var w = this.figureShape(this.rArr, this.pArr[i].rule);
-        console.log('======w', w)
+        //console.log('======w', w)
         if(w === !0){
           x = this.pArr[i].figureName;
           this.oIndex = this.pArr[i].figure
         }
-        console.log('move',this.oIndex)
+        //console.log('move',this.oIndex)
       }
       if (this.aniFlag == 'cut1') {
         this.showCut1(this.oIndex)//v
@@ -1118,7 +1227,7 @@ export default class Main {
     return !(n > -1)
   }
   showCut1(e){
-    console.log('***************showCut1', e)
+    //console.log('***************showCut1', e)
     var t = {
       x: (this.objK.x + this.pointQ.x) / 2,
       y: (this.objK.y + this.pointQ.y) / 2
@@ -1138,18 +1247,18 @@ export default class Main {
     }
   }
   showSlide2(e){
-    console.log('e', e)
+    //console.log('e', e)
     this.scissorsSprite.visible = true;
     this.diamondTween.stop();
     this.scissorsSprite.visible = false;
     if (e != 0 || this.diamondltAni.hasDropped){
-      console.log('e == 0')
+      //console.log('e == 0')
       if (1 != e || this.diamondrtAni.hasDropped){
-        console.log('e == 1')
+        //console.log('e == 1')
         if (2 != e || this.diamondlbAni.hasDropped){
-          console.log('e == 2')
+          //console.log('e == 2')
           if (3 == e && !this.diamondrbAni.hasDropped){
-            console.log('e == 3')
+            //console.log('e == 3')
             this.diamondrbAni.hasDropped = true;
             this.diamondrbAni.gotoAndPlay(3);
             this.bloodAni.play();
@@ -1185,10 +1294,11 @@ export default class Main {
       this.aniFlag = 'slide2';
       setTimeout(()=>{
         this.setmaskFlag();
-      },1200)
+      },1.2)
     }
   }
   setmaskFlag() {
+    //console.log('setmaskFlag====================')
     var self = this;
     if(!this.gFlag){
       this.blackTipsContainer.visible = true;
@@ -1205,7 +1315,7 @@ export default class Main {
           1 != i && 2 != i && (t.alpha = e)
         })
       }).onComplete(function () {
-        //self.maskFlag = false;
+        self.maskFlag = false;
       }).start()
     }
   }
@@ -1221,11 +1331,13 @@ export default class Main {
         a = e[i].endPoint.x,
         r = e[i].endPoint.y,
         p = 15;
+        //console.log(n,p)
+    
       n < p ? (e[i].style = 1, e[i].styleName = "right") : n > 180 - p ? (e[i].style = 0, e[i].styleName = "left") : n > 90 - p && n < 90 + p ? r >= s ? (e[i].style = 2, e[i].styleName = "down") : (e[i].style = 3, e[i].styleName = "up") : a >= o && r <= s ? (e[i].style = 4, e[i].styleName = "up-right") : a < o && r < s ? (e[i].style = 5, e[i].styleName = "up-left") : a >= o && r >= s ? (e[i].style = 6, e[i].styleName = "down-right") : a < o && r > s && (e[i].style = 7, e[i].styleName = "down-left")
     }
   }
   getAngleBetween(e, t, i, n) {
-    console.log('=========',e, t, i, n)
+    //console.log('=========',e, t, i, n)
     var o = {
       x: t.x - e.x,
       y: t.y - e.y
@@ -1238,11 +1350,12 @@ export default class Main {
       r = Math.sqrt(Math.pow(o.x, 2) + Math.pow(o.y, 2)) * Math.sqrt(Math.pow(s.x, 2) + Math.pow(s.y, 2)),
       p = a / r;
     p > 1 && (p = 1);
+    //console.log('angle', a,r,p)
     var l = Math.acos(p),
       d = 180 * l / Math.PI;
     return d
   }
-  maskEndEvent(e){
+  maskEndEvent(){
     var flag = true;
     if(this.pointG && this.pointG.x - this.pointQ.x > 0){
       flag = false;
@@ -1263,24 +1376,55 @@ export default class Main {
           moveItem: this.rectAni2,
           targetLeft: 500,
           forwards: !0
-        }),
+        });
         this.showTween({
           moveItem: this.rectAni1,
           targetLeft: 157.08,
           forwards: !0,
           time: 300
-        })
-        this.rectAni1.footStep[0].scale.set(0, 0);
-        this.rectAni1.footStep[1].scale.set(0, 0);
-        this.showCut('cut1');
+        }, ()=>{
+          this.rectAni1.footStep[0].scale.set(0, 0);
+          this.rectAni1.footStep[1].scale.set(0, 0);
+          this.showCut('cut1');
+        });
+        this.maskFlag = true;
         return;
       }
       for(var j = 0;j<4;j++){
         this.dialogTextContainer.children[j].visible = false;
       }
-      console.log('this.mCount', this.mCount, this.dialogTextContainer.children)
+      //console.log('this.mCount', this.mCount, this.dialogTextContainer.children)
       this.dialogTextContainer.children[this.mCount].visible = true;
       this.dialogTextContainer.children[this.mCount].children[1].gotoAndPlay(0);
+    }
+    if ("dialog2_start" == this.aniFlag) {
+      if (3 == this.wCount) return;
+      if(flag){
+        this.wCount++;
+        this.whiteTipsContainer.visible = false;
+      }else{
+        this.wCount > 0 && this.wCount--;
+      }
+      if(this.wCount == 3){
+        for(var i = 0; i < 3;i++){
+          this.dialog2Container.children[i].visible = false;
+        }
+        this.showTween({
+          moveItem: this.rectAni3,
+          targetLeft: 500,
+          forwards: !0
+        }, ()=>{
+          this.rectAni3.visible = false;
+          this.rectAni3.footStep[0].scale.set(0, 0);
+          this.rectAni3.footStep[1].scale.set(0, 0);
+          this.showCut('cut2');
+        })
+      }
+      for (var i = 0; i < 3; i++) {
+        this.dialog2Container.children[i].visible = false;
+      }
+      this.dialog2Container.children[this.wCount].visible = true;
+      this.dialog2Container.children[this.wCount].children[1].play();
     }
     if ("cut1" == this.aniFlag || "cut2" == this.aniFlag || "dialog3_start" == this.aniFlag){
       if (!this.lFlag) return;
@@ -1288,7 +1432,8 @@ export default class Main {
       if (this.eArr.length - this.arrIndex == 1){
         this.arrIndex = this.eArr.length - 1;
         this.iArr.push(this.eArr[this.arrIndex - 1]);
-        this.iArr.push(this.eArr[this.arrIndex])
+        this.iArr.push(this.eArr[this.arrIndex]);
+        //console.log('end this.iArr', this.iArr)
         if(this.iArr.length > 1){
           this.aArr.push({
             firstPoint: this.iArr[this.iArr.length - 2],
@@ -1298,16 +1443,17 @@ export default class Main {
       }else if(this.iArr.length <= 2){
         return;
       }
+      
       this.changeStyle(this.aArr)
       for (var o = "", n = 0; n < this.pArr.length; n++) {
         var s = this.figureShape(this.aArr, this.pArr[n].rule);
-        console.log('s', s)
+        //console.log('s', s)
         if(s){
           o = this.pArr[n].figureName;
           this.oIndex = this.pArr[n].figure
         }
       }
-      console.log('end', this.oIndex)
+      //console.log('end', this.oIndex)
       if ("cut1" == this.aniFlag){
         this.showCut1(this.oIndex)
       } else if ("cut2" == this.aniFlag){
@@ -1315,7 +1461,7 @@ export default class Main {
       }
     }
   }
-  showTween(e, t){
+  showTween(e, t){//k()
     var self = this;
     var i = e.time ? e.time/1000 : 1;
     e.targetLeft < 0 ? new TWEEN.Tween({
@@ -1331,6 +1477,7 @@ export default class Main {
     }).to({
       left: e.targetLeft
     }, i).onUpdate(function () {
+      //console.log('=======================')
       self.rectAni(e.moveItem, this.left, e.forwards)
     }).onComplete(function () {
       t && t()
@@ -1344,7 +1491,11 @@ export default class Main {
       this.dialogScissorsContainer.visible = true;
       this.rectAni1.visible = false;
     }else{
-      //lt.visible = !0, gt.visible = !0, triangleScissorsTween.start(), ft.visible = !0, _o = !1
+      this.lineWAni.visible = true;
+      this.triangleSciss.visible = true;
+      this.triangleScissorsTween.start();
+      this.triangleTextSprite.visible = true;
+      this.oFlag = false;
     }
   }
   generateObj(obj,time){
@@ -1619,10 +1770,173 @@ export default class Main {
       this.blood2Ani2.rotation = Math.PI / 180 * 90;
       this.blood2Ani2.loop = false;
       this.dialogScissorsContainer.addChild(footStepSprite, this.diamond1Ani, this.diamondlbAni, this.diamondltAni, this.diamondrtAni, this.diamondrbAni, this.blood2Ani2, this.bloodAni2, this.blood2Ani, this.bloodAni, this.scissorsSprite, this.lineAni, this.lineAni2, this.lineBSAni, this.lineBSAni2, this.lineRAni, this.lineRAni2, this.lineRSAni, this.lineRSAni2);
-    }
-    
-    
-    
+
+      let text1Arr = [], text2Arr = [], text3Arr = [], text4Arr = [];
+      for(var i = 0; i < 27; i++){
+        if(i < 11){
+          text1Arr.push(this.imgSrc + 'text1/A1-T1exoprt_'+i+'.png');
+        }else{
+          text1Arr.push(this.imgSrc + 'text1/A1-T1exoprt_' + (i+7) + '.png');
+        }
+      }
+      for (var i = 0; i < 25; i++) {
+        if (i < 11) {
+          text2Arr.push(this.imgSrc + 'text2/A1-T2exoprt _' + i + '.png');
+        } else {
+          text2Arr.push(this.imgSrc + 'text2/A1-T2exoprt _' + (i + 9) + '.png');
+        }
+      }
+      for (var i = 0; i < 27; i++) {
+        if (i < 11) {
+          text3Arr.push(this.imgSrc + 'text3/A1-T3exoprt_' + i + '.png');
+        } else {
+          text3Arr.push(this.imgSrc + 'text3/A1-T3exoprt_' + (i + 18) + '.png');
+        }
+      }
+      for (var i = 0; i < 25; i++) {
+        if (i == 0) {
+          text4Arr.push(this.imgSrc + 'text4/zsxlexport_00.png');
+        } else {
+          text4Arr.push(this.imgSrc + 'text4/zsxlexport_' + (i - 1) + '.png');
+        }
+      }
+      var text1Ani = new PIXI.extras.AnimatedSprite.fromImages(text1Arr);
+      text1Ani.animationSpeed = 0.2;
+      text1Ani.play();
+      text1Ani.onFrameChange = function(){
+        this.currentFrame == 10 && this.gotoAndPlay(0);
+      }
+      text1Ani.loop = false;
+      text1Ani.hasCrashed = false;
+      text1Ani.timer = null;
+      this.textContainer.addChild(text1Ani);
+
+      var text2Ani = new PIXI.extras.AnimatedSprite.fromImages(text2Arr);
+      text2Ani.animationSpeed = 0.2;
+      text2Ani.play();
+      text1Ani.onFrameChange = function () {
+        this.currentFrame == 10 && this.gotoAndPlay(0);
+      }
+      text2Ani.loop = false;
+      text2Ani.hasCrashed = false;
+      text2Ani.timer = null;
+      text2Ani.position.set(630, 0)
+      this.textContainer.addChild(text2Ani);
+
+      var text3Ani = new PIXI.extras.AnimatedSprite.fromImages(text3Arr);
+      text3Ani.animationSpeed = 0.2;
+      text3Ani.play();
+      text3Ani.onFrameChange = function () {
+        this.currentFrame == 10 && this.gotoAndPlay(0);
+      }
+      text3Ani.loop = false;
+      text3Ani.hasCrashed = false;
+      text3Ani.timer = null;
+      text3Ani.position.set(1260, 0)
+      this.textContainer.addChild(text3Ani);
+
+      var text4Ani = new PIXI.extras.AnimatedSprite.fromImages(text4Arr);
+      text4Ani.animationSpeed = 0.2;
+      text4Ani.gotoAndStop(0);
+      
+      text4Ani.loop = false;
+      text4Ani.hasCrashed = false;
+      text4Ani.timer = null;
+      text4Ani.position.set(1995, 0)
+      this.textContainer.addChild(text4Ani);
+
+      var text4lineSprite0 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'text4/line0.png'].texture);
+      var text4lineSprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'text4/line1.png'].texture);
+      var text4lineSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'text4/line2.png'].texture);
+      var text4lineSprite3 = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'text4/line3.png'].texture);
+
+      text4lineSprite0.position.set(200, 635);
+      text4lineSprite1.position.set(610, 680);
+      text4lineSprite2.position.set(726, 652);
+      text4lineSprite3.position.set(1745, 85);
+      this.textContainer.addChild(text4lineSprite0, text4lineSprite1, text4lineSprite2, text4lineSprite3);
+      //rt
+      let triangleArr = [];
+      for(var i = 0; i< 3; i++){
+        triangleArr.push(this.imgSrc + 'triangle/triangle_' + i +'.png')
+      }
+      this.triangleAni = new PIXI.extras.AnimatedSprite.fromImages(triangleArr);
+      this.triangleAni.animationSpeed = .1;
+      this.triangleAni.onFrameChange = () => {
+        this.triangleTop.hasDropped || this.triangleTop.gotoAndStop(this.triangleAni.currentFrame)
+      };
+      this.triangleAni.play();
+      //triangleTop
+      let triangleTopArr = [];
+      for(var i = 0; i < 25;i++){
+        if(i < 3){
+          triangleTopArr.push(this.imgSrc + 'triangle/triangle_top_' + i + '.png');
+        }else if(i >= 3 && i <= 13){
+          triangleTopArr.push(this.imgSrc + 'triangle/txdl_' + (i-3) + '.png');
+        }else if(i >= 14 && i <= 24){
+          triangleTopArr.push(this.imgSrc + 'triangle/txdr_' + (i - 14) + '.png');
+        }
+      }
+      this.triangleTop = new PIXI.extras.AnimatedSprite.fromImages(triangleTopArr);
+      this.triangleTop.position.set(-172.5, -201);
+      this.triangleTop.animationSpeed = .2;
+      this.triangleTop.loop = false;
+      this.triangleTop.hasDropped = false;
+      //lt
+      let lineWArr = [];
+      for (var e = 0; e < 5; e++){
+        lineWArr.push(this.imgSrc + "line/w_" + e + ".png");
+      };
+      //lt
+      this.lineWAni = new PIXI.extras.AnimatedSprite.fromImages(lineWArr);
+      this.lineWAni.animationSpeed = .4;
+      this.lineWAni.position.set(-14.5, 50);
+      this.lineWAni.play();
+      this.lineWAni.visible = false;
+      //dt
+      this.lineRAni3 = new PIXI.extras.AnimatedSprite.fromImages(lineRArr);
+      this.lineRAni3.animationSpeed = .4;
+      this.lineRAni3.position.set(-14.5, 50);
+      this.lineRAni3.play();
+      this.lineRAni3.visible = false;
+      //ht
+      this.blood2Ani3 = new PIXI.extras.AnimatedSprite.fromImages(blood2Arr);
+      this.blood2Ani3.animationSpeed = .2;
+      this.blood2Ani3.pivot.set(375, 125);
+      this.blood2Ani3.scale.set(.8, .8);
+      this.blood2Ani3.position.set(130, 50);
+      this.blood2Ani3.rotation = Math.PI / 180 * 135;
+      //ct
+      this.bloodAni3 = new PIXI.extras.AnimatedSprite.fromImages(bloodArr);
+      this.bloodAni3.animationSpeed = .2;
+      this.bloodAni3.pivot.set(125, 125); 
+      this.bloodAni3.scale.set(.8, .8); 
+      this.bloodAni3.position.set(130, 50); 
+      this.bloodAni3.rotation = -Math.PI / 180 * 135;
+      this.bloodAni3.loop = false; 
+      this.bloodAni3.loop = false;
+      //ft
+      this.triangleTextSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'triangle/text.png'].texture);
+
+      this.triangleTextSprite.position.set(500, 50);
+      this.triangleTextSprite.visible = false;
+      //gt
+      this.triangleSciss = new PIXI.Sprite(this.loader.resources[this.imgSrc + "triangle/scissors.png"].texture);
+      this.triangleSciss.visible = false;
+      this.triangleSciss.position.set(274, 32);
+      this.triangleScissorsTween = new TWEEN.Tween(this.triangleSciss.position).to({
+        x: -50
+      }, 2).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
+      this.foot2StepSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step2.png'].texture)
+      this.foot2StepSprite.pivot.set(21.5, 6);
+      this.foot2StepSprite.position.set(131.5, 255);
+      this.foot2StepSprite.scale.set(0, 0); 
+      this.trangleContainer.addChild(this.foot2StepSprite, this.triangleAni, this.triangleTop, this.lineWAni, this.lineRAni3, this.blood2Ani3, this.bloodAni3, this.triangleTextSprite, this.triangleSciss);
+
+      //to do
+
+
+    } 
   }
   showAnimation(){
     var that = this;

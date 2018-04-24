@@ -1224,7 +1224,7 @@ var Scroller;
 
       // Start animation and switch on flag
       console.log('==============',core.effect)
-      self.__isDecelerating = core.effect.Animate.start(step, verify, completed);
+      self.__isDecelerating = core.effect && core.effect.Animate.start(step, verify, completed);
 
     },
 
