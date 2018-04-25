@@ -289,6 +289,9 @@ export default class Main {
       //console.log('************topScale', topScale)
       this.handleSlide2(topScale);
     }
+    if (this.aniFlag == 'slide3'){
+      this.handleSlide3(topScale);
+    }
   }
   handleSlide2(topScale){//R()
     if(topScale > 10){
@@ -356,6 +359,9 @@ export default class Main {
       this.diamond1Ani.footStep.position.x = v1 - 0.8 * v2 + 1.6 * (v4 - v2) - 0.8 * (num - v4);
       this.diamond1Ani.footStep.scale.set(0.8 + (num - v4)/100 * 0.2);
     }
+  }
+  handleSlide3(topScale){
+    console.log(topScale)
   }
   showTextAni(e){//Q()
     if (!e.timer){
@@ -1297,6 +1303,13 @@ export default class Main {
       },1.2)
     }
   }
+  showSlide3(){
+    this.lineRAni3.visible = false;
+    this.aniFlag = "slide3";
+    this.whiteTipsContainer.visible = true;
+    this.scroller.__scrollTop = 0;
+    this.maskFlag = false;
+  }
   setmaskFlag() {
     //console.log('setmaskFlag====================')
     var self = this;
@@ -1319,8 +1332,43 @@ export default class Main {
       }).start()
     }
   }
-  showCut2(){
-
+  showCut2(t){
+    var self = this;
+    console.log('^^^^^^^^^^^^^^^^^t', t, this.triangleTop.hasDropped)
+    if (t != 5 && t != 3 || this.triangleTop.hasDropped){
+      if (t != 1 && t != 4 || this.triangleTop.hasDropped){
+        console.log('111111111111111111111')
+        this.triangleScissorsTween.stop();
+        this.triangleSciss.visible = !1;
+        this.triangleTextSprite.visible = !1;
+        this.lineRAni3.visible = !0;
+        this.lineWAni.visible = !1;
+        this.bloodAni3.gotoAndPlay(0);
+        this.triangleTop.hasDropped = true;
+        this.triangleTop.gotoAndPlay(14);
+        this.triangleTop.onFrameChange = function () {
+          if (24 == self.triangleTop.currentFrame) {
+            self.triangleTop.stop();
+            self.showSlide3();
+          }
+        }
+      }
+    }else{
+      console.log('222222222222222222222222')
+      this.triangleScissorsTween.stop();
+      this.triangleSciss.visible = false;
+      this.triangleTextSprite.visible = !1;
+      this.lineRAni3.visible = !0;
+      this.lineWAni.visible = !1;
+      this.blood2Ani3.gotoAndPlay(0);
+      this.triangleTop.hasDropped = true;
+      this.triangleTop.onFrameChange = function () {
+        if (13 == self.triangleTop.currentFrame){
+          self.triangleTop.stop();
+          this.showSlide3();
+        }
+      }
+    }
   }
 
   changeStyle(e) {
@@ -1419,6 +1467,7 @@ export default class Main {
           this.rectAni3.footStep[1].scale.set(0, 0);
           this.showCut('cut2');
         })
+        return;
       }
       for (var i = 0; i < 3; i++) {
         this.dialog2Container.children[i].visible = false;
@@ -1934,9 +1983,69 @@ export default class Main {
       this.trangleContainer.addChild(this.foot2StepSprite, this.triangleAni, this.triangleTop, this.lineWAni, this.lineRAni3, this.blood2Ani3, this.bloodAni3, this.triangleTextSprite, this.triangleSciss);
 
       //to do
-
+      let dialog2Text = this.getDialog2Text();
+      let dialog2Outline = this.getDialog2Outline();
+      for(var i = 0; i< 3; i++){
+        var dialog2Container = new PIXI.Container();
+        var dialog2TextAni = new PIXI.extras.AnimatedSprite.fromImages(dialog2Text[i]);
+        dialog2TextAni.animationSpeed = 0.1;
+        dialog2TextAni.loop = false;
+        dialog2Container.position.y = 120;
+        var dialog2OutlineAni = new PIXI.extras.AnimatedSprite.fromImages(dialog2Outline[i]);
+        dialog2OutlineAni.animationSpeed = 0.1;
+        dialog2OutlineAni.play();
+        dialog2OutlineAni.position.x = -40;
+        dialog2TextAni.position.x = -15;
+        if(i == 0){
+          dialog2Container.position.x = 377.5;
+          dialog2Container.position.y = 10;
+        }
+        if (i == 1) {
+          dialog2Container.position.x = 377.5;
+          dialog2TextAni.position.y = 13;
+          dialog2TextAni.position.x = -20;
+        }
+        if (i == 2) {
+          dialog2Container.position.x = this.height - 250-500-127.5;
+          dialog2TextAni.position.y = 15;
+          dialog2TextAni.position.x = -20;
+        }
+        dialog2Container.addChild(dialog2OutlineAni, dialog2TextAni);
+        this.dialog2Container.addChild(dialog2Container);
+        dialog2Container.visible = false;
+      }
 
     } 
+  }
+  getDialog2Text(){
+    let dialog2Text1 = [];
+    for(var i = 0; i<5;i++){
+      dialog2Text1.push(this.imgSrc + "dialog2/text1_" + i + ".png");
+    }
+    let dialog2Text2 = [];
+    for (var i = 0; i < 5; i++) {
+      dialog2Text2.push(this.imgSrc + "dialog2/text2_" + i + ".png");
+    }
+    let dialog2Text3 = [];
+    for (var i = 0; i < 5; i++) {
+      dialog2Text3.push(this.imgSrc + "dialog2/text3_" + i + ".png");
+    }
+    return [dialog2Text1, dialog2Text2, dialog2Text3];
+  }
+  getDialog2Outline() {
+    let dialog2Outline1 = [];
+    for(var i=0;i<4;i++){
+      dialog2Outline1.push(this.imgSrc + 'dialog2/outline1_' +i+'.png');
+    }
+    let dialog2Outline2 = [];
+    for (var i = 0; i < 4; i++) {
+      dialog2Outline2.push(this.imgSrc + 'dialog2/outline2_' + i + '.png');
+    }
+    let dialog2Outline3 = [];
+    for (var i = 0; i < 4; i++) {
+      dialog2Outline3.push(this.imgSrc + 'dialog2/outline3_' + i + '.png');
+    }
+    return [dialog2Outline1, dialog2Outline2, dialog2Outline3]
   }
   showAnimation(){
     var that = this;
