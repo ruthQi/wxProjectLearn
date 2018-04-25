@@ -361,7 +361,156 @@ export default class Main {
     }
   }
   handleSlide3(topScale){
-    console.log(topScale)
+    console.log(topScale);
+    if(topScale > 10){
+      this.whiteTipsContainer.visible = false;
+    }else{
+      this.whiteTipsContainer.visible = true;
+    }
+    this.stairsBgContainer.visible = true;
+    this.stairsContainer.visible = true;
+    let v1 = 300, v2 = 100, v3 = 131.5, v4 = topScale%(2 * v1);
+    if(topScale < 1200){
+      v1 = 200;
+      v2 = 120;
+      v3 = 131.5;
+      v4 = topScale % (2 * v1);
+      if(v4 < v1){
+        this.triangleAni.position.x = v4;//rt
+        this.triangleAni.position.y = -v2 * Math.sin(v4 / v1 * Math.PI);
+        this.foot2StepSprite.position.x = v3 + v4;
+        this.foot2StepSprite.scale.set((v2 + this.triangleAni.position.y) / v2, (v2 + this.triangleAni.position.y) / v2);
+      }else{
+        this.triangleAni.position.x = 2 * v1 - v4;
+        this.triangleAni.position.y = 0;
+        this.foot2StepSprite.position.x = v3 + 2 * v1 - v4;
+        this.foot2StepSprite.scale.set(1, 1);
+      }
+      this.stairsBgContainer.position.x = 1300 - topScale;
+      this.stairsBgContainer.children[1].position.x = -240 + topScale / 5;
+      this.stairsBgContainer.children[2].position.x = 73 + topScale / 10;
+      this.stairsContainer.position.x = 1300 + 476 - topScale;
+      this.stairsHoleBgSprite.position.x = 1300 + 476 + 785 - topScale;//St
+      this.stairsHoleCoverSprite.position.x = 1300 + 476 + 785 - topScale;
+      this.stairsLightContainer.visible = false;
+    }else if(topScale >= 1200 && topScale < 4800){
+      if(topScale < 2800){
+        v4 = (topScale - 1200) / 4;
+        this.stairsBgContainer.position.x = 1300 - 1200 - v4;
+        this.stairsBgContainer.position.y = -612 + v4 / 2;
+        this.stairsBgContainer.children[1].position.x = v4 / 10;
+        this.stairsBgContainer.children[2].position.x = 193 + v4 / 40;
+        this.stairsBgContainer.children[1].position.y = -v4 / 5;
+        this.stairsBgContainer.children[2].position.y = -v4 / 10;
+        this.stairsBgContainer.children[3].position.y = 266 - v4 / 40;
+        this.stairsBgContainer.children[4].position.y = 70 - v4 / 30;
+        this.stairsBgContainer.children[3].position.x = 958 + v4 / 5;
+        this.stairsBgContainer.children[4].position.x = 964 + v4 / 10;
+        this.stairsContainer.position.x = 1300 + 476 - 1200 - v4;
+        this.stairsContainer.position.y = v4 / 2 - 200;
+        this.stairsHoleBgSprite.position.x = 1300 + 476 + 735 - v4 - 1200;
+        this.stairsHoleCoverSprite.position.x = 1300 + 476 + 735 - v4 - 1200;
+        this.stairsHoleBgSprite.position.y = v4 / 2 - 647;
+        this.stairsHoleCoverSprite.position.y = v4 / 2 - 794
+      }else{
+        v4 = (topScale - 2800) / 4 + 400;
+        this.stairsBgContainer.position.x = 1300 - 1200 - v4;
+        this.stairsBgContainer.position.y = -612 + v4 - 200;
+        this.stairsBgContainer.children[1].position.x = v4 / 10;
+        this.stairsBgContainer.children[2].position.x = 193 + v4 / 40;
+        this.stairsBgContainer.children[1].position.y = -v4 / 5;
+        this.stairsBgContainer.children[2].position.y = -v4 / 10;
+        this.stairsBgContainer.children[3].position.y = 266 - v4 / 40;
+        this.stairsBgContainer.children[4].position.y = 70 - v4 / 30;
+        this.stairsBgContainer.children[3].position.x = 958 + v4 / 5;
+        this.stairsBgContainer.children[4].position.x = 964 + v4 / 10;
+        this.stairsContainer.position.x = 1300 + 476 - 1200 - v4;
+        this.stairsContainer.position.y = v4 - 200 - 200;//xt
+        this.stairsHoleBgSprite.position.x = 1300 + 476 + 735 - 1200 - v4;
+        this.stairsHoleCoverSprite.position.x = 1300 + 476 + 735 - 1200 - v4;
+        this.stairsHoleBgSprite.position.y = v4 - 647 - 200;
+        this.stairsHoleCoverSprite.position.y = v4 - 794 - 200;
+      }
+      if(topScale > 1400){
+        this.stairsLightContainer.visible = true;
+      }
+      if(topScale >= 1200 && topScale < 1800){
+        v1= 170;
+        v2 = 100;
+        v4 = (topScale - 1200) / 4;
+        this.triangleAni.position.x = v4,
+        this.triangleAni.position.y = -v2 * Math.sin(v4 / v1 * Math.PI),
+        this.nianAni.gotoAndStop(Math.min(10, parseInt((topScale - 1200) / 600 * 11))),
+        this.foot2StepSprite.scale.set(0, 0);//ut
+        this.setStairsAlpha();
+      }
+      if (topScale >= 1800 && topScale < 2000) {
+        v4 = (topScale - 1800)/4;
+        this.triangleAni.position.x = 150 - v4;
+        this.triangleAni.position.y = -36 + v4/2;
+        this.setStairsAlpha(0);
+      }
+      if (topScale >= 2000 && topScale < 2600) {
+        v1 = 190;
+        v2 = 120;
+        v4 = (topScale - 2000)/4;
+        this.triangleAni.position.x = 100 + v4;
+        this.triangleAni.position.y = -11 - v2 * Math.sin(v4 / v1 * Math.PI);
+        this.wangAni.gotoAndStop(Math.min(13, parseInt((topScale - 2e3) / 600 * 14)));
+        this.setStairsAlpha();
+      }
+      if (topScale >= 2600 && topScale < 2800) {
+        v4 = (topScale - 2600) / 4;
+        this.triangleAni.position.x = 250 - v4;
+        this.triangleAni.position.y = -85 + v4 / 2;
+        this.setStairsAlpha(1);
+      }
+      if (topScale >= 2800 && topScale < 3200) {
+        v1 = 150;
+        v2 = 240;
+        v4 = (topScale - 2800) / 4;
+        this.triangleAni.position.x = 200 + v4/2;
+        this.triangleAni.position.y = -60 - v2 * Math.sin(v4 / v1 * Math.PI) / 2;
+        this.byAni.gotoAndStop(Math.min(8, parseInt((topScale - 2800) / 400 * 9)));
+        this.setStairsAlpha();
+      }
+      if(topScale >= 3200 && topScale < 3600){
+        v4 = (topScale - 3200)/4;
+        this.triangleAni.position.x = 250 - v4;
+        this.triangleAni.position.y = -164 + v4;
+        this.setStairsAlpha(2);
+      }
+      if (topScale >= 3600 && topScale < 4400) {
+        v1 = 220;
+        v2 = 360;
+        v4 = (topScale - 3600) / 4;
+        this.triangleAni.position.x = 150 + v4;
+        this.triangleAni.position.y = -66 - v2 * Math.sin(v4 / v1 * Math.PI) / 2;
+        this.byAni.gotoAndStop(Math.min(8, parseInt((topScale - 2800) / 400 * 9)));
+        this.setStairsAlpha();
+      }
+      if (topScale >= 4400) {
+        v4 = (topScale - 4400) / 4;
+        this.triangleAni.position.x = 350 - v4;
+        this.triangleAni.position.y = -115 + v4;
+        this.hxAni.gotoAndStop(Math.min(10, parseInt((topScale - 4400) / 200 * 11)))
+        this.setStairsAlpha(3);
+      }
+
+    }else if(topScale > 4800){
+      v4 = topScale - 4800;
+      this.triangleAni.position.y = -15 - v4;
+    }else if(topScale > 5300){
+      this.handleDialog('dialog3');
+    }
+  }
+  setStairsAlpha(num){
+    for (var e = 0; e < 4; e++){
+      this.stairsContainer.children[e].children[0].alpha = .25
+    } 
+    if(num >= 0){
+      this.stairsContainer.children[num].children[0].alpha = 1;
+    }
   }
   showTextAni(e){//Q()
     if (!e.timer){
@@ -431,6 +580,10 @@ export default class Main {
         this.aniFlag = "dialog2_start";
         this.whiteTipsContainer.visible = true;
         }, 0.2)
+    }
+
+    if (type == 'dialog3'){
+      console.log('99999999999999')
     }
 
 
@@ -837,7 +990,7 @@ export default class Main {
     this.stairsContainer.position.set(1876, -200);
 
     //vt
-    this.stairsLlightContainer = new PIXI.Container();
+    this.stairsLightContainer = new PIXI.Container();
 
     //mt
     this.stairsBgContainer = new PIXI.Container();
@@ -864,7 +1017,7 @@ export default class Main {
     this.holeBg1Sprite.position.set(50,-193);
     this.holeCover1Sprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'stairs/hole_cover1.png'].texture);
     this.holeCover1Sprite.position.set(50, -340);
-    this.holeContainer.addChild(this.holeRect, this.holeBg1Sprite, this.diamondFallAni, this.stairsBgContainer, this.stairsContainer, this.stairsHoleBgSprite, this.trangleContainer, this.stairsHoleCoverSprite, this.holeCover1Sprite, this.dialog2Container, footStep2Sprite1, footStep2Sprite2, this.rectAni3, this.stairsLlightContainer);
+    this.holeContainer.addChild(this.holeRect, this.holeBg1Sprite, this.diamondFallAni, this.stairsBgContainer, this.stairsContainer, this.stairsHoleBgSprite, this.trangleContainer, this.stairsHoleCoverSprite, this.holeCover1Sprite, this.dialog2Container, footStep2Sprite1, footStep2Sprite2, this.rectAni3, this.stairsLightContainer);
     this.holeContainer.visible = false;
     this.holeContainer.position.set(0,250);
 
@@ -915,7 +1068,7 @@ export default class Main {
       percent: 0
     }).to({
       percent: 100
-    }, 2e3).onUpdate(function () {
+    }, 2).onUpdate(function () {
       if (this.percent < 45){
         handSprite.alpha = 1;
       }else{
@@ -1334,10 +1487,8 @@ export default class Main {
   }
   showCut2(t){
     var self = this;
-    console.log('^^^^^^^^^^^^^^^^^t', t, this.triangleTop.hasDropped)
     if (t != 5 && t != 3 || this.triangleTop.hasDropped){
       if (t != 1 && t != 4 || this.triangleTop.hasDropped){
-        console.log('111111111111111111111')
         this.triangleScissorsTween.stop();
         this.triangleSciss.visible = !1;
         this.triangleTextSprite.visible = !1;
@@ -1354,7 +1505,6 @@ export default class Main {
         }
       }
     }else{
-      console.log('222222222222222222222222')
       this.triangleScissorsTween.stop();
       this.triangleSciss.visible = false;
       this.triangleTextSprite.visible = !1;
@@ -1403,7 +1553,7 @@ export default class Main {
       d = 180 * l / Math.PI;
     return d
   }
-  maskEndEvent(){
+  maskEndEvent(){//x
     var flag = true;
     if(this.pointG && this.pointG.x - this.pointQ.x > 0){
       flag = false;
@@ -1601,7 +1751,7 @@ export default class Main {
     }
     return [outline1Arr, outline2Arr, outline3Arr, outline4Arr];
   }
-  showOtherCon(){
+  showOtherCon(){//p()
     let dialogTextArr = this.getDialogTextArr();
     let outLineArr = this.getDialogOutlineArr(); 
     if(!Rn){
@@ -1976,6 +2126,7 @@ export default class Main {
       this.triangleScissorsTween = new TWEEN.Tween(this.triangleSciss.position).to({
         x: -50
       }, 2).easing(TWEEN.Easing.Quadratic.InOut).delay(0.5).repeat(1 / 0);
+      //ut
       this.foot2StepSprite = new PIXI.Sprite(this.loader.resources[this.imgSrc + 'foot_step2.png'].texture)
       this.foot2StepSprite.pivot.set(21.5, 6);
       this.foot2StepSprite.position.set(131.5, 255);
@@ -2014,6 +2165,69 @@ export default class Main {
         this.dialog2Container.addChild(dialog2Container);
         dialog2Container.visible = false;
       }
+      //f
+      var stairs1Container = new PIXI.Container();
+      stairs1Container.position.set(0, 586);
+      var floorSprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/floor.png"].texture);
+      floorSprite1.alpha = .25;
+      var lineSprite1 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/stair1_line.png"].texture);
+      lineSprite1.position.set(94, 128);
+      let stairsNianArr = [];
+      for (var e = 0; e < 11; e++){
+        stairsNianArr.push(this.imgSrc + "stairs/nianexport_" + e + ".png");
+      } 
+      //wt
+      this.nianAni = new PIXI.extras.AnimatedSprite.fromImages(stairsNianArr), 
+      this.nianAni.position.set(-95, 100), 
+      stairs1Container.addChild(floorSprite1, lineSprite1, this.nianAni);
+      //v
+      var stairs2Container = new PIXI.Container();
+      stairs2Container.position.set(255, 393);
+      var floorSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/floor2.png"].texture);
+      floorSprite2.alpha = .25;
+      floorSprite2.position.set(52, 0);
+      var mainSprite2 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/stair2_main.png"].texture);
+      mainSprite2.position.set(0, 56);
+      //_t
+      let wangArr = [];
+      for (var e = 0; e < 14; e++){
+        wangArr.push(this.imgSrc + "stairs/wangexport_" + e + ".png");
+      } 
+      this.wangAni = new PIXI.extras.AnimatedSprite.fromImages(wangArr), 
+      this.wangAni.position.set(80, -45), 
+      stairs2Container.addChild(floorSprite2, mainSprite2, this.wangAni);
+      //_
+      var stairs3Container = new PIXI.Container();
+      stairs3Container.position.set(447, 166);
+      var floorSprite3 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/floor3.png"].texture);
+      floorSprite3.alpha = .25;
+      floorSprite3.position.set(0, 21);
+      var mainSprite3 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/stair3_main.png"].texture);
+      //yt
+      let byArr = [];
+      for (var e = 0; e < 9; e++){
+        byArr.push(this.imgSrc + "stairs/byexport_" + e + ".png");
+      } 
+      this.byAni = new PIXI.extras.AnimatedSprite.fromImages(byArr);
+      this.byAni.position.set(130, 20), 
+      stairs3Container.addChild(floorSprite3, mainSprite3, this.byAni);
+      //S
+      var stairs4Container = new PIXI.Container();
+      stairs4Container.position.set(714, 0);
+      var floorSprite4 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/floor4.png"].texture);
+      floorSprite4.alpha = .25;
+      floorSprite4.position.set(13, 0);
+      var mainSprite4 = new PIXI.Sprite(this.loader.resources[this.imgSrc + "stairs/stair4_main.png"].texture);
+      mainSprite4.position.set(0, 12);
+      //It
+      let hxArr = [];
+      for (var e = 0; e < 11; e++){
+        hxArr.push(this.imgSrc + "stairs/hxexport_" + e + ".png")
+      }
+      this.hxAni = new PIXI.extras.AnimatedSprite.fromImages(hxArr);
+      this.hxAni.position.set(150, 10);
+      stairs4Container.addChild(floorSprite4, mainSprite4, this.hxAni);
+      this.stairsContainer.addChild(stairs1Container, stairs2Container, stairs3Container, stairs4Container);
 
     } 
   }
