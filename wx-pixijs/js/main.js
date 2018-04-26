@@ -796,6 +796,7 @@ export default class Main {
     for (var i = 0; i < 38; i++) {
       sxzArr.push(this.imgSrc + 'sxz/sxz_' + i + '.png');
     }
+    //new PIXI.extras.AnimatedSprite.fromImages():onFrameChange, currentFrame
     this.sxzAni = new PIXI.extras.AnimatedSprite.fromImages(sxzArr);
     this.sxzAni.animationSpeed = 0.25;
     this.sxzAni.loop = false;
